@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="14dp"
+    android:paddingRight="14dp">
+
+    <ImageButton
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_gravity="left|center_vertical"
+        android:background="@drawable/green_round_button"
+        android:padding="20dp"
+        android:src="@drawable/pause" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:src="@drawable/hero" />
+
+    <ImageButton
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_gravity="right|center_vertical"
+        android:background="@drawable/green_round_button"
+        android:padding="20dp"
+        android:src="@drawable/help" />
+
+</FrameLayout>
