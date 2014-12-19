@@ -6,13 +6,11 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-
-import java.util.Random;
 
 import pl.stxnext.grot.R;
 import pl.stxnext.grot.enums.FieldType;
+import pl.stxnext.grot.enums.Rotation;
 import pl.stxnext.grot.view.GameButtonView;
 
 /**
@@ -38,6 +36,7 @@ public class GameFragment extends Fragment {
             LinearLayout buttonLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.button_layout, null);
             GameButtonView gameButtonView = (GameButtonView) buttonLayout.findViewById(R.id.button);
             gameButtonView.setColor(getResources().getColor(randomField().getColorId()));
+            gameButtonView.setRotation(randomRotation());
             gameButtonView.setId(i);
             gameButtonView.setTag(i);
             view.addView(buttonLayout);
@@ -47,6 +46,13 @@ public class GameFragment extends Fragment {
     private FieldType randomField() {
         double random = Math.random();
         FieldType[] types = FieldType.values();
+        int type = (int) (random * types.length);
+        return types[type];
+    }
+
+    private Rotation randomRotation() {
+        double random = Math.random();
+        Rotation[] types = Rotation.values();
         int type = (int) (random * types.length);
         return types[type];
     }

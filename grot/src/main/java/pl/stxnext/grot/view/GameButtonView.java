@@ -12,6 +12,8 @@ import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
+import pl.stxnext.grot.enums.Rotation;
+
 /**
  * @author Mieszko Stelmach @ STXNext
  */
@@ -21,6 +23,7 @@ public class GameButtonView extends ImageButton {
     private Paint backgroundPaint;
     private RectF rect = new RectF();
     private int color;
+    private Rotation rotation = Rotation.LEFT;
 
     public GameButtonView(Context context) {
         super(context);
@@ -41,6 +44,10 @@ public class GameButtonView extends ImageButton {
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public void setRotation(Rotation rotation) {
+        this.rotation = rotation;
     }
 
     @Override
@@ -78,7 +85,8 @@ public class GameButtonView extends ImageButton {
         Path path = getArrowPath();
         Matrix matrix = new Matrix();
         final float factor = 0.8f * size;
-        matrix.preScale(factor, factor);
+        matrix.postScale(factor, factor);
+        matrix.postRotate(rotation.getRotation(), factor / 2, factor / 2);
         path.transform(matrix);
         final float shift = 0.1f * size;
         path.offset(shift, shift);
