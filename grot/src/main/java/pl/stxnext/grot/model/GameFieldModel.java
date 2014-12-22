@@ -1,5 +1,7 @@
 package pl.stxnext.grot.model;
 
+import android.graphics.Point;
+
 import pl.stxnext.grot.enums.FieldType;
 import pl.stxnext.grot.enums.Rotation;
 
@@ -10,8 +12,11 @@ public class GameFieldModel {
 
     private FieldType fieldType;
     private Rotation rotation;
+    private Point point;
+    private ModelChangedListener listener;
 
-    public GameFieldModel() {}
+    public GameFieldModel() {
+    }
 
     public GameFieldModel(FieldType fieldType, Rotation rotation) {
         this.fieldType = fieldType;
@@ -32,5 +37,27 @@ public class GameFieldModel {
 
     public void setRotation(Rotation rotation) {
         this.rotation = rotation;
+    }
+
+    public Point getPoint() {
+        return point;
+    }
+
+    public void setPoint(Point point) {
+        this.point = point;
+    }
+
+    public void setListener(ModelChangedListener listener) {
+        this.listener = listener;
+    }
+
+    public void notifyModelChanged() {
+        if (listener != null) {
+            listener.onModelChanged(this);
+        }
+    }
+
+    public interface ModelChangedListener {
+        void onModelChanged(GameFieldModel model);
     }
 }

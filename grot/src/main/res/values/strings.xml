@@ -3,4 +3,5 @@
     <string name="grot">GROT</string>
     <string name="score">Score</string>
     <string name="moves">Moves</string>
+    <string name="game_finished">Game Finished!</string>
 </resources>

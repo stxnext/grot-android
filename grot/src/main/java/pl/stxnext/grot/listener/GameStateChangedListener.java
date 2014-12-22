@@ -1,5 +1,7 @@
 package pl.stxnext.grot.listener;
 
+import pl.stxnext.grot.model.FieldTransition;
+import pl.stxnext.grot.model.GameFieldModel;
 import pl.stxnext.grot.model.GamePlainModel;
 
 /**
@@ -7,4 +9,7 @@ import pl.stxnext.grot.model.GamePlainModel;
  */
 public interface GameStateChangedListener {
     void onGameStarted(GamePlainModel model);
+
+    void onFieldPressed(int position);
+
 }

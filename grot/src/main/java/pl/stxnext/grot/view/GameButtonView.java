@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
@@ -18,13 +19,15 @@ import pl.stxnext.grot.model.GameFieldModel;
 /**
  * @author Mieszko Stelmach @ STXNext
  */
-public class GameButtonView extends ImageButton {
+public class GameButtonView extends ImageButton implements GameFieldModel.ModelChangedListener {
     private Path path;
     private Paint paint;
     private Paint backgroundPaint;
     private RectF rect = new RectF();
+    private GameFieldModel model;
     private int color;
     private Rotation rotation = Rotation.LEFT;
+    private boolean changePainters;
 
     public GameButtonView(Context context) {
         super(context);
@@ -43,29 +46,25 @@ public class GameButtonView extends ImageButton {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    @Deprecated
-    public void setColor(int color) {
-        this.color = color;
-    }
-
-    @Deprecated
-    public void setRotation(Rotation rotation) {
-        this.rotation = rotation;
-    }
-
     public void setModel(GameFieldModel model) {
+        this.model = model;
         this.color = getResources().getColor(model.getFieldType().getColorId());
         this.rotation = model.getRotation();
+        model.setListener(this);
+    }
+
+    public GameFieldModel getModel() {
+        return model;
     }
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         int width = canvas.getWidth();
-        if (path == null) {
+        if (path == null || changePainters) {
             this.path = getArrowPath(width);
         }
-        if (paint == null) {
+        if (paint == null || changePainters) {
             this.paint = new Paint() {
                 {
                     setStyle(Style.FILL);
@@ -74,7 +73,7 @@ public class GameButtonView extends ImageButton {
                 }
             };
         }
-        if (backgroundPaint == null) {
+        if (backgroundPaint == null || changePainters) {
             this.backgroundPaint = new Paint() {
                 {
                     setStyle(Style.FILL);
@@ -82,6 +81,7 @@ public class GameButtonView extends ImageButton {
                     setAntiAlias(true);
                 }
             };
+            this.changePainters = false;
         }
         rect.set(0, 0, width, width);
         canvas.drawOval(rect, backgroundPaint);
@@ -121,5 +121,13 @@ public class GameButtonView extends ImageButton {
         path.lineTo(0.1904f, 0.5579f);
         path.cubicTo(0.1904f, 0.5579f, 0.1453f, 0.5641f, 0.1453f, 0.5242f);
         return path;
+    }
+
+    @Override
+    public void onModelChanged(final GameFieldModel model) {
+        this.color = getResources().getColor(model.getFieldType().getColorId());
+        this.rotation = model.getRotation();
+        this.changePainters = true;
+        postInvalidate();
     }
 }

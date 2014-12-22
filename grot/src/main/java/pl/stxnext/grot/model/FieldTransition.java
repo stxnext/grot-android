@@ -7,18 +7,18 @@ import pl.stxnext.grot.enums.FieldType;
  */
 public class FieldTransition {
     private final int position;
-    private final FieldType fieldType;
+    private final GameFieldModel fieldModel;
 
-    public FieldTransition(int position, FieldType fieldType) {
+    public FieldTransition(int position, GameFieldModel fieldModel) {
         this.position = position;
-        this.fieldType = fieldType;
+        this.fieldModel = fieldModel;
     }
 
     public int getPosition() {
         return position;
     }
 
-    public FieldType getFieldType() {
-        return fieldType;
+    public GameFieldModel getFieldModel() {
+        return fieldModel;
     }
 }

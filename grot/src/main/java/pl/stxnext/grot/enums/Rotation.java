@@ -4,7 +4,7 @@ package pl.stxnext.grot.enums;
  * @author Mieszko Stelmach @ STXNext
  */
 public enum Rotation {
-    LEFT(0), RIGHT(180), UP(270), DOWN(90);
+    LEFT(180), RIGHT(0), UP(270), DOWN(90);
 
     private final int degrees;
 

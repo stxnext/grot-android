@@ -1,31 +1,37 @@
 package pl.stxnext.grot.activity;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
 
 import pl.stxnext.grot.R;
 import pl.stxnext.grot.controller.GameController;
 import pl.stxnext.grot.fragment.GameFragment;
 import pl.stxnext.grot.listener.GameStateChangedListener;
+import pl.stxnext.grot.model.FieldTransition;
 import pl.stxnext.grot.model.GamePlainModel;
 
 /**
  * @author Mieszko Stelmach @ STXNext
  */
-public class MainActivity extends Activity implements GameStateChangedListener {
+public class MainActivity extends Activity implements GameStateChangedListener, GameController.GameControllerListener {
 
     private static final String GAME_FRAGMENT_TAG = "game_fragment_tag";
     private GameController gameController;
     private TextView scoreView;
     private TextView movesView;
+    private Handler handler;
+    private GameFragment gameFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.gameController = new GameController(this);
+        this.gameController = new GameController(this, this);
         setContentView(R.layout.activity_main);
         Typeface typefaceRegular = Typeface.createFromAsset(getAssets(), "Lato-Regular.ttf");
         Typeface typefaceBold = Typeface.createFromAsset(getAssets(), "Lato-Bold.ttf");
@@ -37,11 +43,12 @@ public class MainActivity extends Activity implements GameStateChangedListener {
         movesLabel.setTypeface(typefaceRegular);
         this.movesView = (TextView) findViewById(R.id.movesViewId);
         movesView.setTypeface(typefaceBold);
+        this.handler = new Handler();
         addGameFragment();
     }
 
     private void addGameFragment() {
-        GameFragment gameFragment = new GameFragment();
+        this.gameFragment = new GameFragment();
         getFragmentManager()
                 .beginTransaction()
                 .add(R.id.game_plain_container, gameFragment, GAME_FRAGMENT_TAG)
@@ -49,8 +56,41 @@ public class MainActivity extends Activity implements GameStateChangedListener {
     }
 
     @Override
-    public void onGameStarted(GamePlainModel model) {
-        scoreView.setText(String.format("%d", model.getScore()));
-        movesView.setText(String.format("%d", model.getMoves()));
+    public void onGameStarted(final GamePlainModel model) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                scoreView.setText(String.format("%d", model.getScore()));
+                movesView.setText(String.format("%d", model.getMoves()));
+            }
+        });
+        gameController.setNewGamePlainModel(model);
+    }
+
+    @Override
+    public void onFieldPressed(int position) {
+        gameController.updateGameState(position);
+    }
+
+    @Override
+    public void updateGameInfo(final GamePlainModel model, List<FieldTransition> fieldTransitions) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                scoreView.setText(String.format("%d", model.getScore()));
+                movesView.setText(String.format("%d", model.getMoves()));
+            }
+        });
+        gameFragment.updateGameBoard(model, fieldTransitions);
+    }
+
+    @Override
+    public void onGameFinished(GamePlainModel model) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, R.string.game_finished, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
