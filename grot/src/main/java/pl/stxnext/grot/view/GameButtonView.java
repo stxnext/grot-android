@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.widget.ImageButton;
 
 import pl.stxnext.grot.enums.Rotation;
+import pl.stxnext.grot.model.GameFieldModel;
 
 /**
  * @author Mieszko Stelmach @ STXNext
@@ -42,12 +43,19 @@ public class GameButtonView extends ImageButton {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    @Deprecated
     public void setColor(int color) {
         this.color = color;
     }
 
+    @Deprecated
     public void setRotation(Rotation rotation) {
         this.rotation = rotation;
+    }
+
+    public void setModel(GameFieldModel model) {
+        this.color = getResources().getColor(model.getFieldType().getColorId());
+        this.rotation = model.getRotation();
     }
 
     @Override

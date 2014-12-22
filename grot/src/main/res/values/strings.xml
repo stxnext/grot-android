@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">GROT</string>
     <string name="grot">GROT</string>
+    <string name="score">Score</string>
+    <string name="moves">Moves</string>
 </resources>
