@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import pl.stxnext.grot.game.GamePlainGenerator;
+
 /**
  * @author Mieszko Stelmach @ STXNext
  */
@@ -22,12 +24,6 @@ public class GamePlainModel {
 
     public void addGameFieldModel(GameFieldModel model) {
         fieldModels.add(model);
-    }
-
-    public void updateGameFieldModel(GameFieldModel model, int position) {
-        if (fieldModels.size() > position) {
-            fieldModels.set(position, model);
-        }
     }
 
     public int getSize() {
@@ -68,5 +64,15 @@ public class GamePlainModel {
     public void updateResults(int gainedScore, int gainedMoves) {
         setScore(getScore() + gainedScore);
         setMoves(getMoves() + gainedMoves);
+    }
+
+    public void updateGamePlain(List<FieldTransition> fieldTransitions) {
+        //TODO Add arrows falling
+        for (FieldTransition fieldTransition : fieldTransitions) {
+            GameFieldModel fieldModel = fieldTransition.getFieldModel();
+            fieldModel.setFieldType(GamePlainGenerator.randomField());
+            fieldModel.setRotation(GamePlainGenerator.randomRotation());
+            fieldModel.notifyModelChanged();
+        }
     }
 }

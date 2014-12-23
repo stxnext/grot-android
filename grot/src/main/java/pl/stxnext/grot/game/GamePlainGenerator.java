@@ -31,21 +31,11 @@ public class GamePlainGenerator {
         return model;
     }
 
-    public static GamePlainModel updateGamePlain(GamePlainModel model, List<FieldTransition> fieldTransitions) {
-        for (FieldTransition fieldTransition : fieldTransitions) {
-            GameFieldModel fieldModel = fieldTransition.getFieldModel();
-            fieldModel.setFieldType(randomField());
-            fieldModel.setRotation(randomRotation());
-            fieldModel.notifyModelChanged();
-        }
-        return model;
-    }
-
-    private static GameFieldModel getRandomFieldModel() {
+    public static GameFieldModel getRandomFieldModel() {
         return new GameFieldModel(randomField(), randomRotation());
     }
 
-    private static FieldType randomField() {
+    public static FieldType randomField() {
         double randomValue = Math.random();
         double counter = 0.0;
         for (FieldType type : FieldType.values()) {
@@ -57,7 +47,7 @@ public class GamePlainGenerator {
         return FieldType.HIGHEST;
     }
 
-    private static Rotation randomRotation() {
+    public static Rotation randomRotation() {
         double random = Math.random();
         Rotation[] types = Rotation.values();
         int type = (int) (random * types.length);

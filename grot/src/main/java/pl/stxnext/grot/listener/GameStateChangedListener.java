@@ -12,4 +12,6 @@ public interface GameStateChangedListener {
 
     void onFieldPressed(int position);
 
+    void onRestartGame();
+
 }

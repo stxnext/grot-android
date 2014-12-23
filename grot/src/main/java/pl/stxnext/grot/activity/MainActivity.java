@@ -11,6 +11,7 @@ import java.util.List;
 
 import pl.stxnext.grot.R;
 import pl.stxnext.grot.controller.GameController;
+import pl.stxnext.grot.fragment.FinishedGameFragment;
 import pl.stxnext.grot.fragment.GameFragment;
 import pl.stxnext.grot.listener.GameStateChangedListener;
 import pl.stxnext.grot.model.FieldTransition;
@@ -22,6 +23,7 @@ import pl.stxnext.grot.model.GamePlainModel;
 public class MainActivity extends Activity implements GameStateChangedListener, GameController.GameControllerListener {
 
     private static final String GAME_FRAGMENT_TAG = "game_fragment_tag";
+    private static final String FINISHED_GAME_FRAGMENT_TAG = "finished_game_fragment_tag";
     private GameController gameController;
     private TextView scoreView;
     private TextView movesView;
@@ -73,6 +75,11 @@ public class MainActivity extends Activity implements GameStateChangedListener, 
     }
 
     @Override
+    public void onRestartGame() {
+
+    }
+
+    @Override
     public void updateGameInfo(final GamePlainModel model, List<FieldTransition> fieldTransitions) {
         handler.post(new Runnable() {
             @Override
@@ -86,11 +93,10 @@ public class MainActivity extends Activity implements GameStateChangedListener, 
 
     @Override
     public void onGameFinished(GamePlainModel model) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(MainActivity.this, R.string.game_finished, Toast.LENGTH_LONG).show();
-            }
-        });
+        FinishedGameFragment finishedGameFragment = new FinishedGameFragment();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.game_plain_container, finishedGameFragment, FINISHED_GAME_FRAGMENT_TAG)
+                .commit();
     }
 }

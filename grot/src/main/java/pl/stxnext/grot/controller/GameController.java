@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import pl.stxnext.grot.enums.Rotation;
 import pl.stxnext.grot.game.GamePlainGenerator;
 import pl.stxnext.grot.model.FieldTransition;
 import pl.stxnext.grot.model.GameFieldModel;
@@ -47,8 +48,11 @@ public class GameController {
                         FieldTransition fieldTransition = new FieldTransition(nextPosition, model);
                         fieldTransitions.add(fieldTransition);
                         nextPosition = getNextPosition(model);
+                        while(nextPosition != -1 && visited.contains(nextPosition)) {
+                            nextPosition = getNextPosition(nextPosition, model.getRotation());
+                        }
                     }
-                } while (nextPosition != -1 && !visited.contains(nextPosition));
+                } while (nextPosition != -1);
                 updateGamePlain(fieldTransitions);
                 listener.updateGameInfo(gamePlainModel, fieldTransitions);
             }
@@ -92,7 +96,7 @@ public class GameController {
             int gainedMoves = Math.max(0, fieldTransitions.size() - threshold);
             gainedMoves--;
             gamePlainModel.updateResults(gainedScore, gainedMoves);
-            GamePlainGenerator.updateGamePlain(gamePlainModel, fieldTransitions);
+            gamePlainModel.updateGamePlain(fieldTransitions);
         }
         listener.updateGameInfo(gamePlainModel, fieldTransitions);
         if (gamePlainModel.getMoves() == 0) {
@@ -101,32 +105,43 @@ public class GameController {
     }
 
     private int getNextPosition(GameFieldModel model) {
-        final int size = gamePlainModel.getSize();
         Point point = model.getPoint();
-        switch (model.getRotation()) {
+        return getNextPosition(point.x, point.y, model.getRotation());
+    }
+
+    private int getNextPosition(int position, Rotation rotation) {
+        int size = gamePlainModel.getSize();
+        int x = position % size;
+        int y = position / size;
+        return getNextPosition(x, y, rotation);
+    }
+
+    private int getNextPosition(int x, int y, Rotation rotation) {
+        final int size = gamePlainModel.getSize();
+        switch (rotation) {
             case LEFT:
-                if (point.x == 0) {
+                if (x == 0) {
                     return -1;
                 } else {
-                    return calculatePosition(point.x - 1, point.y);
+                    return calculatePosition(x - 1, y);
                 }
             case RIGHT:
-                if (point.x == size - 1) {
+                if (x == size - 1) {
                     return -1;
                 } else {
-                    return calculatePosition(point.x + 1, point.y);
+                    return calculatePosition(x + 1, y);
                 }
             case UP:
-                if (point.y == 0) {
+                if (y == 0) {
                     return -1;
                 } else {
-                    return calculatePosition(point.x, point.y - 1);
+                    return calculatePosition(x, y - 1);
                 }
             case DOWN:
-                if (point.y == size - 1) {
+                if (y == size - 1) {
                     return -1;
                 } else {
-                    return calculatePosition(point.x, point.y + 1);
+                    return calculatePosition(x, y + 1);
                 }
         }
         return -1;
