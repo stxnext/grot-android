@@ -76,7 +76,10 @@ public class MainActivity extends Activity implements GameStateChangedListener, 
 
     @Override
     public void onRestartGame() {
-
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.game_plain_container, gameFragment, GAME_FRAGMENT_TAG)
+                .commit();
     }
 
     @Override
