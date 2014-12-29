@@ -1,8 +1,10 @@
 package pl.stxnext.grot.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import pl.stxnext.grot.game.GamePlainGenerator;
 
@@ -67,12 +69,34 @@ public class GamePlainModel {
     }
 
     public void updateGamePlain(List<FieldTransition> fieldTransitions) {
-        //TODO Add arrows falling
+        Set<Integer> emptyPositions = new HashSet<>(fieldTransitions.size());
         for (FieldTransition fieldTransition : fieldTransitions) {
-            GameFieldModel fieldModel = fieldTransition.getFieldModel();
+            emptyPositions.add(fieldTransition.getPosition());
+        }
+        for (int x = 0; x < size; x++) {
+            int gaps = 0;
+            for (int y = size - 1; y >= 0; y--) {
+                int position = y * size + x;
+                if (emptyPositions.contains(position)) {
+                    gaps++;
+                } else if (gaps > 0) {
+                    int positionToSwap = (y + gaps) * size + x;
+                    GameFieldModel gameFieldModel = fieldModels.get(position);
+                    GameFieldModel swapGameFieldModel = fieldModels.get(positionToSwap);
+                    swapGameFieldModel.setFieldType(gameFieldModel.getFieldType());
+                    swapGameFieldModel.setRotation(gameFieldModel.getRotation());
+                    swapGameFieldModel.notifyModelChanged();
+                    emptyPositions.remove(positionToSwap);
+                    emptyPositions.add(position);
+                }
+            }
+        }
+        for (Integer emptyPosition : emptyPositions) {
+            GameFieldModel fieldModel = fieldModels.get(emptyPosition);
             fieldModel.setFieldType(GamePlainGenerator.randomField());
             fieldModel.setRotation(GamePlainGenerator.randomRotation());
             fieldModel.notifyModelChanged();
         }
     }
+
 }
