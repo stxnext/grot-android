@@ -1,7 +1,8 @@
 package pl.stxnext.grot.listener;
 
+import java.util.List;
+
 import pl.stxnext.grot.model.FieldTransition;
-import pl.stxnext.grot.model.GameFieldModel;
 import pl.stxnext.grot.model.GamePlainModel;
 
 /**
@@ -13,5 +14,7 @@ public interface GameStateChangedListener {
     void onFieldPressed(int position);
 
     void onRestartGame();
+
+    void onAnimationEnd(List<FieldTransition> fieldTransitions);
 
 }

@@ -1,8 +1,12 @@
 package pl.stxnext.grot.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +33,8 @@ import pl.stxnext.grot.view.GameButtonView;
 public class GameFragment extends Fragment {
 
     private GameStateChangedListener listener;
+    private GridLayout gridLayout;
+    private Handler handler;
 
     @Nullable
     @Override
@@ -39,7 +45,9 @@ public class GameFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fillGamePlain((ViewGroup) view);
+        this.gridLayout = (GridLayout) view;
+        this.handler = new Handler();
+        fillGamePlain(gridLayout);
     }
 
     @Override
@@ -74,7 +82,53 @@ public class GameFragment extends Fragment {
         listener.onGameStarted(model);
     }
 
-    public void updateGameBoard(GamePlainModel model, List<FieldTransition> fieldTransitions) {
-        //TODO Add animations
+    public void updateGameBoard(GamePlainModel model, final List<FieldTransition> fieldTransitions) {
+        final Iterator<FieldTransition> iterator = fieldTransitions.iterator();
+        if (iterator.hasNext()) {
+            final AnimatorSet buttonAnimation = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.button_animation);
+            buttonAnimation.addListener(new Animator.AnimatorListener() {
+
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (iterator.hasNext()) {
+                        final GameButtonView nextGameButtonView = (GameButtonView) gridLayout.findViewById(iterator.next().getPosition());
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                buttonAnimation.setTarget(nextGameButtonView);
+                                buttonAnimation.start();
+                            }
+                        }, 100);
+                    } else {
+                        listener.onAnimationEnd(fieldTransitions);
+                    }
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            GameButtonView gameButtonView = (GameButtonView) gridLayout.findViewById(iterator.next().getPosition());
+            buttonAnimation.setTarget(gameButtonView);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    buttonAnimation.start();
+                }
+            });
+        } else {
+            listener.onAnimationEnd(fieldTransitions);
+        }
     }
 }

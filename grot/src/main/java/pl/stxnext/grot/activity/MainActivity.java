@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -80,6 +79,11 @@ public class MainActivity extends Activity implements GameStateChangedListener, 
                 .beginTransaction()
                 .replace(R.id.game_plain_container, gameFragment, GAME_FRAGMENT_TAG)
                 .commit();
+    }
+
+    @Override
+    public void onAnimationEnd(List<FieldTransition> fieldTransitions) {
+        gameController.updateGamePlain(fieldTransitions);
     }
 
     @Override

@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
@@ -125,6 +124,7 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
 
     @Override
     public void onModelChanged(final GameFieldModel model) {
+        setAlpha(1.0f);
         this.color = getResources().getColor(model.getFieldType().getColorId());
         this.rotation = model.getRotation();
         this.changePainters = true;

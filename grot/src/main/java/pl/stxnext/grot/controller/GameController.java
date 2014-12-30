@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Set;
 
 import pl.stxnext.grot.enums.Rotation;
-import pl.stxnext.grot.game.GamePlainGenerator;
 import pl.stxnext.grot.model.FieldTransition;
 import pl.stxnext.grot.model.GameFieldModel;
 import pl.stxnext.grot.model.GamePlainModel;
@@ -48,19 +47,23 @@ public class GameController {
                         FieldTransition fieldTransition = new FieldTransition(nextPosition, model);
                         fieldTransitions.add(fieldTransition);
                         nextPosition = getNextPosition(model);
-                        while(nextPosition != -1 && visited.contains(nextPosition)) {
+                        while (nextPosition != -1 && visited.contains(nextPosition)) {
                             nextPosition = getNextPosition(nextPosition, model.getRotation());
                         }
                     }
                 } while (nextPosition != -1);
-                updateGamePlain(fieldTransitions);
+                calculatePoints(fieldTransitions);
                 listener.updateGameInfo(gamePlainModel, fieldTransitions);
             }
         });
         thread.start();
     }
 
-    private void updateGamePlain(List<FieldTransition> fieldTransitions) {
+    public void updateGamePlain(List<FieldTransition> fieldTransitions) {
+        gamePlainModel.updateGamePlain(fieldTransitions);
+    }
+
+    private void calculatePoints(List<FieldTransition> fieldTransitions) {
         final int size = gamePlainModel.getSize();
         int gainedScore = 0;
         Map<Integer, Integer> rows = new HashMap<>(size);
@@ -96,9 +99,7 @@ public class GameController {
             int gainedMoves = Math.max(0, fieldTransitions.size() - threshold);
             gainedMoves--;
             gamePlainModel.updateResults(gainedScore, gainedMoves);
-            gamePlainModel.updateGamePlain(fieldTransitions);
         }
-        listener.updateGameInfo(gamePlainModel, fieldTransitions);
         if (gamePlainModel.getMoves() == 0) {
             listener.onGameFinished(gamePlainModel);
         }
