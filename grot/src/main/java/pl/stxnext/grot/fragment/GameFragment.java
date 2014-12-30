@@ -124,6 +124,7 @@ public class GameFragment extends Fragment {
     private Iterator<FieldTransition> addAnimationSetListeners(final List<FieldTransition> fieldTransitions) {
         final Iterator<FieldTransition> iterator = fieldTransitions.iterator();
         for (AnimatorSet animatorSet : animations.values()) {
+            animatorSet.removeAllListeners();
             animatorSet.addListener(new Animator.AnimatorListener() {
 
                 @Override
@@ -134,12 +135,12 @@ public class GameFragment extends Fragment {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     if (iterator.hasNext()) {
-                        final FieldTransition fieldTransition = iterator.next();
+                        FieldTransition fieldTransition = iterator.next();
                         final GameButtonView nextGameButtonView = (GameButtonView) gridLayout.findViewById(fieldTransition.getPosition());
+                        final AnimatorSet buttonAnimation = animations.get(fieldTransition.getFieldModel().getRotation());
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                AnimatorSet buttonAnimation = animations.get(fieldTransition.getFieldModel().getRotation());
                                 buttonAnimation.setTarget(nextGameButtonView);
                                 buttonAnimation.start();
                             }
