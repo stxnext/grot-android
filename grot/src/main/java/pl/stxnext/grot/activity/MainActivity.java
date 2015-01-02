@@ -86,11 +86,27 @@ public class MainActivity extends Activity implements GameStateChangedListener, 
         handler.post(new Runnable() {
             @Override
             public void run() {
-                scoreView.setText(String.format("%d", model.getScore()));
                 movesView.setText(String.format("%d", model.getMoves()));
             }
         });
+
+        updateScore(model.getScore());
+
         gameController.updateGamePlain(fieldTransitions);
+    }
+
+    private void updateScore(final int currentScore) {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                int score = Integer.valueOf(scoreView.getText().toString());
+                score++;
+                scoreView.setText(String.format("%d", score));
+                if (score < currentScore) {
+                    updateScore(currentScore);
+                }
+            }
+        }, 80);
     }
 
     @Override

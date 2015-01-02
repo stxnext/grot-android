@@ -98,7 +98,7 @@ public class GameFragment extends Fragment {
         }
     }
 
-    private ViewPropertyAnimator  configAnimation(View view, Rotation rotation, final Iterator<FieldTransition> iterator, final GamePlainModel model, final List<FieldTransition> fieldTransitions) {
+    private ViewPropertyAnimator configAnimation(View view, Rotation rotation, final Iterator<FieldTransition> iterator, final GamePlainModel model, final List<FieldTransition> fieldTransitions) {
         ViewPropertyAnimator animator = view.animate();
         animator.alpha(0).setDuration(600);
         switch (rotation) {
