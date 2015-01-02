@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/main_background_color"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/main_background_color"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="48dp"
+        android:layout_margin="@dimen/content_margin"
         android:background="@drawable/green_border_bottom"
         android:baselineAligned="false"
         android:gravity="center"
@@ -28,14 +28,16 @@
                 android:layout_height="wrap_content"
                 android:text="@string/score"
                 android:textColor="@android:color/black"
-                android:textSize="21sp" />
+                android:textSize="21sp"/>
 
             <TextView
                 android:id="@+id/scoreViewId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/stx_main_color"
-                android:textSize="64sp" />
+                android:text="0"
+                android:textSize="52sp"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -52,25 +54,27 @@
                 android:layout_height="wrap_content"
                 android:text="@string/moves"
                 android:textColor="@android:color/black"
-                android:textSize="21sp" />
+                android:textSize="21sp"/>
 
             <TextView
                 android:id="@+id/movesViewId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/stx_main_color"
-                android:textSize="64sp" />
+                android:text="0"
+                android:textSize="52sp"/>
+
         </LinearLayout>
+
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/game_plain_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:gravity="center" />
+        android:layout_marginBottom="8dp"
+        android:layout_weight="1"/>
 
-    <include layout="@layout/bottom_panel" />
+    <include layout="@layout/bottom_panel"/>
 
 </LinearLayout>

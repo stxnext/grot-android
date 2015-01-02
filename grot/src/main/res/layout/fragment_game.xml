@@ -3,10 +3,11 @@
     android:id="@+id/game_plain"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
     android:layout_gravity="center"
     android:columnCount="4"
-    android:gravity="center"
-    android:padding="8dp"
+    android:layout_marginStart="@dimen/content_margin"
+    android:layout_marginEnd="@dimen/content_margin"
     android:rowCount="4"
     android:useDefaultMargins="true"
     android:clipChildren="false"/>
