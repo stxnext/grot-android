@@ -125,6 +125,8 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
     @Override
     public void onModelChanged(final GameFieldModel model) {
         setAlpha(1.0f);
+        setX(0);
+        setY(0);
         this.color = getResources().getColor(model.getFieldType().getColorId());
         this.rotation = model.getRotation();
         this.changePainters = true;

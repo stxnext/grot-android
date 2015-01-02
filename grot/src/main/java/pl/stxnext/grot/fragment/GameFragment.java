@@ -107,14 +107,14 @@ public class GameFragment extends Fragment {
 
     private void prepareAnimations() {
         this.animations = new HashMap<>();
-        animations.put(Rotation.LEFT, createAnimationSet(R.animator.button_animation));
-        animations.put(Rotation.RIGHT, createAnimationSet(R.animator.button_animation));
-        animations.put(Rotation.UP, createAnimationSet(R.animator.button_animation));
-        animations.put(Rotation.DOWN, createAnimationSet(R.animator.button_animation));
-//        animations.put(Rotation.LEFT, createAnimationSet(R.animator.button_animation_left));
-//        animations.put(Rotation.RIGHT, createAnimationSet(R.animator.button_animation_right));
-//        animations.put(Rotation.UP, createAnimationSet(R.animator.button_animation_up));
-//        animations.put(Rotation.DOWN, createAnimationSet(R.animator.button_animation_down));
+//        animations.put(Rotation.LEFT, createAnimationSet(R.animator.button_animation));
+//        animations.put(Rotation.RIGHT, createAnimationSet(R.animator.button_animation));
+//        animations.put(Rotation.UP, createAnimationSet(R.animator.button_animation));
+//        animations.put(Rotation.DOWN, createAnimationSet(R.animator.button_animation));
+        animations.put(Rotation.LEFT, createAnimationSet(R.animator.button_animation_left));
+        animations.put(Rotation.RIGHT, createAnimationSet(R.animator.button_animation_right));
+        animations.put(Rotation.UP, createAnimationSet(R.animator.button_animation_up));
+        animations.put(Rotation.DOWN, createAnimationSet(R.animator.button_animation_down));
     }
 
     private AnimatorSet createAnimationSet(int animatorSetId) {
