@@ -82,12 +82,7 @@ public class MainActivity extends Activity implements GameStateChangedListener, 
     }
 
     @Override
-    public void onAnimationEnd(List<FieldTransition> fieldTransitions) {
-        gameController.updateGamePlain(fieldTransitions);
-    }
-
-    @Override
-    public void updateGameInfo(final GamePlainModel model, List<FieldTransition> fieldTransitions) {
+    public void onAnimationEnd(final GamePlainModel model, List<FieldTransition> fieldTransitions) {
         handler.post(new Runnable() {
             @Override
             public void run() {
@@ -95,6 +90,11 @@ public class MainActivity extends Activity implements GameStateChangedListener, 
                 movesView.setText(String.format("%d", model.getMoves()));
             }
         });
+        gameController.updateGamePlain(fieldTransitions);
+    }
+
+    @Override
+    public void updateGameInfo(GamePlainModel model, List<FieldTransition> fieldTransitions) {
         gameFragment.updateGameBoard(model, fieldTransitions);
     }
 

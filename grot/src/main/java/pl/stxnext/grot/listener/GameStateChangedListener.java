@@ -15,6 +15,6 @@ public interface GameStateChangedListener {
 
     void onRestartGame();
 
-    void onAnimationEnd(List<FieldTransition> fieldTransitions);
+    void onAnimationEnd(GamePlainModel model, List<FieldTransition> fieldTransitions);
 
 }

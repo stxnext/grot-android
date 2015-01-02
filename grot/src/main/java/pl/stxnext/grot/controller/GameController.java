@@ -60,7 +60,11 @@ public class GameController {
     }
 
     public void updateGamePlain(List<FieldTransition> fieldTransitions) {
-        gamePlainModel.updateGamePlain(fieldTransitions);
+        if (gamePlainModel.getMoves() == 0) {
+            listener.onGameFinished(gamePlainModel);
+        } else {
+            gamePlainModel.updateGamePlain(fieldTransitions);
+        }
     }
 
     private void calculatePoints(List<FieldTransition> fieldTransitions) {
@@ -99,9 +103,6 @@ public class GameController {
             int gainedMoves = Math.max(0, fieldTransitions.size() - threshold);
             gainedMoves--;
             gamePlainModel.updateResults(gainedScore, gainedMoves);
-        }
-        if (gamePlainModel.getMoves() == 0) {
-            listener.onGameFinished(gamePlainModel);
         }
     }
 

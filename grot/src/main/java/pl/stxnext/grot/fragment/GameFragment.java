@@ -1,8 +1,6 @@
 package pl.stxnext.grot.fragment;
 
 import android.animation.Animator;
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -12,13 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import pl.stxnext.grot.R;
 import pl.stxnext.grot.config.AppConfig;
@@ -38,7 +35,6 @@ public class GameFragment extends Fragment {
     private GameStateChangedListener listener;
     private GridLayout gridLayout;
     private Handler handler;
-    private Map<Rotation, AnimatorSet> animations;
 
     @Nullable
     @Override
@@ -51,7 +47,6 @@ public class GameFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         this.gridLayout = (GridLayout) view;
         this.handler = new Handler();
-        prepareAnimations();
         fillGamePlain(gridLayout);
     }
 
@@ -87,80 +82,71 @@ public class GameFragment extends Fragment {
         listener.onGameStarted(model);
     }
 
-    public void updateGameBoard(GamePlainModel model, final List<FieldTransition> fieldTransitions) {
-        final Iterator<FieldTransition> iterator = addAnimationSetListeners(fieldTransitions);
+    public void updateGameBoard(final GamePlainModel model, final List<FieldTransition> fieldTransitions) {
+        final Iterator<FieldTransition> iterator = fieldTransitions.iterator();
         if (iterator.hasNext()) {
-            FieldTransition fieldTransition = iterator.next();
-            GameButtonView gameButtonView = (GameButtonView) gridLayout.findViewById(fieldTransition.getPosition());
-            final AnimatorSet buttonAnimation = animations.get(fieldTransition.getFieldModel().getRotation());
-            buttonAnimation.setTarget(gameButtonView);
+            final FieldTransition fieldTransition = iterator.next();
+            final GameButtonView gameButtonView = (GameButtonView) gridLayout.findViewById(fieldTransition.getPosition());
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    buttonAnimation.start();
+                    configAnimation(gameButtonView, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions);
                 }
             });
         } else {
-            listener.onAnimationEnd(fieldTransitions);
+            listener.onAnimationEnd(model, fieldTransitions);
         }
     }
 
-    private void prepareAnimations() {
-        this.animations = new HashMap<>();
-//        animations.put(Rotation.LEFT, createAnimationSet(R.animator.button_animation));
-//        animations.put(Rotation.RIGHT, createAnimationSet(R.animator.button_animation));
-//        animations.put(Rotation.UP, createAnimationSet(R.animator.button_animation));
-//        animations.put(Rotation.DOWN, createAnimationSet(R.animator.button_animation));
-        animations.put(Rotation.LEFT, createAnimationSet(R.animator.button_animation_left));
-        animations.put(Rotation.RIGHT, createAnimationSet(R.animator.button_animation_right));
-        animations.put(Rotation.UP, createAnimationSet(R.animator.button_animation_up));
-        animations.put(Rotation.DOWN, createAnimationSet(R.animator.button_animation_down));
-    }
-
-    private AnimatorSet createAnimationSet(int animatorSetId) {
-        return (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), animatorSetId);
-    }
-
-    private Iterator<FieldTransition> addAnimationSetListeners(final List<FieldTransition> fieldTransitions) {
-        final Iterator<FieldTransition> iterator = fieldTransitions.iterator();
-        for (AnimatorSet animatorSet : animations.values()) {
-            animatorSet.removeAllListeners();
-            animatorSet.addListener(new Animator.AnimatorListener() {
-
-                @Override
-                public void onAnimationStart(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    if (iterator.hasNext()) {
-                        FieldTransition fieldTransition = iterator.next();
-                        final GameButtonView nextGameButtonView = (GameButtonView) gridLayout.findViewById(fieldTransition.getPosition());
-                        final AnimatorSet buttonAnimation = animations.get(fieldTransition.getFieldModel().getRotation());
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                buttonAnimation.setTarget(nextGameButtonView);
-                                buttonAnimation.start();
-                            }
-                        }, 100);
-                    } else {
-                        listener.onAnimationEnd(fieldTransitions);
-                    }
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-
-                }
-            });
+    private ViewPropertyAnimator  configAnimation(View view, Rotation rotation, final Iterator<FieldTransition> iterator, final GamePlainModel model, final List<FieldTransition> fieldTransitions) {
+        ViewPropertyAnimator animator = view.animate();
+        animator.alpha(0).setDuration(600);
+        switch (rotation) {
+            case LEFT:
+                animator.xBy(-view.getWidth());
+                break;
+            case RIGHT:
+                animator.xBy(view.getWidth());
+                break;
+            case UP:
+                animator.yBy(-view.getHeight());
+                break;
+            case DOWN:
+                animator.yBy(view.getHeight());
+                break;
         }
-        return iterator;
+        animator.setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (iterator.hasNext()) {
+                    final FieldTransition fieldTransition = iterator.next();
+                    final GameButtonView gameButtonView = (GameButtonView) gridLayout.findViewById(fieldTransition.getPosition());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            configAnimation(gameButtonView, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions);
+                        }
+                    }, 100);
+                } else {
+                    listener.onAnimationEnd(model, fieldTransitions);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        return animator;
     }
 }
