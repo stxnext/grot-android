@@ -5,7 +5,8 @@
 
     <pl.stxnext.grot.view.GameButtonView
         android:id="@+id/button"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="@dimen/game_button_radius"
+        android:layout_height="@dimen/game_button_radius"
         android:background="@android:color/transparent" />
+
 </LinearLayout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="game_button_radius">68dp</dimen>
+    <dimen name="content_margin">24dp</dimen>
+    <dimen name="scoreboard_margin">24dp</dimen>
+</resources>
