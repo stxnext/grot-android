@@ -4,29 +4,29 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
     android:layout_marginLeft="@dimen/content_margin"
-    android:layout_marginRight="@dimen/content_margin"
-    android:paddingRight="14dp">
+    android:layout_marginRight="@dimen/content_margin">
 
     <ImageButton
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_gravity="left|center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center_vertical"
         android:background="@drawable/green_round_button"
-        android:padding="20dp"
+        android:padding="14dp"
         android:src="@drawable/pause" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginTop="@dimen/content_margin"
         android:src="@drawable/hero" />
 
     <ImageButton
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_gravity="right|center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical"
         android:background="@drawable/green_round_button"
-        android:padding="20dp"
+        android:padding="14dp"
         android:src="@drawable/help" />
 
 </FrameLayout>
