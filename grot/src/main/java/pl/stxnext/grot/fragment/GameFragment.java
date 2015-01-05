@@ -133,8 +133,10 @@ public class GameFragment extends Fragment {
         }
         animator.addListener(new AnimatorListenerAdapter() {
 
+            boolean endAnimation;
+
             @Override
-            public void onAnimationEnd(Animator animation) {
+            public void onAnimationStart(Animator animation) {
                 if (iterator.hasNext()) {
                     final FieldTransition fieldTransition = iterator.next();
                     final int position = fieldTransition.getPosition();
@@ -145,8 +147,15 @@ public class GameFragment extends Fragment {
                         public void run() {
                             configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions).start();
                         }
-                    }, 100);
+                    }, animation.getDuration() / 2);
                 } else {
+                    endAnimation = true;
+                }
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (endAnimation) {
                     listener.onAnimationEnd(model, fieldTransitions);
                 }
             }
