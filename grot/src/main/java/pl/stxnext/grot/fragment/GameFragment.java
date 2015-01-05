@@ -88,19 +88,16 @@ public class GameFragment extends Fragment {
     public void updateGameBoard(final GamePlainModel model, final List<FieldTransition> fieldTransitions) {
         final Iterator<FieldTransition> iterator = fieldTransitions.iterator();
         final Set<Integer> positions = new HashSet<>();
-        final List<AnimatorSet> animatorSets = new ArrayList<>();
+        final List<Animator> animators = new ArrayList<>();
         if (iterator.hasNext()) {
             final FieldTransition fieldTransition = iterator.next();
             final int position = fieldTransition.getPosition();
             positions.add(position);
             final GameButtonView gameButtonView = (GameButtonView) gridLayout.findViewById(position);
+            final AnimatorSet animatorSet = configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions, animators);
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    AnimatorSet animatorSet = configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions, animatorSets);
-                    synchronized (animatorSets) {
-                        animatorSets.add(animatorSet);
-                    }
                     animatorSet.start();
                 }
             });
@@ -109,7 +106,7 @@ public class GameFragment extends Fragment {
         }
     }
 
-    private AnimatorSet configAnimation(View view, final int position, Rotation rotation, final Iterator<FieldTransition> iterator, final GamePlainModel model, final List<FieldTransition> fieldTransitions, final Set<Integer> positions, final List<AnimatorSet> animatorSets) {
+    private AnimatorSet configAnimation(View view, final int position, Rotation rotation, final Iterator<FieldTransition> iterator, final GamePlainModel model, final List<FieldTransition> fieldTransitions, final Set<Integer> positions, final List<Animator> animators) {
         ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
         ObjectAnimator transitionAnimator = null;
         int jumps = 1;
@@ -147,13 +144,10 @@ public class GameFragment extends Fragment {
                     final int position = fieldTransition.getPosition();
                     positions.add(position);
                     final GameButtonView gameButtonView = (GameButtonView) gridLayout.findViewById(position);
+                    final AnimatorSet animatorSet = configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions, animators);
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            AnimatorSet animatorSet = configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions, animatorSets);
-                            synchronized (animatorSets) {
-                                animatorSets.add(animatorSet);
-                            }
                             animatorSet.start();
                         }
                     }, animation.getDuration() / 2);
@@ -162,14 +156,13 @@ public class GameFragment extends Fragment {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                synchronized (animatorSets) {
-                    animatorSets.remove(animation);
-                }
-                if (animatorSets.isEmpty()) {
+                animators.remove(animation);
+                if (animators.isEmpty()) {
                     listener.onAnimationEnd(model, fieldTransitions);
                 }
             }
         });
+        animators.add(animator);
         return animator;
     }
 
