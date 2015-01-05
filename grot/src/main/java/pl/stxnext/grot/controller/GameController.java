@@ -1,6 +1,5 @@
 package pl.stxnext.grot.controller;
 
-import android.content.Context;
 import android.graphics.Point;
 
 import java.util.ArrayList;
