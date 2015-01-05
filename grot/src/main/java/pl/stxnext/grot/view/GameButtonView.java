@@ -48,6 +48,7 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
         this.model = model;
         this.color = getResources().getColor(model.getFieldType().getColorId());
         this.rotation = model.getRotation();
+        this.changePainters = true;
         model.setListener(this);
     }
 
@@ -123,13 +124,13 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
 
     @Override
     public void onModelChanged(final GameFieldModel model) {
+        setX(0);
+        setY(0);
         this.color = getResources().getColor(model.getFieldType().getColorId());
         this.rotation = model.getRotation();
         this.changePainters = true;
-        setX(0);
-        setY(0);
         if (getAlpha() < 1.0f) {
-            animate().alpha(1.0f).setDuration(600);
+            animate().alpha(1.0f).setDuration(400);
         }
         invalidate();
     }

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -87,6 +88,7 @@ public class GameFragment extends Fragment {
     public void updateGameBoard(final GamePlainModel model, final List<FieldTransition> fieldTransitions) {
         final Iterator<FieldTransition> iterator = fieldTransitions.iterator();
         final Set<Integer> positions = new HashSet<>();
+        final List<AnimatorSet> animatorSets = new ArrayList<>();
         if (iterator.hasNext()) {
             final FieldTransition fieldTransition = iterator.next();
             final int position = fieldTransition.getPosition();
@@ -95,7 +97,11 @@ public class GameFragment extends Fragment {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions).start();
+                    AnimatorSet animatorSet = configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions, animatorSets);
+                    synchronized (animatorSets) {
+                        animatorSets.add(animatorSet);
+                    }
+                    animatorSet.start();
                 }
             });
         } else {
@@ -103,7 +109,7 @@ public class GameFragment extends Fragment {
         }
     }
 
-    private AnimatorSet configAnimation(View view, final int position, Rotation rotation, final Iterator<FieldTransition> iterator, final GamePlainModel model, final List<FieldTransition> fieldTransitions, final Set<Integer> positions) {
+    private AnimatorSet configAnimation(View view, final int position, Rotation rotation, final Iterator<FieldTransition> iterator, final GamePlainModel model, final List<FieldTransition> fieldTransitions, final Set<Integer> positions, final List<AnimatorSet> animatorSets) {
         ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
         ObjectAnimator transitionAnimator = null;
         int jumps = 1;
@@ -126,15 +132,13 @@ public class GameFragment extends Fragment {
         }
 
         AnimatorSet animator = new AnimatorSet();
-        animator.setDuration(600 * jumps);
+        animator.setDuration(400 * jumps);
         if (transitionAnimator != null) {
             animator.playTogether(alphaAnimator, transitionAnimator);
         } else {
             animator.play(alphaAnimator);
         }
         animator.addListener(new AnimatorListenerAdapter() {
-
-            boolean endAnimation;
 
             @Override
             public void onAnimationStart(Animator animation) {
@@ -146,17 +150,22 @@ public class GameFragment extends Fragment {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions).start();
+                            AnimatorSet animatorSet = configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions, animatorSets);
+                            synchronized (animatorSets) {
+                                animatorSets.add(animatorSet);
+                            }
+                            animatorSet.start();
                         }
                     }, animation.getDuration() / 2);
-                } else {
-                    endAnimation = true;
                 }
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (endAnimation) {
+                synchronized (animatorSets) {
+                    animatorSets.remove(animation);
+                }
+                if (animatorSets.isEmpty()) {
                     listener.onAnimationEnd(model, fieldTransitions);
                 }
             }
