@@ -65,6 +65,7 @@ public class MainActivity extends Activity implements GameStateChangedListener, 
 
     @Override
     public void onFieldPressed(int position) {
+        scoreBoardViewController.onMove();
         gameController.updateGameState(position);
     }
 

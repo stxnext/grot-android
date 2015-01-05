@@ -151,8 +151,10 @@ public class GameController {
     }
 
     public interface GameControllerListener {
+
         void updateGameInfo(GamePlainModel model, List<FieldTransition> fieldTransitions);
 
         void onGameFinished(GamePlainModel model);
+
     }
 }

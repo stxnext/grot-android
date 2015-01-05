@@ -109,6 +109,10 @@ public class ScoreBoardViewController {
         });
     }
 
+    public void onMove() {
+        updateMoves(moves - 1);
+    }
+
     public void updateMoves(final int currentMoves) {
         boolean changeValue = false;
         if (currentMoves > moves) {
@@ -134,7 +138,7 @@ public class ScoreBoardViewController {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     if (moves != currentMoves) {
-                        updateScore(currentMoves);
+                        updateMoves(currentMoves);
                     }
                 }
 
