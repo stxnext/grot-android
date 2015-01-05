@@ -124,6 +124,7 @@ public class GameFragment extends Fragment {
                     break;
             }
         }
+
         AnimatorSet animator = new AnimatorSet();
         animator.setDuration(600 * jumps);
         if (transitionAnimator != null) {

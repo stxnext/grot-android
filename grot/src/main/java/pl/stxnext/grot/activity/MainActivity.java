@@ -4,7 +4,12 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.animation.Animation;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import java.util.List;
 
@@ -24,22 +29,33 @@ public class MainActivity extends Activity implements GameStateChangedListener, 
     private static final String GAME_FRAGMENT_TAG = "game_fragment_tag";
     private static final String FINISHED_GAME_FRAGMENT_TAG = "finished_game_fragment_tag";
     private GameController gameController;
-    private TextView scoreView;
+    private TextSwitcher scoreSwitcher;
     private TextView movesView;
     private Handler handler;
     private GameFragment gameFragment;
+    private int score = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.gameController = new GameController(this, this);
+        this.gameController = new GameController(this);
         setContentView(R.layout.activity_main);
         Typeface typefaceRegular = Typeface.createFromAsset(getAssets(), "Lato-Regular.ttf");
-        Typeface typefaceBold = Typeface.createFromAsset(getAssets(), "Lato-Bold.ttf");
+        final Typeface typefaceBold = Typeface.createFromAsset(getAssets(), "Lato-Bold.ttf");
         TextView scoreLabel = (TextView) findViewById(R.id.scoreLabelId);
         scoreLabel.setTypeface(typefaceRegular);
-        this.scoreView = (TextView) findViewById(R.id.scoreViewId);
-        scoreView.setTypeface(typefaceBold);
+        this.scoreSwitcher = (TextSwitcher) findViewById(R.id.scoreViewId);
+        this.scoreSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.score_text_view, null);
+                TextView textView = (TextView) view.findViewById(R.id.scoreTextView);
+                textView.setTypeface(typefaceBold);
+
+                return textView;
+            }
+        });
+
         TextView movesLabel = (TextView) findViewById(R.id.movesLabelId);
         movesLabel.setTypeface(typefaceRegular);
         this.movesView = (TextView) findViewById(R.id.movesViewId);
@@ -58,10 +74,14 @@ public class MainActivity extends Activity implements GameStateChangedListener, 
 
     @Override
     public void onGameStarted(final GamePlainModel model) {
+        score = model.getScore();
         handler.post(new Runnable() {
             @Override
             public void run() {
-                scoreView.setText(String.format("%d", model.getScore()));
+                if (scoreSwitcher.getInAnimation() != null) {
+                    scoreSwitcher.getInAnimation().setAnimationListener(null);
+                }
+                scoreSwitcher.setText(String.format("%d", score));
                 movesView.setText(String.format("%d", model.getMoves()));
             }
         });
@@ -96,17 +116,41 @@ public class MainActivity extends Activity implements GameStateChangedListener, 
     }
 
     private void updateScore(final int currentScore) {
-        handler.postDelayed(new Runnable() {
+        if (currentScore - score > 20) {
+            score = score + 10;
+        } else if (currentScore - score > 10) {
+            score = score + 5;
+        } else {
+            score++;
+        }
+
+        if (score == currentScore) {
+            scoreSwitcher.setInAnimation(this, R.anim.score_slide_in_slow);
+            scoreSwitcher.setOutAnimation(this, R.anim.score_slide_out_slow);
+        } else {
+            scoreSwitcher.setInAnimation(this, R.anim.score_slide_in);
+            scoreSwitcher.setOutAnimation(this, R.anim.score_slide_out);
+        }
+
+        scoreSwitcher.setText(String.format("%d", score));
+        scoreSwitcher.getInAnimation().setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void run() {
-                int score = Integer.valueOf(scoreView.getText().toString());
-                score++;
-                scoreView.setText(String.format("%d", score));
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
                 if (score < currentScore) {
                     updateScore(currentScore);
                 }
             }
-        }, 80);
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 
     @Override

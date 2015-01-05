@@ -19,12 +19,10 @@ import pl.stxnext.grot.model.GamePlainModel;
  * @author Mieszko Stelmach @ STXNext
  */
 public class GameController {
-    private final Context context;
     private final GameControllerListener listener;
     private GamePlainModel gamePlainModel;
 
-    public GameController(Context context, GameControllerListener listener) {
-        this.context = context;
+    public GameController(GameControllerListener listener) {
         this.listener = listener;
     }
 
