@@ -53,12 +53,11 @@
                 android:textColor="@android:color/black"
                 android:textSize="21sp"/>
 
-            <TextView
+            <TextSwitcher
                 android:id="@+id/movesViewId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/stx_main_color"
-                android:text="0"
                 android:textSize="52sp"/>
 
         </LinearLayout>

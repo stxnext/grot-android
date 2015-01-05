@@ -9,6 +9,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageButton;
 
 import pl.stxnext.grot.enums.Rotation;
