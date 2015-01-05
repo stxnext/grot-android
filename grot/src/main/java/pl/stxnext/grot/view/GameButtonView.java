@@ -128,7 +128,7 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
         this.changePainters = true;
         setX(0);
         setY(0);
-        if (getAlpha() == 0) {
+        if (getAlpha() < 1.0f) {
             animate().alpha(1.0f).setDuration(600);
         }
         invalidate();
