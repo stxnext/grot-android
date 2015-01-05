@@ -59,10 +59,7 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int width = canvas.getWidth();
-        if (path == null || changePainters) {
-            this.path = getArrowPath(width);
-        }
-        if (paint == null || changePainters) {
+        if (paint == null) {
             this.paint = new Paint() {
                 {
                     setStyle(Style.FILL);
@@ -70,6 +67,9 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
                     setAntiAlias(true);
                 }
             };
+        }
+        if (path == null || changePainters) {
+            this.path = getArrowPath(width);
         }
         if (backgroundPaint == null || changePainters) {
             this.backgroundPaint = new Paint() {
@@ -123,12 +123,14 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
 
     @Override
     public void onModelChanged(final GameFieldModel model) {
-        setAlpha(1.0f);
-        setX(0);
-        setY(0);
         this.color = getResources().getColor(model.getFieldType().getColorId());
         this.rotation = model.getRotation();
         this.changePainters = true;
-        postInvalidate();
+        setX(0);
+        setY(0);
+        if (getAlpha() == 0) {
+            animate().alpha(1.0f).setDuration(600);
+        }
+        invalidate();
     }
 }

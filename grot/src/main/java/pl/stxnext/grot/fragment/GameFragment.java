@@ -2,6 +2,8 @@ package pl.stxnext.grot.fragment;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -10,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewPropertyAnimator;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
@@ -94,7 +95,7 @@ public class GameFragment extends Fragment {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions);
+                    configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions).start();
                 }
             });
         } else {
@@ -102,28 +103,35 @@ public class GameFragment extends Fragment {
         }
     }
 
-    private ViewPropertyAnimator configAnimation(View view, final int position, Rotation rotation, final Iterator<FieldTransition> iterator, final GamePlainModel model, final List<FieldTransition> fieldTransitions, final Set<Integer> positions) {
-        ViewPropertyAnimator animator = view.animate();
-        animator.alpha(0);
+    private AnimatorSet configAnimation(View view, final int position, Rotation rotation, final Iterator<FieldTransition> iterator, final GamePlainModel model, final List<FieldTransition> fieldTransitions, final Set<Integer> positions) {
+        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
+        ObjectAnimator transitionAnimator = null;
         int jumps = 1;
         if (iterator.hasNext()) {
             jumps = calculateAnimationJumps(position, rotation, positions, model);
             switch (rotation) {
                 case LEFT:
-                    animator.xBy(-view.getWidth() * jumps);
+                    transitionAnimator = ObjectAnimator.ofFloat(view, "translationX", -view.getWidth() * jumps);
                     break;
                 case RIGHT:
-                    animator.xBy(view.getWidth() * jumps);
+                    transitionAnimator = ObjectAnimator.ofFloat(view, "translationX", view.getWidth() * jumps);
                     break;
                 case UP:
-                    animator.yBy(-view.getHeight() * jumps);
+                    transitionAnimator = ObjectAnimator.ofFloat(view, "translationY", -view.getHeight() * jumps);
                     break;
                 case DOWN:
-                    animator.yBy(view.getHeight() * jumps);
+                    transitionAnimator = ObjectAnimator.ofFloat(view, "translationY", view.getHeight() * jumps);
                     break;
             }
         }
-        animator.setDuration(600 * jumps).setListener(new AnimatorListenerAdapter() {
+        AnimatorSet animator = new AnimatorSet();
+        animator.setDuration(600 * jumps);
+        if (transitionAnimator != null) {
+            animator.playTogether(alphaAnimator, transitionAnimator);
+        } else {
+            animator.play(alphaAnimator);
+        }
+        animator.addListener(new AnimatorListenerAdapter() {
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -135,7 +143,7 @@ public class GameFragment extends Fragment {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions);
+                            configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions).start();
                         }
                     }, 100);
                 } else {
