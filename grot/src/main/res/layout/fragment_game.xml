@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<pl.stxnext.grot.view.GameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/game_plain"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
     android:layout_gravity="center"
-    android:columnCount="4"
-    android:layout_marginStart="@dimen/content_margin"
     android:layout_marginEnd="@dimen/content_margin"
+    android:layout_marginStart="@dimen/content_margin"
+    android:clipChildren="false"
+    android:columnCount="4"
+    android:gravity="center_horizontal"
     android:rowCount="4"
-    android:useDefaultMargins="true"
-    android:clipChildren="false"/>
+    android:useDefaultMargins="true" />

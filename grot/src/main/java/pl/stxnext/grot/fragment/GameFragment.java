@@ -1,11 +1,11 @@
 package pl.stxnext.grot.fragment;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +14,10 @@ import android.view.ViewPropertyAnimator;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import pl.stxnext.grot.R;
 import pl.stxnext.grot.config.AppConfig;
@@ -36,7 +38,6 @@ public class GameFragment extends Fragment {
     private GridLayout gridLayout;
     private Handler handler;
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_game, container, false);
@@ -84,13 +85,16 @@ public class GameFragment extends Fragment {
 
     public void updateGameBoard(final GamePlainModel model, final List<FieldTransition> fieldTransitions) {
         final Iterator<FieldTransition> iterator = fieldTransitions.iterator();
+        final Set<Integer> positions = new HashSet<>();
         if (iterator.hasNext()) {
             final FieldTransition fieldTransition = iterator.next();
-            final GameButtonView gameButtonView = (GameButtonView) gridLayout.findViewById(fieldTransition.getPosition());
+            final int position = fieldTransition.getPosition();
+            positions.add(position);
+            final GameButtonView gameButtonView = (GameButtonView) gridLayout.findViewById(position);
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    configAnimation(gameButtonView, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions);
+                    configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions);
                 }
             });
         } else {
@@ -98,55 +102,91 @@ public class GameFragment extends Fragment {
         }
     }
 
-    private ViewPropertyAnimator configAnimation(View view, Rotation rotation, final Iterator<FieldTransition> iterator, final GamePlainModel model, final List<FieldTransition> fieldTransitions) {
+    private ViewPropertyAnimator configAnimation(View view, final int position, Rotation rotation, final Iterator<FieldTransition> iterator, final GamePlainModel model, final List<FieldTransition> fieldTransitions, final Set<Integer> positions) {
         ViewPropertyAnimator animator = view.animate();
-        animator.alpha(0).setDuration(600);
-        switch (rotation) {
-            case LEFT:
-                animator.xBy(-view.getWidth());
-                break;
-            case RIGHT:
-                animator.xBy(view.getWidth());
-                break;
-            case UP:
-                animator.yBy(-view.getHeight());
-                break;
-            case DOWN:
-                animator.yBy(view.getHeight());
-                break;
-        }
-        animator.setListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
+        animator.alpha(0);
+        int jumps = calculateAnimationJumps(position, rotation, positions, model);
+        if (iterator.hasNext()) {
+            switch (rotation) {
+                case LEFT:
+                    animator.xBy(-view.getWidth() * jumps);
+                    break;
+                case RIGHT:
+                    animator.xBy(view.getWidth() * jumps);
+                    break;
+                case UP:
+                    animator.yBy(-view.getHeight() * jumps);
+                    break;
+                case DOWN:
+                    animator.yBy(view.getHeight() * jumps);
+                    break;
             }
+        }
+        animator.setDuration(iterator.hasNext() ? 600 * jumps : 600).setListener(new AnimatorListenerAdapter() {
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (iterator.hasNext()) {
                     final FieldTransition fieldTransition = iterator.next();
-                    final GameButtonView gameButtonView = (GameButtonView) gridLayout.findViewById(fieldTransition.getPosition());
+                    final int position = fieldTransition.getPosition();
+                    positions.add(position);
+                    final GameButtonView gameButtonView = (GameButtonView) gridLayout.findViewById(position);
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            configAnimation(gameButtonView, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions);
+                            configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions);
                         }
                     }, 100);
                 } else {
                     listener.onAnimationEnd(model, fieldTransitions);
                 }
             }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
         });
         return animator;
+    }
+
+    private int calculateAnimationJumps(final int position, final Rotation rotation, final Set<Integer> positions, final GamePlainModel model) {
+        int x = position % model.getSize();
+        int y = position / model.getSize();
+        int jumps = 1;
+        do {
+            switch (rotation) {
+                case LEFT:
+                    if (x > 0) {
+                        x = x - 1;
+                    } else {
+                        return jumps;
+                    }
+                    break;
+                case RIGHT:
+                    if (x < model.getSize() - 1) {
+                        x = x + 1;
+                    } else {
+                        return jumps;
+                    }
+                    break;
+                case UP:
+                    if (y > 0) {
+                        y = y - 1;
+                    } else {
+                        return jumps;
+                    }
+                    break;
+                case DOWN:
+                    if (y < model.getSize() - 1) {
+                        y = y + 1;
+                    } else {
+                        return jumps;
+                    }
+                    break;
+            }
+            int nextPosition = y * model.getSize() + x;
+            if (positions.contains(nextPosition)) {
+                jumps++;
+            } else {
+                break;
+            }
+        } while (true);
+        return jumps;
     }
 }

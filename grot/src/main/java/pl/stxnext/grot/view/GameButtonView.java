@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
@@ -57,7 +56,7 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
     }
 
     @Override
-    protected void onDraw(@NonNull Canvas canvas) {
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int width = canvas.getWidth();
         if (path == null || changePainters) {
