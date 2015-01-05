@@ -123,7 +123,7 @@ public class GameFragment extends Fragment {
                     break;
             }
         }
-        animator.setDuration(600 * jumps).setListener(new AnimatorListenerAdapter() {
+        animator.setDuration(200 * jumps).setListener(new AnimatorListenerAdapter() {
 
             @Override
             public void onAnimationEnd(Animator animation) {
