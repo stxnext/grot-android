@@ -67,10 +67,15 @@ public class ScoreBoardViewController {
     }
 
     public void updateScore(final int currentScore) {
-        if (currentScore - score > 20) {
-            score = score + 10;
-        } else if (currentScore - score > 10) {
-            score = score + 5;
+        int difference = currentScore - score;
+        if (difference > 50) {
+            score += 40;
+        } else if (difference > 30) {
+            score += 20;
+        } else if (difference > 20) {
+            score += 10;
+        } else if (difference > 10) {
+            score += 5;
         } else {
             score++;
         }
@@ -116,8 +121,6 @@ public class ScoreBoardViewController {
             movesSwitcher.setInAnimation(context, R.anim.score_slide_in_slow_reverse);
             movesSwitcher.setOutAnimation(context, R.anim.score_slide_out_slow_reverse);
             moves--;
-        } else {
-            movesSwitcher.setCurrentText(String.format("%d", moves));
         }
 
         if (changeValue) {
