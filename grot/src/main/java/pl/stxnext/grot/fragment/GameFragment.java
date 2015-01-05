@@ -105,8 +105,9 @@ public class GameFragment extends Fragment {
     private ViewPropertyAnimator configAnimation(View view, final int position, Rotation rotation, final Iterator<FieldTransition> iterator, final GamePlainModel model, final List<FieldTransition> fieldTransitions, final Set<Integer> positions) {
         ViewPropertyAnimator animator = view.animate();
         animator.alpha(0);
-        int jumps = calculateAnimationJumps(position, rotation, positions, model);
+        int jumps = 1;
         if (iterator.hasNext()) {
+            jumps = calculateAnimationJumps(position, rotation, positions, model);
             switch (rotation) {
                 case LEFT:
                     animator.xBy(-view.getWidth() * jumps);
@@ -122,7 +123,7 @@ public class GameFragment extends Fragment {
                     break;
             }
         }
-        animator.setDuration(iterator.hasNext() ? 600 * jumps : 600).setListener(new AnimatorListenerAdapter() {
+        animator.setDuration(600 * jumps).setListener(new AnimatorListenerAdapter() {
 
             @Override
             public void onAnimationEnd(Animator animation) {
