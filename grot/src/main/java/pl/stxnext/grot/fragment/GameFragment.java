@@ -139,6 +139,8 @@ public class GameFragment extends Fragment {
 
             @Override
             public void onAnimationStart(Animator animation) {
+                listener.onAnimationStart(model);
+
                 if (iterator.hasNext()) {
                     final FieldTransition fieldTransition = iterator.next();
                     final int position = fieldTransition.getPosition();

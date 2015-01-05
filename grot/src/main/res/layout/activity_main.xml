@@ -20,6 +20,7 @@
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:gravity="center"
+            android:animateLayoutChanges="true"
             android:orientation="vertical">
 
             <TextView
@@ -35,6 +36,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
+            <TextView
+                android:id="@+id/scoreInfoLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="-10dp"
+                android:textSize="13sp"
+                android:visibility="invisible"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -43,6 +54,7 @@
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:gravity="center"
+            android:animateLayoutChanges="true"
             android:orientation="vertical">
 
             <TextView
@@ -56,9 +68,17 @@
             <TextSwitcher
                 android:id="@+id/movesViewId"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/movesInfoLabel"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/stx_main_color"
-                android:textSize="52sp"/>
+                android:layout_gravity="bottom|center_horizontal"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="-10dp"
+                android:textSize="13sp"
+                android:visibility="invisible"/>
 
         </LinearLayout>
 

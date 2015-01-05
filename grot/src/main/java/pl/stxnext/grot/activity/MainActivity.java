@@ -3,6 +3,7 @@ package pl.stxnext.grot.activity;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
@@ -38,7 +39,9 @@ public class MainActivity extends Activity implements GameStateChangedListener, 
 
         TextSwitcher scoreSwitcher = (TextSwitcher) findViewById(R.id.scoreViewId);
         TextSwitcher movesSwitcher = (TextSwitcher) findViewById(R.id.movesViewId);
-        this.scoreBoardViewController = new ScoreBoardViewController(this, scoreSwitcher, movesSwitcher);
+        TextView scoreInfo = (TextView) findViewById(R.id.scoreInfoLabel);
+        TextView movesInfo = (TextView) findViewById(R.id.movesInfoLabel);
+        this.scoreBoardViewController = new ScoreBoardViewController(this, scoreSwitcher, scoreInfo, movesSwitcher, movesInfo);
 
         Typeface typefaceRegular = Typeface.createFromAsset(getAssets(), "Lato-Regular.ttf");
         TextView scoreLabel = (TextView) findViewById(R.id.scoreLabelId);
@@ -75,6 +78,12 @@ public class MainActivity extends Activity implements GameStateChangedListener, 
                 .beginTransaction()
                 .replace(R.id.game_plain_container, gameFragment, GAME_FRAGMENT_TAG)
                 .commit();
+    }
+
+    @Override
+    public void onAnimationStart(GamePlainModel model) {
+        scoreBoardViewController.showScoreInfo(model.getScore());
+        scoreBoardViewController.showMovesInfo(model.getMoves());
     }
 
     @Override

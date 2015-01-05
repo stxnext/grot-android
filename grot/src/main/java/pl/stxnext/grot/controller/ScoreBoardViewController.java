@@ -19,14 +19,25 @@ public class ScoreBoardViewController {
     private final Context context;
     private final TextSwitcher scoreSwitcher;
     private final TextSwitcher movesSwitcher;
+    private final TextView scoreInfo;
+    private final TextView movesInfo;
 
     int score = 0;
     int moves = 0;
 
-    public ScoreBoardViewController(Context context, TextSwitcher scoreSwitcher, TextSwitcher movesSwitcher) {
+    private final Runnable showMovesInfoRunnable = new Runnable() {
+        @Override
+        public void run() {
+            movesInfo.setVisibility(View.INVISIBLE);
+        }
+    };
+
+    public ScoreBoardViewController(Context context, TextSwitcher scoreSwitcher, TextView scoreInfo, TextSwitcher movesSwitcher, TextView movesInfo) {
         this.context = context;
         this.scoreSwitcher = scoreSwitcher;
+        this.scoreInfo = scoreInfo;
         this.movesSwitcher = movesSwitcher;
+        this.movesInfo = movesInfo;
         init();
     }
 
@@ -46,6 +57,7 @@ public class ScoreBoardViewController {
 
         scoreSwitcher.setFactory(factory);
         movesSwitcher.setFactory(factory);
+        scoreInfo.setTypeface(typefaceBold);
     }
 
     public void resetMoves(int initMoves) {
@@ -66,7 +78,14 @@ public class ScoreBoardViewController {
         scoreSwitcher.setText(String.format("%d", score));
     }
 
+    public void showScoreInfo(final int currentScore) {
+        String value = String.valueOf(currentScore - score);
+        scoreInfo.setText("+" + value);
+        scoreInfo.setVisibility(View.VISIBLE);
+    }
+
     public void updateScore(final int currentScore) {
+        scoreInfo.setVisibility(View.INVISIBLE);
         int difference = currentScore - score;
         if (difference > 50) {
             score += 40;
@@ -111,6 +130,31 @@ public class ScoreBoardViewController {
 
     public void onMove() {
         updateMoves(moves - 1);
+        movesInfo.setText("-1");
+        movesInfo.setVisibility(View.VISIBLE);
+    }
+
+    public void showMovesInfo(final int currentMoves) {
+        final int difference = currentMoves - moves;
+        final String value = String.valueOf(difference);
+        String currentValue = movesInfo.getText().toString();
+        if (currentValue.equals("-1")) {
+            movesInfo.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (difference > 0) {
+                        movesInfo.setText("+" + value);
+                    }
+                }
+            }, 1500);
+        } else if (difference > 0 && !currentValue.equals(value)) {
+            movesInfo.setText("+" + value);
+        }
+
+        if (movesInfo.getVisibility() == View.VISIBLE) {
+            movesInfo.removeCallbacks(showMovesInfoRunnable);
+            movesInfo.postDelayed(showMovesInfoRunnable, 1500);
+        }
     }
 
     public void updateMoves(final int currentMoves) {
