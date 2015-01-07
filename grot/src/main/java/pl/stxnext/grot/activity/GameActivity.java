@@ -24,7 +24,6 @@ import pl.stxnext.grot.model.GamePlainModel;
 public class GameActivity extends Activity implements GameStateChangedListener, GameController.GameControllerListener {
 
     private static final String GAME_FRAGMENT_TAG = "game_fragment_tag";
-    private static final String FINISHED_GAME_FRAGMENT_TAG = "finished_game_fragment_tag";
     private GameController gameController;
     private GameFragment gameFragment;
 
@@ -36,7 +35,7 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
         setContentView(R.layout.activity_main);
 
         this.gameController = new GameController(this);
-
+        
         TextSwitcher scoreSwitcher = (TextSwitcher) findViewById(R.id.scoreViewId);
         TextSwitcher movesSwitcher = (TextSwitcher) findViewById(R.id.movesViewId);
         TextView scoreInfo = (TextView) findViewById(R.id.scoreInfoLabel);

@@ -42,6 +42,7 @@ public class GameOverActivity extends Activity {
                 prefs.edit().putInt(BEST_RESULT_PREF, score).apply();
             }
 
+            int duration = score / 30;
             timer.scheduleAtFixedRate(new TimerTask() {
 
                 @Override
@@ -50,7 +51,16 @@ public class GameOverActivity extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                progressBar.setProgress(progressBar.getProgress() + 1);
+                                int progress = progressBar.getProgress();
+                                int difference = score - progress;
+                                int value = 1;
+                                if (difference > 200) {
+                                    value = 10;
+                                } else if (difference > 50) {
+                                    value = 2;
+                                }
+
+                                progressBar.setProgress(progress + value);
                                 scoreLabel.setText(String.valueOf(progressBar.getProgress()));
                             }
                         });
@@ -58,7 +68,7 @@ public class GameOverActivity extends Activity {
                         cancel();
                     }
                 }
-            }, 0, 20);
+            }, 0, duration);
 
         }
     }
