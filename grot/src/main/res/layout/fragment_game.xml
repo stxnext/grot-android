@@ -9,4 +9,5 @@
     android:clipChildren="false"
     android:columnCount="4"
     android:gravity="center_horizontal"
+    android:layoutAnimation="@anim/game_intro_animation"
     android:rowCount="4" />

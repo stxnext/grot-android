@@ -7,6 +7,6 @@
     <color name="low_color">#ffec00</color>
     <color name="high_color">#8d198f</color>
     <color name="highest_color">#00968f</color>
-    <color name="transparent_black">#bd000000</color>
+    <color name="transparent_black">#e1000000</color>
 
 </resources>

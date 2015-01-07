@@ -16,6 +16,8 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import java.util.Random;
+
 import pl.stxnext.grot.enums.Rotation;
 import pl.stxnext.grot.model.GameFieldModel;
 
@@ -140,7 +142,9 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
         this.changePainters = true;
         if (getAlpha() < 1f) {
             if (animateAlpha) {
-                animate().alpha(1f).setDuration(400);
+                Random random = new Random();
+                int duration = (int) (200 + (1000 * random.nextFloat()));
+                animate().alpha(1f).setDuration(duration);
             } else {
                 setAlpha(1f);
             }

@@ -4,4 +4,8 @@
     <string name="score">Score</string>
     <string name="moves">Moves</string>
     <string name="game_finished">Game Finished!</string>
+    <string name="restart">Restart</string>
+    <string name="resume">Resume</string>
+    <string name="game_center">Game Center</string>
+    <string name="help">Help</string>
 </resources>

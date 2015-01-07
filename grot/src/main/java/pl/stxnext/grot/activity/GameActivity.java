@@ -1,6 +1,8 @@
 package pl.stxnext.grot.activity;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -49,6 +51,14 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
         TextView movesLabel = (TextView) findViewById(R.id.movesLabelId);
         movesLabel.setTypeface(typefaceRegular);
         addGameFragment();
+
+        findViewById(R.id.pauseButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameActivity.this, MenuActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void addGameFragment() {
