@@ -94,6 +94,7 @@ public class GameOverActivity extends Activity {
             public void onAnimationEnd(Animation animation) {
                 if (scoreToShow < score) {
                     updateScore();
+                    progressBar.setProgress(scoreToShow);
                 }
             }
 
