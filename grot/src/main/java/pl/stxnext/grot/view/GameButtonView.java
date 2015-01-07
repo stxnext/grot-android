@@ -11,9 +11,10 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.animation.BounceInterpolator;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import pl.stxnext.grot.enums.Rotation;
 import pl.stxnext.grot.model.GameFieldModel;
@@ -73,8 +74,9 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
                 }
             };
         }
+        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams)getLayoutParams());
         if (path == null || changePainters) {
-            this.path = getArrowPath(width);
+            this.path = getArrowPath(width, layoutParams);
         }
         if (backgroundPaint == null || changePainters) {
             this.backgroundPaint = new Paint() {
@@ -86,21 +88,23 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
             };
             this.changePainters = false;
         }
-        rect.set(0, 0, width, width);
+        rect.set(layoutParams.leftMargin, layoutParams.topMargin, width, width);
         canvas.drawOval(rect, backgroundPaint);
         canvas.drawPath(path, paint);
     }
 
 
-    private Path getArrowPath(int size) {
+    private Path getArrowPath(int size, LinearLayout.LayoutParams layoutParams) {
         Path path = getArrowPath();
         Matrix matrix = new Matrix();
-        final float factor = 0.8f * size;
-        matrix.postScale(factor, factor);
-        matrix.postRotate(rotation.getRotation(), factor / 2, factor / 2);
+        final float factorX = 0.8f * (size - layoutParams.leftMargin);
+        final float factorY = 0.8f * (size - layoutParams.topMargin);
+        matrix.postScale(factorX, factorY);
+        matrix.postRotate(rotation.getRotation(), factorX / 2, factorY / 2);
         path.transform(matrix);
-        final float shift = 0.1f * size;
-        path.offset(shift, shift);
+        final float shiftX = 0.1f * size + layoutParams.leftMargin;
+        final float shiftY = 0.1f * size + layoutParams.topMargin;
+        path.offset(shiftX, shiftY);
         return path;
     }
 
@@ -128,8 +132,9 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
 
     @Override
     public void onModelChanged(final GameFieldModel model, boolean animateAlpha) {
-        setX(0);
-        setY(0);
+        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams)getLayoutParams());
+        setX(layoutParams.leftMargin);
+        setY(layoutParams.topMargin);
         this.color = getResources().getColor(model.getFieldType().getColorId());
         this.rotation = model.getRotation();
         this.changePainters = true;
@@ -145,7 +150,8 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
 
     @Override
     public void animate(int jumps, AnimatorListenerAdapter animatorListenerAdapter) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(this, "translationY", getHeight() * jumps);
+        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams)getLayoutParams());
+        ObjectAnimator animator = ObjectAnimator.ofFloat(this, "translationY", (layoutParams.topMargin + getHeight() + layoutParams.bottomMargin) * jumps);
         animator.setDuration(400);
         animator.setInterpolator(new BounceInterpolator());
         animator.addListener(animatorListenerAdapter);

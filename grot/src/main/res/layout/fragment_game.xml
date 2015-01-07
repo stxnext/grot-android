@@ -9,5 +9,4 @@
     android:clipChildren="false"
     android:columnCount="4"
     android:gravity="center_horizontal"
-    android:rowCount="4"
-    android:useDefaultMargins="true" />
+    android:rowCount="4" />

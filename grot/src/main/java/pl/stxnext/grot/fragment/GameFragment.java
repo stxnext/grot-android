@@ -114,16 +114,16 @@ public class GameFragment extends Fragment {
             jumps = calculateAnimationJumps(position, rotation, positions, model);
             switch (rotation) {
                 case LEFT:
-                    transitionAnimator = ObjectAnimator.ofFloat(view, "translationX", -view.getWidth() * jumps);
+                    transitionAnimator = ObjectAnimator.ofFloat(view, "translationX", -view.getLayoutParams().width * jumps);
                     break;
                 case RIGHT:
-                    transitionAnimator = ObjectAnimator.ofFloat(view, "translationX", view.getWidth() * jumps);
+                    transitionAnimator = ObjectAnimator.ofFloat(view, "translationX", view.getLayoutParams().width * jumps);
                     break;
                 case UP:
-                    transitionAnimator = ObjectAnimator.ofFloat(view, "translationY", -view.getHeight() * jumps);
+                    transitionAnimator = ObjectAnimator.ofFloat(view, "translationY", -view.getLayoutParams().height * jumps);
                     break;
                 case DOWN:
-                    transitionAnimator = ObjectAnimator.ofFloat(view, "translationY", view.getHeight() * jumps);
+                    transitionAnimator = ObjectAnimator.ofFloat(view, "translationY", view.getLayoutParams().height * jumps);
                     break;
             }
         }

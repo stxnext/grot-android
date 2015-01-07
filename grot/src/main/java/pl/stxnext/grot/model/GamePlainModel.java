@@ -79,6 +79,7 @@ public class GamePlainModel {
         for (FieldTransition fieldTransition : fieldTransitions) {
             emptyPositions.add(fieldTransition.getPosition());
         }
+        final Handler handler = new Handler();
         for (int x = 0; x < size; x++) {
             int gaps = 0;
             for (int y = size - 1; y >= 0; y--) {
@@ -92,21 +93,26 @@ public class GamePlainModel {
                     gameFieldModel.animate(gaps, new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            GameFieldModel swapGameFieldModel = fieldModels.get(positionToSwap);
-                            swapGameFieldModel.setFieldType(gameFieldModel.getFieldType());
-                            swapGameFieldModel.setRotation(gameFieldModel.getRotation());
-                            swapGameFieldModel.notifyModelChanged(false);
-                            gameFieldModel.setFieldType(GamePlainGenerator.randomField());
-                            gameFieldModel.setRotation(GamePlainGenerator.randomRotation());
-                            gameFieldModel.notifyModelChanged(true);
-                            animationWaitList.remove(gameFieldModel);
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    GameFieldModel swapGameFieldModel = fieldModels.get(positionToSwap);
+                                    swapGameFieldModel.setFieldType(gameFieldModel.getFieldType());
+                                    swapGameFieldModel.setRotation(gameFieldModel.getRotation());
+                                    swapGameFieldModel.notifyModelChanged(false);
+                                    gameFieldModel.setFieldType(GamePlainGenerator.randomField());
+                                    gameFieldModel.setRotation(GamePlainGenerator.randomRotation());
+                                    gameFieldModel.notifyModelChanged(true);
+                                    animationWaitList.remove(gameFieldModel);
+                                }
+                            }, 200);
+
                         }
                     });
                     animationWaitList.add(gameFieldModel);
                 }
             }
         }
-        final Handler handler = new Handler();
         final Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {

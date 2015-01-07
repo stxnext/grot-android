@@ -21,7 +21,7 @@ import pl.stxnext.grot.model.GamePlainModel;
 /**
  * @author Mieszko Stelmach @ STXNext
  */
-public class MainActivity extends Activity implements GameStateChangedListener, GameController.GameControllerListener {
+public class GameActivity extends Activity implements GameStateChangedListener, GameController.GameControllerListener {
 
     private static final String GAME_FRAGMENT_TAG = "game_fragment_tag";
     private static final String FINISHED_GAME_FRAGMENT_TAG = "finished_game_fragment_tag";
