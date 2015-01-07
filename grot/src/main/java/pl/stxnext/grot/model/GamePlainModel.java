@@ -1,5 +1,10 @@
 package pl.stxnext.grot.model;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.os.Handler;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -69,7 +74,8 @@ public class GamePlainModel {
     }
 
     public void updateGamePlain(List<FieldTransition> fieldTransitions) {
-        Set<Integer> emptyPositions = new HashSet<>(fieldTransitions.size());
+        final Set<Integer> emptyPositions = new HashSet<>(fieldTransitions.size());
+        final List<GameFieldModel> animationWaitList = new ArrayList<>();
         for (FieldTransition fieldTransition : fieldTransitions) {
             emptyPositions.add(fieldTransition.getPosition());
         }
@@ -80,23 +86,53 @@ public class GamePlainModel {
                 if (emptyPositions.contains(position)) {
                     gaps++;
                 } else if (gaps > 0) {
-                    int positionToSwap = (y + gaps) * size + x;
-                    GameFieldModel gameFieldModel = fieldModels.get(position);
-                    GameFieldModel swapGameFieldModel = fieldModels.get(positionToSwap);
-                    swapGameFieldModel.setFieldType(gameFieldModel.getFieldType());
-                    swapGameFieldModel.setRotation(gameFieldModel.getRotation());
-                    swapGameFieldModel.notifyModelChanged();
+                    final int positionToSwap = (y + gaps) * size + x;
+                    final GameFieldModel gameFieldModel = fieldModels.get(position);
                     emptyPositions.remove(positionToSwap);
-                    emptyPositions.add(position);
+                    gameFieldModel.animate(gaps, new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            GameFieldModel swapGameFieldModel = fieldModels.get(positionToSwap);
+                            swapGameFieldModel.setFieldType(gameFieldModel.getFieldType());
+                            swapGameFieldModel.setRotation(gameFieldModel.getRotation());
+                            swapGameFieldModel.notifyModelChanged(false);
+                            gameFieldModel.setFieldType(GamePlainGenerator.randomField());
+                            gameFieldModel.setRotation(GamePlainGenerator.randomRotation());
+                            gameFieldModel.notifyModelChanged(true);
+                            animationWaitList.remove(gameFieldModel);
+                        }
+                    });
+                    animationWaitList.add(gameFieldModel);
                 }
             }
         }
-        for (Integer emptyPosition : emptyPositions) {
-            GameFieldModel fieldModel = fieldModels.get(emptyPosition);
-            fieldModel.setFieldType(GamePlainGenerator.randomField());
-            fieldModel.setRotation(GamePlainGenerator.randomRotation());
-            fieldModel.notifyModelChanged();
-        }
+        final Handler handler = new Handler();
+        final Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!animationWaitList.isEmpty()) {
+                    try {
+                        synchronized (this) {
+                            wait(600);
+                        }
+                    } catch (InterruptedException e) {
+                        Log.d("GROT", "InterruptedException in waiting thread");
+                    }
+                }
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (Integer emptyPosition : emptyPositions) {
+                            GameFieldModel fieldModel = fieldModels.get(emptyPosition);
+                            fieldModel.setFieldType(GamePlainGenerator.randomField());
+                            fieldModel.setRotation(GamePlainGenerator.randomRotation());
+                            fieldModel.notifyModelChanged(true);
+                        }
+                    }
+                });
+            }
+        });
+        thread.start();
     }
 
 }

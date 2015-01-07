@@ -1,5 +1,7 @@
 package pl.stxnext.grot.view;
 
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -10,6 +12,7 @@ import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.animation.BounceInterpolator;
 import android.widget.ImageButton;
 
 import pl.stxnext.grot.enums.Rotation;
@@ -124,15 +127,28 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
     }
 
     @Override
-    public void onModelChanged(final GameFieldModel model) {
+    public void onModelChanged(final GameFieldModel model, boolean animateAlpha) {
         setX(0);
         setY(0);
         this.color = getResources().getColor(model.getFieldType().getColorId());
         this.rotation = model.getRotation();
         this.changePainters = true;
-        if (getAlpha() < 1.0f) {
-            animate().alpha(1.0f).setDuration(400);
+        if (getAlpha() < 1f) {
+            if (animateAlpha) {
+                animate().alpha(1f).setDuration(400);
+            } else {
+                setAlpha(1f);
+            }
         }
         invalidate();
+    }
+
+    @Override
+    public void animate(int jumps, AnimatorListenerAdapter animatorListenerAdapter) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(this, "translationY", getHeight() * jumps);
+        animator.setDuration(400);
+        animator.setInterpolator(new BounceInterpolator());
+        animator.addListener(animatorListenerAdapter);
+        animator.start();
     }
 }
