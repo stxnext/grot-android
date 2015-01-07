@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -30,6 +29,7 @@ import pl.stxnext.grot.model.FieldTransition;
 import pl.stxnext.grot.model.GameFieldModel;
 import pl.stxnext.grot.model.GamePlainModel;
 import pl.stxnext.grot.view.GameButtonView;
+import pl.stxnext.grot.view.GameLayout;
 
 /**
  * @author Mieszko Stelmach @ STXNext
@@ -37,7 +37,7 @@ import pl.stxnext.grot.view.GameButtonView;
 public class GameFragment extends Fragment {
 
     private GameStateChangedListener listener;
-    private GridLayout gridLayout;
+    private GameLayout gameLayout;
     private Handler handler;
 
     @Override
@@ -48,9 +48,9 @@ public class GameFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.gridLayout = (GridLayout) view;
+        this.gameLayout = (GameLayout) view;
         this.handler = new Handler();
-        fillGamePlain(gridLayout);
+        fillGamePlain(gameLayout);
     }
 
     @Override
@@ -77,6 +77,7 @@ public class GameFragment extends Fragment {
             gameButtonView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    gameLayout.lock();
                     listener.onFieldPressed(gameButtonView.getId());
                 }
             });
@@ -93,7 +94,7 @@ public class GameFragment extends Fragment {
             final FieldTransition fieldTransition = iterator.next();
             final int position = fieldTransition.getPosition();
             positions.add(position);
-            final GameButtonView gameButtonView = (GameButtonView) gridLayout.findViewById(position);
+            final GameButtonView gameButtonView = (GameButtonView) gameLayout.findViewById(position);
             final AnimatorSet animatorSet = configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions, animators);
             handler.post(new Runnable() {
                 @Override
@@ -145,7 +146,7 @@ public class GameFragment extends Fragment {
                     final FieldTransition fieldTransition = iterator.next();
                     final int position = fieldTransition.getPosition();
                     positions.add(position);
-                    final GameButtonView gameButtonView = (GameButtonView) gridLayout.findViewById(position);
+                    final GameButtonView gameButtonView = (GameButtonView) gameLayout.findViewById(position);
                     final AnimatorSet animatorSet = configAnimation(gameButtonView, position, fieldTransition.getFieldModel().getRotation(), iterator, model, fieldTransitions, positions, animators);
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -211,5 +212,9 @@ public class GameFragment extends Fragment {
             }
         } while (true);
         return jumps;
+    }
+
+    public void enablePlain() {
+        gameLayout.unlock();
     }
 }

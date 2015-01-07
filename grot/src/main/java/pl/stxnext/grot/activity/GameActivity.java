@@ -91,6 +91,7 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
         scoreBoardViewController.updateScore(model.getScore());
         scoreBoardViewController.updateMoves(model.getMoves());
         gameController.updateGamePlain(fieldTransitions);
+        gameFragment.enablePlain();
     }
 
     @Override

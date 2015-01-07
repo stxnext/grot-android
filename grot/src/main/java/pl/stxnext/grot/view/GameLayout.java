@@ -4,6 +4,8 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.GridLayout;
 
 /**
@@ -34,6 +36,25 @@ public class GameLayout extends GridLayout {
     @Override
     protected int getChildDrawingOrder(int childCount, int i) {
         return i;
+    }
+
+    public void lock() {
+        disableEnableControls(false, this);
+    }
+
+    public void unlock() {
+        disableEnableControls(true, this);
+    }
+
+    private void disableEnableControls(boolean enable, ViewGroup vg){
+        for (int i = 0; i < vg.getChildCount(); i++){
+            View child = vg.getChildAt(i);
+            if (child instanceof ViewGroup){
+                disableEnableControls(enable, (ViewGroup)child);
+            } else {
+                child.setEnabled(enable);
+            }
+        }
     }
 
 }
