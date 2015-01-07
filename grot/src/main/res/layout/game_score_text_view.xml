@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scoreLabel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:inputType="numberDecimal"
+    android:layout_gravity="center"
+    android:textSize="70sp"
+    android:padding="100dp"
+    android:textColor="@android:color/white"
+    android:text="0" />

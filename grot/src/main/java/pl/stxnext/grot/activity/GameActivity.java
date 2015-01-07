@@ -35,7 +35,7 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
         setContentView(R.layout.activity_main);
 
         this.gameController = new GameController(this);
-        
+
         TextSwitcher scoreSwitcher = (TextSwitcher) findViewById(R.id.scoreViewId);
         TextSwitcher movesSwitcher = (TextSwitcher) findViewById(R.id.movesViewId);
         TextView scoreInfo = (TextView) findViewById(R.id.scoreInfoLabel);

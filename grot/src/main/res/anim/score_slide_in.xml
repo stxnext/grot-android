@@ -11,8 +11,8 @@
         android:toYDelta="0"/>
 
     <scale
-        android:fromXScale="50%"
-        android:fromYScale="50%"
+        android:fromXScale="20%"
+        android:fromYScale="20%"
         android:pivotX="50%"
         android:pivotY="50%"
         android:toXScale="100%"

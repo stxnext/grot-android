@@ -12,14 +12,10 @@
         android:layout_width="300dp"
         android:layout_height="300dp"/>
 
-    <TextView
-        android:id="@+id/scoreLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
+    <TextSwitcher
+        android:id="@+id/scoreViewId"
         android:layout_gravity="center"
-        android:textSize="70sp"
-        android:textColor="@android:color/white"
-        android:text="0" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </FrameLayout>
