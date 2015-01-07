@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="game_button_radius">60dp</dimen>
-    <dimen name="content_margin">60dp</dimen>
+    <dimen name="content_margin">42dp</dimen>
+    <dimen name="game_button_radius">120dp</dimen>
+    <dimen name="game_button_margin">4dp</dimen>
 </resources>

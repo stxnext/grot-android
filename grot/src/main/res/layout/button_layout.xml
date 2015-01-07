@@ -7,7 +7,7 @@
         android:id="@+id/button"
         android:layout_width="@dimen/game_button_radius"
         android:layout_height="@dimen/game_button_radius"
-        android:layout_margin="4dp"
+        android:layout_margin="@dimen/game_button_margin"
         android:background="@android:color/transparent" />
 
 </LinearLayout>
