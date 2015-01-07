@@ -1,7 +1,6 @@
 package pl.stxnext.grot.activity;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import java.util.List;
 import pl.stxnext.grot.R;
 import pl.stxnext.grot.controller.GameController;
 import pl.stxnext.grot.controller.ScoreBoardViewController;
-import pl.stxnext.grot.fragment.FinishedGameFragment;
 import pl.stxnext.grot.fragment.GameFragment;
 import pl.stxnext.grot.listener.GameStateChangedListener;
 import pl.stxnext.grot.model.FieldTransition;
@@ -111,10 +109,8 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
 
     @Override
     public void onGameFinished(GamePlainModel model) {
-        FinishedGameFragment finishedGameFragment = new FinishedGameFragment();
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.game_plain_container, finishedGameFragment, FINISHED_GAME_FRAGMENT_TAG)
-                .commit();
+        Intent intent = new Intent(this, GameOverActivity.class);
+        intent.putExtra(GameOverActivity.GAME_RESULT_ARG, model.getScore());
+        startActivity(intent);
     }
 }
