@@ -6,11 +6,13 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.ProgressBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import pl.stxnext.grot.R;
 
@@ -24,9 +26,8 @@ public class GameOverActivity extends Activity {
 
     public static final String GAME_RESULT_ARG = "game_result";
     private TextSwitcher scoreSwitcher;
-    private int score;
-    private int scoreToShow = 0;
     private ProgressBar progressBar;
+    private int score;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -62,46 +63,27 @@ public class GameOverActivity extends Activity {
             };
 
             scoreSwitcher = (TextSwitcher) findViewById(R.id.scoreViewId);
+            scoreSwitcher.setInAnimation(this, R.anim.score_bring_in);
+            scoreSwitcher.setOutAnimation(this, R.anim.score_goes_out);
             scoreSwitcher.setFactory(factory);
 
-            updateScore();
-        }
-    }
-
-    private void updateScore() {
-        int difference = score - scoreToShow;
-        if (difference > 100) {
-            scoreToShow += 100;
-        } else if (difference > 10) {
-            scoreToShow += 10;
-        } else if (difference > 5) {
-            scoreToShow += 2;
-        } else {
-            scoreToShow++;
-        }
-
-        scoreSwitcher.setInAnimation(this, R.anim.score_bring_in);
-        scoreSwitcher.setOutAnimation(this, R.anim.score_goes_out);
-
-        scoreSwitcher.setText(String.format("%d", scoreToShow));
-        scoreSwitcher.getInAnimation().setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                if (scoreToShow < score) {
-                    updateScore();
-                    progressBar.setProgress(scoreToShow);
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (score > progressBar.getProgress()) {
+                                int value = progressBar.getProgress() + 1;
+                                progressBar.setProgress(value);
+                                scoreSwitcher.setText(String.format("%d", value));
+                            }
+                        }
+                    });
                 }
-            }
+            };
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
+            (new Timer()).scheduleAtFixedRate(timerTask, 0, 10);
+        }
     }
 }
