@@ -1,6 +1,7 @@
 package pl.stxnext.grot.view;
 
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -12,7 +13,8 @@ import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.animation.BounceInterpolator;
-import android.widget.GridLayout;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -27,7 +29,6 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
     private Paint paint;
     private Paint backgroundPaint;
     private RectF rect = new RectF();
-    private GameFieldModel model;
     private int color;
     private Rotation rotation = Rotation.LEFT;
     private boolean changePainters;
@@ -50,15 +51,10 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
     }
 
     public void setModel(GameFieldModel model) {
-        this.model = model;
         this.color = getResources().getColor(model.getFieldType().getColorId());
         this.rotation = model.getRotation();
         this.changePainters = true;
         model.setListener(this);
-    }
-
-    public GameFieldModel getModel() {
-        return model;
     }
 
     @Override
@@ -74,7 +70,7 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
                 }
             };
         }
-        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams)getLayoutParams());
+        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) getLayoutParams());
         if (path == null || changePainters) {
             this.path = getArrowPath(width, layoutParams);
         }
@@ -132,25 +128,32 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
 
     @Override
     public void onModelChanged(final GameFieldModel model, boolean animateAlpha) {
-        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams)getLayoutParams());
+        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) getLayoutParams());
         setX(layoutParams.leftMargin);
         setY(layoutParams.topMargin);
         this.color = getResources().getColor(model.getFieldType().getColorId());
         this.rotation = model.getRotation();
         this.changePainters = true;
-        if (getAlpha() < 1f) {
-            if (animateAlpha) {
-                animate().alpha(1f).setDuration(400);
-            } else {
-                setAlpha(1f);
-            }
+        if (animateAlpha) {
+            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(this, "alpha", 0f, 1f);
+            alphaAnimator.setInterpolator(new DecelerateInterpolator());
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(this, "scaleX", 0.5f, 1f);
+            scaleX.setInterpolator(new OvershootInterpolator());
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(this, "scaleY", 0.5f, 1f);
+            scaleY.setInterpolator(new OvershootInterpolator());
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.setDuration(400);
+            animatorSet.playTogether(alphaAnimator, scaleX, scaleY);
+            animatorSet.start();
+        } else {
+            setAlpha(1f);
         }
         invalidate();
     }
 
     @Override
     public void animate(int jumps, AnimatorListenerAdapter animatorListenerAdapter) {
-        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams)getLayoutParams());
+        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) getLayoutParams());
         ObjectAnimator animator = ObjectAnimator.ofFloat(this, "translationY", (layoutParams.topMargin + getHeight() + layoutParams.bottomMargin) * jumps);
         animator.setDuration(400);
         animator.setInterpolator(new BounceInterpolator());

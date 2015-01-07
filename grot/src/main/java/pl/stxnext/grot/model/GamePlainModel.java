@@ -83,29 +83,34 @@ public class GamePlainModel {
         for (int x = 0; x < size; x++) {
             int gaps = 0;
             for (int y = size - 1; y >= 0; y--) {
-                int position = y * size + x;
+                final int position = y * size + x;
                 if (emptyPositions.contains(position)) {
                     gaps++;
                 } else if (gaps > 0) {
                     final int positionToSwap = (y + gaps) * size + x;
                     final GameFieldModel gameFieldModel = fieldModels.get(position);
                     emptyPositions.remove(positionToSwap);
-                    gameFieldModel.animate(gaps, new AnimatorListenerAdapter() {
+                    final int jumps = gaps;
+                    gameFieldModel.animate(jumps, new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    GameFieldModel swapGameFieldModel = fieldModels.get(positionToSwap);
-                                    swapGameFieldModel.setFieldType(gameFieldModel.getFieldType());
-                                    swapGameFieldModel.setRotation(gameFieldModel.getRotation());
-                                    swapGameFieldModel.notifyModelChanged(false);
-                                    gameFieldModel.setFieldType(GamePlainGenerator.randomField());
-                                    gameFieldModel.setRotation(GamePlainGenerator.randomRotation());
-                                    gameFieldModel.notifyModelChanged(true);
-                                    animationWaitList.remove(gameFieldModel);
+                            GameFieldModel swapGameFieldModel = fieldModels.get(positionToSwap);
+                            swapGameFieldModel.setFieldType(gameFieldModel.getFieldType());
+                            swapGameFieldModel.setRotation(gameFieldModel.getRotation());
+                            swapGameFieldModel.notifyModelChanged(false);
+                            boolean shouldBeMarkedAsEmpty = true;
+                            int yPos = position / size - jumps;
+                            int xPos = position % size;
+                            for (; yPos >= 0; yPos--) {
+                                int positionAbove = yPos * size + xPos;
+                                if (!emptyPositions.contains(positionAbove)) {
+                                    shouldBeMarkedAsEmpty = false;
                                 }
-                            }, 200);
+                            }
+                            if (shouldBeMarkedAsEmpty) {
+                                emptyPositions.add(position);
+                            }
+                            animationWaitList.remove(gameFieldModel);
 
                         }
                     });
@@ -125,17 +130,17 @@ public class GamePlainModel {
                         Log.d("GROT", "InterruptedException in waiting thread");
                     }
                 }
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (Integer emptyPosition : emptyPositions) {
-                            GameFieldModel fieldModel = fieldModels.get(emptyPosition);
-                            fieldModel.setFieldType(GamePlainGenerator.randomField());
-                            fieldModel.setRotation(GamePlainGenerator.randomRotation());
+                for (Integer emptyPosition : emptyPositions) {
+                    final GameFieldModel fieldModel = fieldModels.get(emptyPosition);
+                    fieldModel.setFieldType(GamePlainGenerator.randomField());
+                    fieldModel.setRotation(GamePlainGenerator.randomRotation());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
                             fieldModel.notifyModelChanged(true);
                         }
-                    }
-                });
+                    }, (long) (Math.random() * 200));
+                }
             }
         });
         thread.start();
