@@ -65,8 +65,8 @@ public class GameOverActivity extends Activity {
             };
 
             scoreSwitcher = (TextSwitcher) findViewById(R.id.scoreViewId);
-            scoreSwitcher.setInAnimation(this, R.anim.score_slide_in_slow);
-            scoreSwitcher.setOutAnimation(this, R.anim.score_slide_out_slow);
+            scoreSwitcher.setInAnimation(this, R.anim.score_scale_in);
+            scoreSwitcher.setOutAnimation(this, R.anim.score_scale_out);
             scoreSwitcher.setFactory(factory);
 
             TimerTask timerTask = new TimerTask() {
@@ -87,14 +87,15 @@ public class GameOverActivity extends Activity {
                 }
             };
 
-            (new Timer()).scheduleAtFixedRate(timerTask, 0, 5);
+            (new Timer()).scheduleAtFixedRate(timerTask, 0, 10);
         }
 
         updateScore();
     }
 
     private void updateScore() {
-        scoreSwitcher.setText(String.format("%d", currentScore - (currentScore % 10)));
+        String value = String.format("%d", currentScore > 10 ? currentScore - 9 : 0);
+        scoreSwitcher.setText(value);
         scoreSwitcher.getInAnimation().setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -111,8 +112,15 @@ public class GameOverActivity extends Activity {
                         }
                     }, 200);
                 } else if (score == currentScore) {
-                    scoreSwitcher.getInAnimation().setDuration(1200);
-                    scoreSwitcher.setText(String.format("%d", score));
+                    scoreSwitcher.getInAnimation().setDuration(1000);
+                    scoreSwitcher.getOutAnimation().setDuration(1000);
+                    scoreSwitcher.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            scoreSwitcher.setText(String.format("%d", score));
+                        }
+                    }, 200);
+
                     currentScore++;
                 }
             }
