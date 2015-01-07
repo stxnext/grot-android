@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/transparent_black">
 
-
     <ProgressBar
         android:id="@+id/scoreProgress"
         style="?android:attr/progressBarStyleHorizontal"

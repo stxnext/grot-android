@@ -7,6 +7,6 @@
     android:inputType="numberDecimal"
     android:layout_gravity="center"
     android:textSize="70sp"
-    android:padding="100dp"
+    android:padding="80dp"
     android:textColor="@android:color/white"
     android:text="0" />

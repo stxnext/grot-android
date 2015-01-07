@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.ProgressBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ public class GameOverActivity extends Activity {
     private TextSwitcher scoreSwitcher;
     private ProgressBar progressBar;
     private int score;
+    private volatile int currentScore = 0;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -63,8 +65,8 @@ public class GameOverActivity extends Activity {
             };
 
             scoreSwitcher = (TextSwitcher) findViewById(R.id.scoreViewId);
-            scoreSwitcher.setInAnimation(this, R.anim.score_bring_in);
-            scoreSwitcher.setOutAnimation(this, R.anim.score_goes_out);
+            scoreSwitcher.setInAnimation(this, R.anim.score_slide_in_slow);
+            scoreSwitcher.setOutAnimation(this, R.anim.score_slide_out_slow);
             scoreSwitcher.setFactory(factory);
 
             TimerTask timerTask = new TimerTask() {
@@ -76,14 +78,49 @@ public class GameOverActivity extends Activity {
                             if (score > progressBar.getProgress()) {
                                 int value = progressBar.getProgress() + 1;
                                 progressBar.setProgress(value);
-                                scoreSwitcher.setText(String.format("%d", value));
+                                currentScore = value;
+                            } else {
+                                cancel();
                             }
                         }
                     });
                 }
             };
 
-            (new Timer()).scheduleAtFixedRate(timerTask, 0, 10);
+            (new Timer()).scheduleAtFixedRate(timerTask, 0, 5);
         }
+
+        updateScore();
+    }
+
+    private void updateScore() {
+        scoreSwitcher.setText(String.format("%d", currentScore - (currentScore % 10)));
+        scoreSwitcher.getInAnimation().setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (score > currentScore) {
+                    scoreSwitcher.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateScore();
+                        }
+                    }, 200);
+                } else if (score == currentScore) {
+                    scoreSwitcher.getInAnimation().setDuration(1200);
+                    scoreSwitcher.setText(String.format("%d", score));
+                    currentScore++;
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 }
