@@ -24,6 +24,7 @@ import pl.stxnext.grot.model.GamePlainModel;
  * @author Mieszko Stelmach @ STXNext
  */
 public class GameController {
+
     private final GamePlainGenerator gamePlainGenerator;
     private final GameControllerListener listener;
     private GamePlainModel gamePlainModel;

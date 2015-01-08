@@ -3,4 +3,6 @@
     <dimen name="content_margin">32dp</dimen>
     <dimen name="game_button_radius">80dp</dimen>
     <dimen name="game_button_margin">2dp</dimen>
+    <dimen name="menu_layout_horizontal_margin">100dp</dimen>
+    <dimen name="menu_layout_vertical_margin">150dp</dimen>
 </resources>

@@ -11,6 +11,7 @@ import java.util.List;
  * @author Mieszko Stelmach @ STXNext
  */
 public class GamePlainModel implements Parcelable {
+
     private final int size;
     private final int area;
     private final List<GameFieldModel> fieldModels;

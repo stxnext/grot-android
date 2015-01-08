@@ -26,6 +26,7 @@ import pl.stxnext.grot.model.GameFieldModel;
  * @author Mieszko Stelmach @ STXNext
  */
 public class GameButtonView extends ImageButton implements GameFieldModel.ModelChangedListener {
+
     private Path path;
     private Paint paint;
     private Paint backgroundPaint;
