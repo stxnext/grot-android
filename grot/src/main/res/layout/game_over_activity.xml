@@ -1,24 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent_black">
+    android:background="@color/transparent_black"
+    android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/scoreProgress"
-        style="?android:attr/progressBarStyleHorizontal"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_centerInParent="true"
-        android:indeterminate="false"
-        android:progressDrawable="@drawable/progress" />
+        android:layout_height="0dp"
+        android:layout_weight="1.9">
 
-    <TextSwitcher
-        android:id="@+id/scoreViewId"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/game_over_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Game Over"
+            android:textSize="50sp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:paddingBottom="20dp"
+            android:background="@drawable/bottom_line"
+            android:textColor="@android:color/white"
+            android:gravity="center"/>
 
-</FrameLayout>
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5">
+
+        <ProgressBar
+            android:id="@+id/scoreProgress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:indeterminate="false"
+            android:progressDrawable="@drawable/progress"/>
+
+        <TextSwitcher
+            android:id="@+id/scoreViewId"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/game_over_menu"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2.4"
+        android:gravity="center"
+        android:layoutAnimation="@anim/menu_animation"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:id="@+id/game_center_button"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/google_games"
+                android:clickable="false"
+                android:focusable="false"
+                android:background="@drawable/oval_button"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:text="@string/game_center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/restart_button"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:padding="20dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/restart_btn"
+                android:clickable="false"
+                android:focusable="false"
+                android:background="@drawable/oval_button"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:text="@string/restart"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+

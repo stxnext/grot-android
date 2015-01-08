@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -52,12 +54,17 @@ public class GameOverActivity extends Activity {
             }
 
             final Typeface typefaceBold = Typeface.createFromAsset(getAssets(), "Lato-Bold.ttf");
+            TextView gameOverLabel = (TextView) findViewById(R.id.game_over_label);
+            gameOverLabel.setTypeface(typefaceBold);
 
             ViewSwitcher.ViewFactory factory = new ViewSwitcher.ViewFactory() {
                 @Override
                 public View makeView() {
                     View view = LayoutInflater.from(GameOverActivity.this).inflate(R.layout.game_score_text_view, null);
+
                     TextView textView = (TextView) view.findViewById(R.id.scoreLabel);
+                    textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+
                     textView.setTypeface(typefaceBold);
 
                     return textView;
@@ -87,10 +94,23 @@ public class GameOverActivity extends Activity {
                 }
             };
 
-            (new Timer()).scheduleAtFixedRate(timerTask, 0, 10);
+            (new Timer()).scheduleAtFixedRate(timerTask, 0, 8);
         }
 
         updateScore();
+    }
+
+    private void prepareBottomContainer() {
+        View bottomContainer = findViewById(R.id.game_over_menu);
+        bottomContainer.setVisibility(View.VISIBLE);
+
+        bottomContainer.findViewById(R.id.restart_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
     }
 
     private void updateScore() {
@@ -112,12 +132,27 @@ public class GameOverActivity extends Activity {
                         }
                     }, 200);
                 } else if (score == currentScore) {
-                    scoreSwitcher.getInAnimation().setDuration(1000);
-                    scoreSwitcher.getOutAnimation().setDuration(1000);
+                    scoreSwitcher.setInAnimation(GameOverActivity.this, R.anim.score_rescale_in);
                     scoreSwitcher.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             scoreSwitcher.setText(String.format("%d", score));
+                            scoreSwitcher.getInAnimation().setAnimationListener(new Animation.AnimationListener() {
+                                @Override
+                                public void onAnimationStart(Animation animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animation animation) {
+                                    prepareBottomContainer();
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animation animation) {
+
+                                }
+                            });
                         }
                     }, 200);
 

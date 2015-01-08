@@ -33,7 +33,7 @@
 
             <TextSwitcher
                 android:id="@+id/scoreViewId"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
             <TextView
@@ -67,7 +67,7 @@
 
             <TextSwitcher
                 android:id="@+id/movesViewId"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
             <TextView

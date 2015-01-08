@@ -23,6 +23,8 @@ import pl.stxnext.grot.model.GamePlainModel;
  */
 public class GameActivity extends Activity implements GameStateChangedListener, GameController.GameControllerListener {
 
+    public static final int RESTART_GAME_RESULT = 1324;
+
     private static final String GAME_FRAGMENT_TAG = "game_fragment_tag";
     private GameController gameController;
     private GameFragment gameFragment;
@@ -35,6 +37,10 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
         setContentView(R.layout.activity_main);
 
         this.gameController = new GameController(this);
+
+        Intent intent = new Intent(this, GameOverActivity.class);
+        intent.putExtra(GameOverActivity.GAME_RESULT_ARG, 21);
+        startActivityForResult(intent, RESTART_GAME_RESULT);
 
         TextSwitcher scoreSwitcher = (TextSwitcher) findViewById(R.id.scoreViewId);
         TextSwitcher movesSwitcher = (TextSwitcher) findViewById(R.id.movesViewId);
@@ -109,7 +115,16 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
     public void onGameFinished(GamePlainModel model) {
         Intent intent = new Intent(this, GameOverActivity.class);
         intent.putExtra(GameOverActivity.GAME_RESULT_ARG, model.getScore());
-        startActivity(intent);
+        startActivityForResult(intent, RESTART_GAME_RESULT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == RESTART_GAME_RESULT) {
+            onRestartGame();
+        }
     }
 
     @Override
