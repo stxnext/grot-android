@@ -79,7 +79,6 @@ public class GamePlainModel {
         for (FieldTransition fieldTransition : fieldTransitions) {
             emptyPositions.add(fieldTransition.getPosition());
         }
-        final Handler handler = new Handler();
         for (int x = 0; x < size; x++) {
             int gaps = 0;
             for (int y = size - 1; y >= 0; y--) {
@@ -91,7 +90,7 @@ public class GamePlainModel {
                     final GameFieldModel gameFieldModel = fieldModels.get(position);
                     emptyPositions.remove(positionToSwap);
                     final int jumps = gaps;
-                    gameFieldModel.animate(jumps, new AnimatorListenerAdapter() {
+                    gameFieldModel.animateFall(jumps, new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             GameFieldModel swapGameFieldModel = fieldModels.get(positionToSwap);
@@ -118,6 +117,7 @@ public class GamePlainModel {
                 }
             }
         }
+        final Handler handler = new Handler();
         final Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {

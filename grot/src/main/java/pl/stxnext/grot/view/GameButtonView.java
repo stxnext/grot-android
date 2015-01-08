@@ -12,9 +12,6 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
@@ -35,6 +32,8 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
     private int color;
     private Rotation rotation = Rotation.LEFT;
     private boolean changePainters;
+    private AnimatorSet animator;
+    private ObjectAnimator fallAnimator;
 
     public GameButtonView(Context context) {
         super(context);
@@ -58,12 +57,14 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
         this.rotation = model.getRotation();
         this.changePainters = true;
         model.setListener(this);
+        animateAlpha();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int width = canvas.getWidth();
+        int height = canvas.getHeight();
         if (paint == null) {
             this.paint = new Paint() {
                 {
@@ -87,7 +88,7 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
             };
             this.changePainters = false;
         }
-        rect.set(layoutParams.leftMargin, layoutParams.topMargin, width, width);
+        rect.set(layoutParams.leftMargin, layoutParams.topMargin, width, height);
         canvas.drawOval(rect, backgroundPaint);
         canvas.drawPath(path, paint);
     }
@@ -131,24 +132,13 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
 
     @Override
     public void onModelChanged(final GameFieldModel model, boolean animateAlpha) {
-        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) getLayoutParams());
-        setX(layoutParams.leftMargin);
-        setY(layoutParams.topMargin);
+        resetView();
         this.color = getResources().getColor(model.getFieldType().getColorId());
         this.rotation = model.getRotation();
         this.changePainters = true;
 
         if (animateAlpha) {
-            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(this, "alpha", 0f, 1f);
-            alphaAnimator.setInterpolator(new DecelerateInterpolator());
-            ObjectAnimator scaleX = ObjectAnimator.ofFloat(this, "scaleX", 0.5f, 1f);
-            scaleX.setInterpolator(new OvershootInterpolator());
-            ObjectAnimator scaleY = ObjectAnimator.ofFloat(this, "scaleY", 0.5f, 1f);
-            scaleY.setInterpolator(new OvershootInterpolator());
-            AnimatorSet animatorSet = new AnimatorSet();
-            animatorSet.setDuration(400);
-            animatorSet.playTogether(alphaAnimator, scaleX, scaleY);
-            animatorSet.start();
+            animateAlpha();
         } else {
             setAlpha(1f);
         }
@@ -157,12 +147,40 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
     }
 
     @Override
-    public void animate(int jumps, AnimatorListenerAdapter animatorListenerAdapter) {
+    public void animateFall(int jumps, AnimatorListenerAdapter animatorListenerAdapter) {
+        if (fallAnimator == null) {
+            this.fallAnimator = new ObjectAnimator();
+            fallAnimator.setTarget(this);
+            fallAnimator.setPropertyName("translationY");
+            fallAnimator.setDuration(400);
+            fallAnimator.setInterpolator(new BounceInterpolator());
+        } else {
+            fallAnimator.removeAllListeners();
+        }
         LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) getLayoutParams());
-        ObjectAnimator animator = ObjectAnimator.ofFloat(this, "translationY", (layoutParams.topMargin + getHeight() + layoutParams.bottomMargin) * jumps);
-        animator.setDuration(400);
-        animator.setInterpolator(new BounceInterpolator());
-        animator.addListener(animatorListenerAdapter);
+        fallAnimator.addListener(animatorListenerAdapter);
+        fallAnimator.setFloatValues((layoutParams.topMargin + getHeight() + layoutParams.bottomMargin) * jumps);
+        fallAnimator.start();
+    }
+
+    public void resetView() {
+        LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) getLayoutParams());
+        setX(layoutParams.leftMargin);
+        setY(layoutParams.topMargin);
+    }
+
+    private void animateAlpha() {
+        if (animator == null) {
+            ObjectAnimator alpha = ObjectAnimator.ofFloat(this, "alpha", 0f, 1f);
+            alpha.setInterpolator(new DecelerateInterpolator());
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(this, "scaleX", 0.5f, 1f);
+            scaleX.setInterpolator(new OvershootInterpolator());
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(this, "scaleY", 0.5f, 1f);
+            scaleY.setInterpolator(new OvershootInterpolator());
+            this.animator = new AnimatorSet();
+            animator.setDuration(400);
+            animator.playTogether(alpha, scaleX, scaleY);
+        }
         animator.start();
     }
 }

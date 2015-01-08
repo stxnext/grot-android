@@ -50,7 +50,7 @@ public class GameFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         this.gameLayout = (GameLayout) view;
         this.handler = new Handler();
-        fillGamePlain(gameLayout);
+        fillGamePlain();
     }
 
     @Override
@@ -65,7 +65,7 @@ public class GameFragment extends Fragment {
         }
     }
 
-    private void fillGamePlain(ViewGroup view) {
+    private void fillGamePlain() {
         final GamePlainModel model = GamePlainGenerator.generateNewGamePlain();
         Iterator<GameFieldModel> iterator = model.getGamePlainIterator();
         for (int i = 0; iterator.hasNext(); i++) {
@@ -81,9 +81,26 @@ public class GameFragment extends Fragment {
                     listener.onFieldPressed(gameButtonView.getId());
                 }
             });
-            view.addView(buttonLayout);
+            gameLayout.addView(buttonLayout);
         }
         listener.onGameStarted(model);
+    }
+
+    public void restartGame() {
+        View view = getView();
+        if (view != null) {
+            final GamePlainModel model = GamePlainGenerator.generateNewGamePlain();
+            Iterator<GameFieldModel> iterator = model.getGamePlainIterator();
+            for (int i = 0; iterator.hasNext(); i++) {
+                GameFieldModel fieldModel = iterator.next();
+                final GameButtonView gameButtonView = (GameButtonView) view.findViewById(i);
+                gameButtonView.resetView();
+                gameButtonView.setModel(fieldModel);
+                gameButtonView.invalidate();
+            }
+            gameLayout.unlock();
+            listener.onGameStarted(model);
+        }
     }
 
     public void updateGameBoard(final GamePlainModel model, final List<FieldTransition> fieldTransitions) {

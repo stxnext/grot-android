@@ -1,6 +1,5 @@
 package pl.stxnext.grot.model;
 
-import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.graphics.Point;
 
@@ -59,14 +58,14 @@ public class GameFieldModel {
         }
     }
 
-    public void animate(int jumps, AnimatorListenerAdapter animatorListener) {
+    public void animateFall(int jumps, AnimatorListenerAdapter animatorListener) {
         if (listener != null) {
-            listener.animate(jumps, animatorListener);
+            listener.animateFall(jumps, animatorListener);
         }
     }
 
     public interface ModelChangedListener {
         void onModelChanged(GameFieldModel model, boolean animateAlpha);
-        void animate(int jumps, AnimatorListenerAdapter animatorListener);
+        void animateFall(int jumps, AnimatorListenerAdapter animatorListener);
     }
 }

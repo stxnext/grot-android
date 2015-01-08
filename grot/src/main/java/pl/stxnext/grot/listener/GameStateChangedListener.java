@@ -13,8 +13,6 @@ public interface GameStateChangedListener {
 
     void onFieldPressed(int position);
 
-    void onRestartGame();
-
     void onAnimationStart(GamePlainModel model);
 
     void onAnimationEnd(GamePlainModel model, List<FieldTransition> fieldTransitions);
