@@ -24,6 +24,8 @@ import pl.stxnext.grot.R;
  */
 public class GameOverActivity extends Activity {
 
+    public static final int RESTART_GAME = 1421;
+
     public static final String SHARED_PREFS = "grot_preferences";
     public static final String BEST_RESULT_PREF = "personal_result";
 
@@ -107,7 +109,7 @@ public class GameOverActivity extends Activity {
         bottomContainer.findViewById(R.id.restart_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESULT_OK);
+                setResult(RESTART_GAME);
                 finish();
             }
         });

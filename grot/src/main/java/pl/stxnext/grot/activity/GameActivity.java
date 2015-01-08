@@ -23,7 +23,8 @@ import pl.stxnext.grot.model.GamePlainModel;
  */
 public class GameActivity extends Activity implements GameStateChangedListener, GameController.GameControllerListener {
 
-    public static final int RESTART_GAME_RESULT = 1324;
+    public static final int GAME_OVER_REQUEST= 1324;
+    public static final int PAUSE_MENU_REQUEST= 1325;
 
     private static final String GAME_FRAGMENT_TAG = "game_fragment_tag";
     private GameController gameController;
@@ -37,10 +38,6 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
         setContentView(R.layout.activity_main);
 
         this.gameController = new GameController(this);
-
-        Intent intent = new Intent(this, GameOverActivity.class);
-        intent.putExtra(GameOverActivity.GAME_RESULT_ARG, 21);
-        startActivityForResult(intent, RESTART_GAME_RESULT);
 
         TextSwitcher scoreSwitcher = (TextSwitcher) findViewById(R.id.scoreViewId);
         TextSwitcher movesSwitcher = (TextSwitcher) findViewById(R.id.movesViewId);
@@ -59,7 +56,7 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GameActivity.this, MenuActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, PAUSE_MENU_REQUEST);
             }
         });
     }
@@ -85,12 +82,8 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
         gameController.updateGameState(position);
     }
 
-    @Override
-    public void onRestartGame() {
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.game_plain_container, gameFragment, GAME_FRAGMENT_TAG)
-                .commit();
+    public void restartGame() {
+        gameFragment.restartGame();
     }
 
     @Override
@@ -115,15 +108,21 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
     public void onGameFinished(GamePlainModel model) {
         Intent intent = new Intent(this, GameOverActivity.class);
         intent.putExtra(GameOverActivity.GAME_RESULT_ARG, model.getScore());
-        startActivityForResult(intent, RESTART_GAME_RESULT);
+        startActivityForResult(intent, GAME_OVER_REQUEST);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK && requestCode == RESTART_GAME_RESULT) {
-            onRestartGame();
+        if (requestCode == GAME_OVER_REQUEST) {
+            if (resultCode == GameOverActivity.RESTART_GAME || resultCode == RESULT_CANCELED) {
+                restartGame();
+            }
+        } else if (requestCode == PAUSE_MENU_REQUEST) {
+            if (resultCode == MenuActivity.RESTART_GAME) {
+                restartGame();
+            }
         }
     }
 

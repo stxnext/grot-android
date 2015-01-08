@@ -90,7 +90,7 @@ public class GamePlainModel {
                     final GameFieldModel gameFieldModel = fieldModels.get(position);
                     emptyPositions.remove(positionToSwap);
                     final int jumps = gaps;
-                    gameFieldModel.animate(jumps, new AnimatorListenerAdapter() {
+                    gameFieldModel.animateFall(jumps, new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             GameFieldModel swapGameFieldModel = fieldModels.get(positionToSwap);
