@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -37,10 +38,6 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
         setContentView(R.layout.activity_main);
 
         this.gameController = new GameController(this);
-
-        Intent intent = new Intent(this, GameOverActivity.class);
-        intent.putExtra(GameOverActivity.GAME_RESULT_ARG, 21);
-        startActivityForResult(intent, RESTART_GAME_RESULT);
 
         TextSwitcher scoreSwitcher = (TextSwitcher) findViewById(R.id.scoreViewId);
         TextSwitcher movesSwitcher = (TextSwitcher) findViewById(R.id.movesViewId);
@@ -112,10 +109,15 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
     }
 
     @Override
-    public void onGameFinished(GamePlainModel model) {
-        Intent intent = new Intent(this, GameOverActivity.class);
-        intent.putExtra(GameOverActivity.GAME_RESULT_ARG, model.getScore());
-        startActivityForResult(intent, RESTART_GAME_RESULT);
+    public void onGameFinished(final GamePlainModel model) {
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(GameActivity.this, GameOverActivity.class);
+                intent.putExtra(GameOverActivity.GAME_RESULT_ARG, model.getScore());
+                startActivityForResult(intent, RESTART_GAME_RESULT);
+            }
+        }, 1000);
     }
 
     @Override
