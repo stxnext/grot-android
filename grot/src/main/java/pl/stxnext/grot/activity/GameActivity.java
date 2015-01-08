@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -105,10 +106,15 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
     }
 
     @Override
-    public void onGameFinished(GamePlainModel model) {
-        Intent intent = new Intent(this, GameOverActivity.class);
-        intent.putExtra(GameOverActivity.GAME_RESULT_ARG, model.getScore());
-        startActivityForResult(intent, GAME_OVER_REQUEST);
+    public void onGameFinished(final GamePlainModel model) {
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(GameActivity.this, GameOverActivity.class);
+                intent.putExtra(GameOverActivity.GAME_RESULT_ARG, model.getScore());
+                startActivityForResult(intent, GAME_OVER_REQUEST);
+            }
+        }, 1000);
     }
 
     @Override

@@ -34,6 +34,7 @@ public class GameOverActivity extends Activity {
     private ProgressBar progressBar;
     private int score;
     private volatile int currentScore = 0;
+    private Typeface typefaceBold;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -55,10 +56,7 @@ public class GameOverActivity extends Activity {
                 prefs.edit().putInt(BEST_RESULT_PREF, score).apply();
             }
 
-            final Typeface typefaceBold = Typeface.createFromAsset(getAssets(), "Lato-Bold.ttf");
-            TextView gameOverLabel = (TextView) findViewById(R.id.game_over_label);
-            gameOverLabel.setTypeface(typefaceBold);
-
+            typefaceBold = Typeface.createFromAsset(getAssets(), "Lato-Bold.ttf");
             ViewSwitcher.ViewFactory factory = new ViewSwitcher.ViewFactory() {
                 @Override
                 public View makeView() {
@@ -100,6 +98,33 @@ public class GameOverActivity extends Activity {
         }
 
         updateScore();
+        prepareTopLabel();
+    }
+
+    private void prepareTopLabel() {
+        TextView gameOverLabel = (TextView) findViewById(R.id.game_over_label);
+        gameOverLabel.setTypeface(typefaceBold);
+
+        Integer labelRes;
+        if (score > 1200) {
+            labelRes = R.string.masterpiece;
+        } else if (score > 1000) {
+            labelRes = R.string.perfect;
+        } else if (score > 800) {
+            labelRes = R.string.excellent;
+        } else if (score > 600) {
+            labelRes = R.string.great;
+        } else if (score > 500) {
+            labelRes = R.string.good;
+        } else if (score > 400) {
+            labelRes = R.string.quite_good;
+        } else if (score > 200) {
+            labelRes = R.string.fair;
+        } else {
+            labelRes = R.string.poor;
+        }
+
+        gameOverLabel.setText(labelRes);
     }
 
     private void prepareBottomContainer() {
