@@ -79,7 +79,6 @@ public class GamePlainModel {
         for (FieldTransition fieldTransition : fieldTransitions) {
             emptyPositions.add(fieldTransition.getPosition());
         }
-        final Handler handler = new Handler();
         for (int x = 0; x < size; x++) {
             int gaps = 0;
             for (int y = size - 1; y >= 0; y--) {
@@ -118,6 +117,7 @@ public class GamePlainModel {
                 }
             }
         }
+        final Handler handler = new Handler();
         final Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
