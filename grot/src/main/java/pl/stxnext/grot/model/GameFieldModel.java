@@ -2,6 +2,8 @@ package pl.stxnext.grot.model;
 
 import android.animation.AnimatorListenerAdapter;
 import android.graphics.Point;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import pl.stxnext.grot.enums.FieldType;
 import pl.stxnext.grot.enums.Rotation;
@@ -9,7 +11,7 @@ import pl.stxnext.grot.enums.Rotation;
 /**
  * @author Mieszko Stelmach @ STXNext
  */
-public class GameFieldModel {
+public class GameFieldModel implements Parcelable {
 
     private FieldType fieldType;
     private Rotation rotation;
@@ -63,6 +65,36 @@ public class GameFieldModel {
             listener.animateFall(jumps, animatorListener);
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeSerializable(fieldType);
+        dest.writeSerializable(rotation);
+        dest.writeParcelable(point, 0);
+    }
+
+    public static final Parcelable.Creator<GameFieldModel> CREATOR = new Parcelable.Creator<GameFieldModel>() {
+
+        public GameFieldModel createFromParcel(Parcel in) {
+            FieldType fieldType = (FieldType) in.readSerializable();
+            Rotation rotation = (Rotation) in.readSerializable();
+            Point point = in.readParcelable(Point.class.getClassLoader());
+            GameFieldModel r = new GameFieldModel();
+            r.setFieldType(fieldType);
+            r.setRotation(rotation);
+            r.setPoint(point);
+            return r;
+        }
+
+        public GameFieldModel[] newArray(int size) {
+            return new GameFieldModel[size];
+        }
+    };
 
     public interface ModelChangedListener {
         void onModelChanged(GameFieldModel model, boolean animateAlpha);

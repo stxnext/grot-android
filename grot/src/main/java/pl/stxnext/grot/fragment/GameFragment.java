@@ -23,7 +23,6 @@ import java.util.Set;
 import pl.stxnext.grot.R;
 import pl.stxnext.grot.config.AppConfig;
 import pl.stxnext.grot.enums.Rotation;
-import pl.stxnext.grot.game.GamePlainGenerator;
 import pl.stxnext.grot.listener.GameStateChangedListener;
 import pl.stxnext.grot.model.FieldTransition;
 import pl.stxnext.grot.model.GameFieldModel;
@@ -35,6 +34,16 @@ import pl.stxnext.grot.view.GameLayout;
  * @author Mieszko Stelmach @ STXNext
  */
 public class GameFragment extends Fragment {
+
+    public static final String GAME_PLAIN_MODEL_ARG = "game_plain_model";
+
+    public static GameFragment newInstance(GamePlainModel model) {
+        GameFragment gameFragment = new GameFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(GAME_PLAIN_MODEL_ARG, model);
+        gameFragment.setArguments(bundle);
+        return gameFragment;
+    }
 
     private GameStateChangedListener listener;
     private GameLayout gameLayout;
@@ -50,7 +59,8 @@ public class GameFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         this.gameLayout = (GameLayout) view;
         this.handler = new Handler();
-        fillGamePlain();
+        GamePlainModel model = (GamePlainModel) getArguments().get(GAME_PLAIN_MODEL_ARG);
+        fillGamePlain(model);
     }
 
     @Override
@@ -65,8 +75,7 @@ public class GameFragment extends Fragment {
         }
     }
 
-    private void fillGamePlain() {
-        final GamePlainModel model = GamePlainGenerator.generateNewGamePlain();
+    private void fillGamePlain(GamePlainModel model) {
         Iterator<GameFieldModel> iterator = model.getGamePlainIterator();
         for (int i = 0; iterator.hasNext(); i++) {
             GameFieldModel fieldModel = iterator.next();
@@ -86,10 +95,9 @@ public class GameFragment extends Fragment {
         listener.onGameStarted(model);
     }
 
-    public void restartGame() {
+    public void restartGame(GamePlainModel model) {
         View view = getView();
         if (view != null) {
-            final GamePlainModel model = GamePlainGenerator.generateNewGamePlain();
             Iterator<GameFieldModel> iterator = model.getGamePlainIterator();
             for (int i = 0; iterator.hasNext(); i++) {
                 GameFieldModel fieldModel = iterator.next();

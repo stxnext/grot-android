@@ -2,11 +2,8 @@ package pl.stxnext.grot.game;
 
 import android.graphics.Point;
 
-import java.util.List;
-
 import pl.stxnext.grot.enums.FieldType;
 import pl.stxnext.grot.enums.Rotation;
-import pl.stxnext.grot.model.FieldTransition;
 import pl.stxnext.grot.model.GameFieldModel;
 import pl.stxnext.grot.model.GamePlainModel;
 
@@ -17,7 +14,7 @@ public class GamePlainGenerator {
     private static final int SIZE = 4;
     private static final int MOVES = 5;
 
-    public static GamePlainModel generateNewGamePlain() {
+    public GamePlainModel generateNewGamePlain() {
         GamePlainModel model = new GamePlainModel(SIZE);
         for (int i = 0; i < model.getArea(); i++) {
             GameFieldModel fieldModel = getRandomFieldModel();
@@ -31,11 +28,11 @@ public class GamePlainGenerator {
         return model;
     }
 
-    public static GameFieldModel getRandomFieldModel() {
+    public GameFieldModel getRandomFieldModel() {
         return new GameFieldModel(randomField(), randomRotation());
     }
 
-    public static FieldType randomField() {
+    public FieldType randomField() {
         double randomValue = Math.random();
         double counter = 0.0;
         for (FieldType type : FieldType.values()) {
@@ -47,7 +44,7 @@ public class GamePlainGenerator {
         return FieldType.HIGHEST;
     }
 
-    public static Rotation randomRotation() {
+    public Rotation randomRotation() {
         double random = Math.random();
         Rotation[] types = Rotation.values();
         int type = (int) (random * types.length);

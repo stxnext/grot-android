@@ -1,22 +1,16 @@
 package pl.stxnext.grot.model;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.os.Handler;
-import android.util.Log;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-
-import pl.stxnext.grot.game.GamePlainGenerator;
 
 /**
  * @author Mieszko Stelmach @ STXNext
  */
-public class GamePlainModel {
+public class GamePlainModel implements Parcelable {
     private final int size;
     private final int area;
     private final List<GameFieldModel> fieldModels;
@@ -64,7 +58,7 @@ public class GamePlainModel {
         return score;
     }
 
-    public void setScore(int score) {
+    private void setScore(int score) {
         this.score = score;
     }
 
@@ -73,87 +67,37 @@ public class GamePlainModel {
         setMoves(getMoves() + gainedMoves);
     }
 
-    public void updateGamePlain(List<FieldTransition> fieldTransitions, final GamePlainModelUpdateListener listener) {
-        final Set<Integer> emptyPositions = new HashSet<>(fieldTransitions.size());
-        final List<GameFieldModel> animationWaitList = new ArrayList<>();
-        for (FieldTransition fieldTransition : fieldTransitions) {
-            emptyPositions.add(fieldTransition.getPosition());
-        }
-        for (int x = 0; x < size; x++) {
-            int gaps = 0;
-            for (int y = size - 1; y >= 0; y--) {
-                final int position = y * size + x;
-                if (emptyPositions.contains(position)) {
-                    gaps++;
-                } else if (gaps > 0) {
-                    final int positionToSwap = (y + gaps) * size + x;
-                    final GameFieldModel gameFieldModel = fieldModels.get(position);
-                    emptyPositions.remove(positionToSwap);
-                    final int jumps = gaps;
-                    gameFieldModel.animateFall(jumps, new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            GameFieldModel swapGameFieldModel = fieldModels.get(positionToSwap);
-                            swapGameFieldModel.setFieldType(gameFieldModel.getFieldType());
-                            swapGameFieldModel.setRotation(gameFieldModel.getRotation());
-                            swapGameFieldModel.notifyModelChanged(false);
-                            boolean shouldBeMarkedAsEmpty = true;
-                            int yPos = position / size - jumps;
-                            int xPos = position % size;
-                            for (; yPos >= 0; yPos--) {
-                                int positionAbove = yPos * size + xPos;
-                                if (!emptyPositions.contains(positionAbove)) {
-                                    shouldBeMarkedAsEmpty = false;
-                                }
-                            }
-                            if (shouldBeMarkedAsEmpty) {
-                                emptyPositions.add(position);
-                            }
-                            animationWaitList.remove(gameFieldModel);
-
-                        }
-                    });
-                    animationWaitList.add(gameFieldModel);
-                }
-            }
-        }
-        final Handler handler = new Handler();
-        final Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (!animationWaitList.isEmpty()) {
-                    try {
-                        synchronized (this) {
-                            wait(600);
-                        }
-                    } catch (InterruptedException e) {
-                        Log.d("GROT", "InterruptedException in waiting thread");
-                    }
-                }
-                for (Integer emptyPosition : emptyPositions) {
-                    final GameFieldModel fieldModel = fieldModels.get(emptyPosition);
-                    fieldModel.setFieldType(GamePlainGenerator.randomField());
-                    fieldModel.setRotation(GamePlainGenerator.randomRotation());
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            fieldModel.notifyModelChanged(true);
-                        }
-                    }, (long) (Math.random() * 200));
-                }
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.onGamePlainUpdated();
-                    }
-                }, 200);
-            }
-        });
-        thread.start();
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public interface GamePlainModelUpdateListener {
-        void onGamePlainUpdated();
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(size);
+        dest.writeInt(moves);
+        dest.writeInt(score);
+        dest.writeParcelableArray(fieldModels.toArray(new GameFieldModel[fieldModels.size()]), 0);
     }
 
+    public static final Parcelable.Creator<GamePlainModel> CREATOR = new Parcelable.Creator<GamePlainModel>() {
+
+        public GamePlainModel createFromParcel(Parcel in) {
+            int size = in.readInt();
+            int moves = in.readInt();
+            int score = in.readInt();
+            Parcelable[] gameFieldModels = in.readParcelableArray(GameFieldModel.class.getClassLoader());
+            GamePlainModel r = new GamePlainModel(size);
+            r.setMoves(moves);
+            r.setScore(score);
+            for(Parcelable gameFieldModel : gameFieldModels) {
+                r.addGameFieldModel((GameFieldModel) gameFieldModel);
+            }
+            return r;
+        }
+
+        public GamePlainModel[] newArray(int size) {
+            return new GamePlainModel[size];
+        }
+    };
 }

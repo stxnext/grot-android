@@ -62,7 +62,7 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
     }
 
     private void addGameFragment() {
-        this.gameFragment = new GameFragment();
+        this.gameFragment = GameFragment.newInstance(gameController.getNewGamePlainModel());
         getFragmentManager()
                 .beginTransaction()
                 .add(R.id.game_plain_container, gameFragment, GAME_FRAGMENT_TAG)
@@ -83,7 +83,7 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
     }
 
     public void restartGame() {
-        gameFragment.restartGame();
+        gameFragment.restartGame(gameController.getNewGamePlainModel());
     }
 
     @Override

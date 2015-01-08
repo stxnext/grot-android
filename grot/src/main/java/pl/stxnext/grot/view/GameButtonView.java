@@ -18,6 +18,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import pl.stxnext.grot.config.AppConfig;
 import pl.stxnext.grot.enums.Rotation;
 import pl.stxnext.grot.model.GameFieldModel;
 
@@ -152,7 +153,7 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
             this.fallAnimator = new ObjectAnimator();
             fallAnimator.setTarget(this);
             fallAnimator.setPropertyName("translationY");
-            fallAnimator.setDuration(400);
+            fallAnimator.setDuration(AppConfig.ANIMATION_DURATION);
             fallAnimator.setInterpolator(new BounceInterpolator());
         } else {
             fallAnimator.removeAllListeners();
@@ -178,7 +179,7 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
             ObjectAnimator scaleY = ObjectAnimator.ofFloat(this, "scaleY", 0.5f, 1f);
             scaleY.setInterpolator(new OvershootInterpolator());
             this.animator = new AnimatorSet();
-            animator.setDuration(400);
+            animator.setDuration(AppConfig.ANIMATION_DURATION);
             animator.playTogether(alpha, scaleX, scaleY);
         }
         animator.start();
