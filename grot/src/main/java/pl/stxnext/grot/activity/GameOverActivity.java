@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextSwitcher;
@@ -35,6 +36,7 @@ public class GameOverActivity extends Activity {
     private int score;
     private volatile int currentScore = 0;
     private Typeface typefaceBold;
+    private int personalBest;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class GameOverActivity extends Activity {
             score = getIntent().getIntExtra(GAME_RESULT_ARG, 0);
 
             SharedPreferences prefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-            int personalBest = prefs.getInt(BEST_RESULT_PREF, 0);
+            personalBest = prefs.getInt(BEST_RESULT_PREF, 0);
 
             progressBar = (ProgressBar) findViewById(R.id.scoreProgress);
 
@@ -53,6 +55,7 @@ public class GameOverActivity extends Activity {
             progressBar.setMax(maxProgress);
 
             if (score > personalBest) {
+                personalBest = score;
                 prefs.edit().putInt(BEST_RESULT_PREF, score).apply();
             }
 
@@ -140,6 +143,15 @@ public class GameOverActivity extends Activity {
         });
     }
 
+    private void showRecord() {
+        if (score == personalBest) {
+            View recordView = findViewById(R.id.record);
+            recordView.setVisibility(View.VISIBLE);
+            Animation anim = AnimationUtils.loadAnimation(this, R.anim.record_animation);
+            recordView.startAnimation(anim);
+        }
+    }
+
     private void updateScore() {
         String value = String.format("%d", currentScore > 10 ? currentScore - 9 : 0);
         scoreSwitcher.setText(value);
@@ -173,6 +185,7 @@ public class GameOverActivity extends Activity {
                                 @Override
                                 public void onAnimationEnd(Animation animation) {
                                     prepareBottomContainer();
+                                    showRecord();
                                 }
 
                                 @Override
