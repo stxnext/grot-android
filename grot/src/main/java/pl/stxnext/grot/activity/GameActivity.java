@@ -98,7 +98,6 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
         scoreBoardViewController.updateScore(model.getScore());
         scoreBoardViewController.updateMoves(model.getMoves());
         gameController.updateGamePlain(fieldTransitions);
-        gameFragment.enablePlain();
     }
 
     @Override
@@ -111,5 +110,10 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
         Intent intent = new Intent(this, GameOverActivity.class);
         intent.putExtra(GameOverActivity.GAME_RESULT_ARG, model.getScore());
         startActivity(intent);
+    }
+
+    @Override
+    public void onGamePlainUpdated() {
+        gameFragment.enablePlain();
     }
 }

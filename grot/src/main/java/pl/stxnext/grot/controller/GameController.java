@@ -17,7 +17,7 @@ import pl.stxnext.grot.model.GamePlainModel;
 /**
  * @author Mieszko Stelmach @ STXNext
  */
-public class GameController {
+public class GameController implements GamePlainModel.GamePlainModelUpdateListener {
     private final GameControllerListener listener;
     private GamePlainModel gamePlainModel;
 
@@ -60,7 +60,7 @@ public class GameController {
         if (gamePlainModel.getMoves() == 0) {
             listener.onGameFinished(gamePlainModel);
         } else {
-            gamePlainModel.updateGamePlain(fieldTransitions);
+            gamePlainModel.updateGamePlain(fieldTransitions, this);
         }
     }
 
@@ -150,11 +150,18 @@ public class GameController {
         return y * gamePlainModel.getSize() + x;
     }
 
+    @Override
+    public void onGamePlainUpdated() {
+        listener.onGamePlainUpdated();
+    }
+
     public interface GameControllerListener {
 
         void updateGameInfo(GamePlainModel model, List<FieldTransition> fieldTransitions);
 
         void onGameFinished(GamePlainModel model);
+
+        void onGamePlainUpdated();
 
     }
 }

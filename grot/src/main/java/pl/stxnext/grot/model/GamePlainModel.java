@@ -73,7 +73,7 @@ public class GamePlainModel {
         setMoves(getMoves() + gainedMoves);
     }
 
-    public void updateGamePlain(List<FieldTransition> fieldTransitions) {
+    public void updateGamePlain(List<FieldTransition> fieldTransitions, final GamePlainModelUpdateListener listener) {
         final Set<Integer> emptyPositions = new HashSet<>(fieldTransitions.size());
         final List<GameFieldModel> animationWaitList = new ArrayList<>();
         for (FieldTransition fieldTransition : fieldTransitions) {
@@ -141,9 +141,19 @@ public class GamePlainModel {
                         }
                     }, (long) (Math.random() * 200));
                 }
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onGamePlainUpdated();
+                    }
+                }, 200);
             }
         });
         thread.start();
+    }
+
+    public interface GamePlainModelUpdateListener {
+        void onGamePlainUpdated();
     }
 
 }
