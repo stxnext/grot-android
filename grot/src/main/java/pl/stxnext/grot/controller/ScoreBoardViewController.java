@@ -2,6 +2,7 @@ package pl.stxnext.grot.controller;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -49,6 +50,7 @@ public class ScoreBoardViewController {
             public View makeView() {
                 View view = LayoutInflater.from(context).inflate(R.layout.score_text_view, null);
                 TextView textView = (TextView) view.findViewById(R.id.scoreTextView);
+                textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
                 textView.setTypeface(typefaceBold);
 
                 return textView;

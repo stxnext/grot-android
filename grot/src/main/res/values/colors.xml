@@ -8,6 +8,6 @@
     <color name="high_color">#8d198f</color>
     <color name="highest_color">#00968f</color>
     <color name="transparent_black">#e1000000</color>
-    <color name="alpha_black">#37f8f7ff</color>
+    <color name="alpha_white">#37f8f7ff</color>
 
 </resources>
