@@ -19,6 +19,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import pl.stxnext.grot.R;
+import pl.stxnext.grot.config.AppConfig;
 
 /**
  * Created by Tomasz Konieczny on 2015-01-07.
@@ -27,7 +28,6 @@ public class GameOverActivity extends Activity {
 
     public static final int RESTART_GAME = 1421;
 
-    public static final String SHARED_PREFS = "grot_preferences";
     public static final String BEST_RESULT_PREF = "personal_result";
 
     public static final String GAME_RESULT_ARG = "game_result";
@@ -46,7 +46,7 @@ public class GameOverActivity extends Activity {
         if (getIntent() != null) {
             score = getIntent().getIntExtra(GAME_RESULT_ARG, 0);
 
-            SharedPreferences prefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+            SharedPreferences prefs = getSharedPreferences(AppConfig.SHARED_PREFS, MODE_PRIVATE);
             personalBest = prefs.getInt(BEST_RESULT_PREF, 0);
 
             progressBar = (ProgressBar) findViewById(R.id.scoreProgress);

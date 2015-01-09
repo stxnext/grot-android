@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+Properties props = new Properties()
+props.load(new FileInputStream(file(project.property("stx-release.properties"))))
+
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
@@ -11,15 +14,26 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {
+        release {
+            storeFile file(props['keystore'])
+            storePassword props['keystore.password']
+            keyAlias props['alias']
+            keyPassword props['alias.password']
+        }
+    }
+
     buildTypes {
         debug {
             debuggable true
             minifyEnabled false
         }
         release {
-            debuggable false
             zipAlignEnabled true
             minifyEnabled true
+            debuggable false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -27,4 +41,5 @@ android {
 
 dependencies {
     compile 'com.google.android.gms:play-services:6.5.87'
+    compile project(':BaseGameUtils')
 }

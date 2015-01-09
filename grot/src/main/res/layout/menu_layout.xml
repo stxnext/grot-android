@@ -72,6 +72,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/resume_game_button"
         android:layout_marginTop="@dimen/menu_layout_vertical_margin"
+        android:clickable="true"
+        android:focusable="true"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -79,12 +81,14 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:background="@drawable/oval_button"
+            android:clickable="false"
             android:src="@drawable/google_games" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
+            android:clickable="false"
             android:text="@string/game_center"
             android:textColor="@android:color/white"
             android:textSize="20sp" />

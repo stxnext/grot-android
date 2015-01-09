@@ -1,9 +1,8 @@
 package pl.stxnext.grot.activity;
 
 import android.app.Activity;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Fade;
 import android.view.View;
 
 import pl.stxnext.grot.R;
@@ -32,6 +31,14 @@ public class MenuActivity extends Activity {
             @Override
             public void onClick(View v) {
                 setResult(RESTART_GAME);
+                finish();
+            }
+        });
+        findViewById(R.id.game_center_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenuActivity.this, GameServicesActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
