@@ -148,6 +148,8 @@
             android:layout_marginTop="@dimen/menu_layout_vertical_margin"
             android:layout_toRightOf="@id/game_center_button"
             android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
             android:orientation="vertical">
 
             <Button
@@ -156,6 +158,8 @@
                 android:background="@drawable/oval_button"
                 android:text="\?"
                 android:textColor="@android:color/white"
+                android:clickable="false"
+                android:focusable="false"
                 android:textSize="58sp"
                 android:textStyle="bold"/>
 

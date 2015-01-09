@@ -22,4 +22,10 @@
     <string name="perfect">Perfect!</string>
     <string name="masterpiece">Masterpiece!</string>
 
+    <string name="tutorial_1">This logic game is about making the most valuable chains possible!</string>
+    <string name="tutorial_2">Tap any field to start a chain reaction - fields will move one by one in the direction shown by the arrowheads.</string>
+    <string name="tutorial_3">Longer chains grant move bonuses. Clear all fields in a row or in a column to get extra points.</string>
+    <string name="tutorial_4">Collect as many points as possible.</string>
+    <string name="points">Points:</string>
+
 </resources>

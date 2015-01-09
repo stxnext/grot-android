@@ -62,5 +62,13 @@ public class MenuActivity extends Activity {
             }
         });
 
+        findViewById(R.id.help_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenuActivity.this, HelpActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

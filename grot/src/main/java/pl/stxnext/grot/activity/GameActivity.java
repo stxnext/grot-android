@@ -53,6 +53,14 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
         movesLabel.setTypeface(typefaceRegular);
         addGameFragment();
 
+        findViewById(R.id.help_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameActivity.this, HelpActivity.class);
+                startActivity(intent);
+            }
+        });
+
         findViewById(R.id.pauseButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
