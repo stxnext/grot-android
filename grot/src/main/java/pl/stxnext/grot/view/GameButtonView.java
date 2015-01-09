@@ -1,5 +1,6 @@
 package pl.stxnext.grot.view;
 
+import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -17,6 +18,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+
+import java.util.List;
 
 import pl.stxnext.grot.config.AppConfig;
 import pl.stxnext.grot.enums.Rotation;
@@ -36,6 +39,8 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
     private boolean changePainters;
     private AnimatorSet animator;
     private ObjectAnimator fallAnimator;
+    private ObjectAnimator moveAnimator;
+    private ObjectAnimator fadeOutAnimator;
 
     public GameButtonView(Context context) {
         super(context);
@@ -59,7 +64,7 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
         this.rotation = model.getRotation();
         this.changePainters = true;
         model.setListener(this);
-        animateAlpha();
+        animateFadeIn();
     }
 
     @Override
@@ -140,7 +145,7 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
         this.changePainters = true;
 
         if (animateAlpha) {
-            animateAlpha();
+            animateFadeIn();
         } else {
             setAlpha(1f);
         }
@@ -171,7 +176,7 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
         setY(layoutParams.topMargin);
     }
 
-    private void animateAlpha() {
+    private void animateFadeIn() {
         if (animator == null) {
             ObjectAnimator alpha = ObjectAnimator.ofFloat(this, "alpha", 0f, 1f);
             alpha.setInterpolator(new DecelerateInterpolator());
@@ -184,5 +189,58 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
             animator.playTogether(alpha, scaleX, scaleY);
         }
         animator.start();
+    }
+
+    public Animator getMoveAnimator(int jumps, boolean transition) {
+        if (fadeOutAnimator == null) {
+            this.fadeOutAnimator = ObjectAnimator.ofFloat(this, "alpha", 1f, 0f);
+        }
+        if (transition) {
+            if (moveAnimator == null) {
+                switch (rotation) {
+                    case LEFT:
+                        moveAnimator = ObjectAnimator.ofFloat(this, "translationX", -getWidth() * jumps);
+                        break;
+                    case RIGHT:
+                        moveAnimator = ObjectAnimator.ofFloat(this, "translationX", getWidth() * jumps);
+                        break;
+                    case UP:
+                        moveAnimator = ObjectAnimator.ofFloat(this, "translationY", -getHeight() * jumps);
+                        break;
+                    case DOWN:
+                        moveAnimator = ObjectAnimator.ofFloat(this, "translationY", getHeight() * jumps);
+                        break;
+                }
+            } else {
+                switch (rotation) {
+                    case LEFT:
+                        moveAnimator.setPropertyName("translationX");
+                        moveAnimator.setFloatValues(-getWidth() * jumps);
+                        break;
+                    case RIGHT:
+                        moveAnimator.setPropertyName("translationX");
+                        moveAnimator.setFloatValues(getWidth() * jumps);
+                        break;
+                    case UP:
+                        moveAnimator.setPropertyName("translationY");
+                        moveAnimator.setFloatValues(-getHeight() * jumps);
+                        break;
+                    case DOWN:
+                        moveAnimator.setPropertyName("translationY");
+                        moveAnimator.setFloatValues(getHeight() * jumps);
+                        break;
+                }
+            }
+        }
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        if (transition) {
+            animatorSet.setDuration(AppConfig.ANIMATION_DURATION * jumps);
+            animatorSet.playTogether(fadeOutAnimator, moveAnimator);
+        } else {
+            animatorSet.setDuration(AppConfig.ANIMATION_DURATION);
+            animatorSet.play(fadeOutAnimator);
+        }
+        return animatorSet;
     }
 }
