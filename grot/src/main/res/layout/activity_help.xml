@@ -2,7 +2,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@android:color/black"
+    android:background="@color/transparent_black"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -14,7 +14,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:padding="20dp"
+            android:layoutAnimation="@anim/menu_animation"
             android:orientation="vertical">
 
             <TextView
