@@ -19,8 +19,6 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import java.util.List;
-
 import pl.stxnext.grot.config.AppConfig;
 import pl.stxnext.grot.enums.Rotation;
 import pl.stxnext.grot.model.GameFieldModel;
