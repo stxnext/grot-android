@@ -1,125 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/transparent_black"
-    android:gravity="center"
-    android:layoutAnimation="@anim/menu_animation"
-    android:orientation="vertical"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/resume_game_button"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
+    <include
+        android:id="@+id/start_background"
+        android:visibility="gone"
+        layout="@layout/activity_splash"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent_black"
         android:gravity="center"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="vertical">
+        android:layoutAnimation="@anim/menu_animation"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
 
-        <ImageButton
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:clickable="false"
-            android:background="@drawable/oval_button"
-            android:src="@drawable/resume" />
+        <LinearLayout
+            android:id="@+id/resume_game_button"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical">
 
-        <TextView
+            <ImageButton
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:clickable="false"
+                android:background="@drawable/oval_button"
+                android:src="@drawable/resume"/>
+
+            <TextView
+                android:id="@+id/play_resume_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/resume"
+                android:clickable="false"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"/>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/restart_button_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="@string/resume"
-            android:clickable="false"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:layout_marginLeft="@dimen/menu_layout_horizontal_margin"
+            android:layout_toRightOf="@id/resume_game_button">
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/restart_button"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/restart_button"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/menu_layout_horizontal_margin"
-        android:layout_toRightOf="@id/resume_game_button"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:orientation="vertical">
+                <ImageButton
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/oval_button"
+                    android:clickable="false"
+                    android:src="@drawable/restart_btn"/>
 
-        <ImageButton
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:background="@drawable/oval_button"
-            android:clickable="false"
-            android:src="@drawable/restart_btn" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:clickable="false"
+                    android:text="@string/restart"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/about_button"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <Button
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/oval_button"
+                    android:text="i"
+                    android:textColor="@android:color/white"
+                    android:textSize="58sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:clickable="false"
+                    android:text="@string/about"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"/>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:id="@+id/game_center_button"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:clickable="false"
-            android:text="@string/restart"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:layout_below="@id/resume_game_button"
+            android:layout_marginTop="@dimen/menu_layout_vertical_margin"
+            android:gravity="center"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <ImageButton
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:background="@drawable/oval_button"
+                android:src="@drawable/google_games"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/game_center"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"/>
 
-    <LinearLayout
-        android:id="@+id/game_center_button"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/resume_game_button"
-        android:layout_marginTop="@dimen/menu_layout_vertical_margin"
-        android:gravity="center"
-        android:orientation="vertical">
+        </LinearLayout>
 
-        <ImageButton
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:background="@drawable/oval_button"
-            android:src="@drawable/google_games" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/help_button"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="@string/game_center"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:layout_below="@id/restart_button_container"
+            android:layout_marginLeft="@dimen/menu_layout_horizontal_margin"
+            android:layout_marginTop="@dimen/menu_layout_vertical_margin"
+            android:layout_toRightOf="@id/game_center_button"
+            android:gravity="center"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <Button
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:background="@drawable/oval_button"
+                android:text="\?"
+                android:textColor="@android:color/white"
+                android:textSize="58sp"
+                android:textStyle="bold"/>
 
-    <LinearLayout
-        android:id="@+id/help_button"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/restart_button"
-        android:layout_marginLeft="@dimen/menu_layout_horizontal_margin"
-        android:layout_marginTop="@dimen/menu_layout_vertical_margin"
-        android:layout_toRightOf="@id/game_center_button"
-        android:gravity="center"
-        android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/help"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"/>
 
-        <Button
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:background="@drawable/oval_button"
-            android:text="\?"
-            android:textColor="@android:color/white"
-            android:textSize="58sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="@string/help"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
-
-    </LinearLayout>
+        </LinearLayout>
 
 
-</RelativeLayout>
+    </RelativeLayout>
+</FrameLayout>
+

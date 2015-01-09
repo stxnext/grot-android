@@ -29,7 +29,8 @@ public class SplashActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashActivity.this, GameActivity.class);
+                Intent intent = new Intent(SplashActivity.this, MenuActivity.class);
+                intent.putExtra(MenuActivity.START_SCREEN_ARG, true);
                 startActivity(intent);
                 finish();
             }
