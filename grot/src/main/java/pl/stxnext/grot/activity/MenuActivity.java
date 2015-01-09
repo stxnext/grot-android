@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import pl.stxnext.grot.R;
 
@@ -12,28 +13,61 @@ import pl.stxnext.grot.R;
  */
 public class MenuActivity extends Activity {
 
+    public static final String START_SCREEN_ARG = "is_start_screen";
+
     public static final int RESTART_GAME = 1421;
+
+    public boolean isStartScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_layout);
 
+        isStartScreen = getIntent().getBooleanExtra(START_SCREEN_ARG, false);
+
+        View restartButton = findViewById(R.id.restart_button);
+        if (isStartScreen) {
+            TextView textView = (TextView) findViewById(R.id.play_resume_label);
+            textView.setText(R.string.play);
+
+            View aboutButton = findViewById(R.id.about_button);
+            aboutButton.setVisibility(View.VISIBLE);
+            restartButton.setVisibility(View.GONE);
+
+            findViewById(R.id.start_background).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.restart_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setResult(RESTART_GAME);
+                    finish();
+                }
+            });
+        }
+
         findViewById(R.id.resume_game_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESULT_CANCELED);
-                finish();
+                if (isStartScreen) {
+                    Intent intent = new Intent(MenuActivity.this, GameActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    setResult(RESULT_CANCELED);
+                    finish();
+                }
             }
         });
 
-        findViewById(R.id.restart_button).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.help_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESTART_GAME);
-                finish();
+                Intent intent = new Intent(MenuActivity.this, HelpActivity.class);
+                startActivity(intent);
             }
         });
+
         findViewById(R.id.game_center_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,5 +76,14 @@ public class MenuActivity extends Activity {
                 finish();
             }
         });
+
+        findViewById(R.id.about_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenuActivity.this, AboutActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

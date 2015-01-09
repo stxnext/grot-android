@@ -6,7 +6,9 @@
     <string name="game_finished">Game Finished!</string>
     <string name="restart">Restart</string>
     <string name="resume">Resume</string>
+    <string name="play">Play</string>
     <string name="game_center">Game Center</string>
+    <string name="about">About</string>
     <string name="help">Help</string>
 
     <string name="app_id">1002479476948</string>
@@ -19,4 +21,15 @@
     <string name="excellent">Excellent!</string>
     <string name="perfect">Perfect!</string>
     <string name="masterpiece">Masterpiece!</string>
+
+    <string name="tutorial_1">This logic game is about making the most valuable chains possible!</string>
+    <string name="tutorial_2">Tap any field to start a chain reaction - fields will move one by one in the direction shown by the arrowheads.</string>
+    <string name="tutorial_3">Longer chains grant move bonuses. Clear all fields in a row or in a column to get extra points.</string>
+    <string name="tutorial_4">Collect as many points as possible.</string>
+    <string name="points">Points:</string>
+    <string name="created_by">Created by STX Next\nhttp://stxnext.com</string>
+    <string name="source_code">Source code</string>
+    <string name="source_code_url">https://github.com/stxnext/grot-android</string>
+    <string name="credits">Credits</string>
+
 </resources>

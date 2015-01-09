@@ -36,7 +36,7 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_game);
 
         this.gameController = new GameController(this);
 
@@ -52,6 +52,14 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
         TextView movesLabel = (TextView) findViewById(R.id.movesLabelId);
         movesLabel.setTypeface(typefaceRegular);
         addGameFragment();
+
+        findViewById(R.id.help_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameActivity.this, HelpActivity.class);
+                startActivity(intent);
+            }
+        });
 
         findViewById(R.id.pauseButton).setOnClickListener(new View.OnClickListener() {
             @Override

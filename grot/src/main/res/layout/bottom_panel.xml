@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
         android:background="@drawable/green_round_button"
-        android:padding="14dp"
+        android:padding="8dp"
         android:src="@drawable/pause" />
 
     <ImageView
@@ -23,11 +23,12 @@
         android:src="@drawable/hero" />
 
     <ImageButton
+        android:id="@+id/help_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|center_vertical"
         android:background="@drawable/green_round_button"
-        android:padding="14dp"
+        android:padding="8dp"
         android:src="@drawable/help" />
 
 </FrameLayout>

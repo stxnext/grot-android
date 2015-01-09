@@ -36,7 +36,17 @@
 
         <activity
             android:name=".activity.GameServicesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/GrotTheme" />
 
+        <activity
+            android:name=".activity.HelpActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/GrotTheme" />
+
+        <activity
+            android:name=".activity.AboutActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/GrotTheme" />
 
         <meta-data
