@@ -9,6 +9,8 @@
     <string name="game_center">Game Center</string>
     <string name="help">Help</string>
 
+    <string name="app_id">stx-grot</string>
+
     <string name="poor">Poor…</string>
     <string name="fair">Fair</string>
     <string name="good">Quite good</string>
