@@ -97,6 +97,8 @@
                     android:background="@drawable/oval_button"
                     android:text="i"
                     android:textColor="@android:color/white"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:textSize="58sp"
                     android:textStyle="bold"/>
 

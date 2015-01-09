@@ -39,6 +39,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/GrotTheme" />
 
+        <activity
+            android:name=".activity.AboutActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/GrotTheme" />
+
     </application>
 
 </manifest>

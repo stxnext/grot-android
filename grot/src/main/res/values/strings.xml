@@ -27,5 +27,9 @@
     <string name="tutorial_3">Longer chains grant move bonuses. Clear all fields in a row or in a column to get extra points.</string>
     <string name="tutorial_4">Collect as many points as possible.</string>
     <string name="points">Points:</string>
+    <string name="created_by">Created by STX Next\nhttp://stxnext.com</string>
+    <string name="source_code">Source code</string>
+    <string name="source_code_url">https://github.com/stxnext/grot-android</string>
+    <string name="credits">Credits</string>
 
 </resources>
