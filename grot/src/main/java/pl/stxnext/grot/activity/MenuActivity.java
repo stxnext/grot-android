@@ -26,18 +26,28 @@ public class MenuActivity extends Activity {
 
         isStartScreen = getIntent().getBooleanExtra(START_SCREEN_ARG, false);
 
+        View playButton = findViewById(R.id.play_game_button);
         View restartButton = findViewById(R.id.restart_button);
         if (isStartScreen) {
-            TextView textView = (TextView) findViewById(R.id.play_resume_label);
-            textView.setText(R.string.play);
-
-            View aboutButton = findViewById(R.id.about_button);
-            aboutButton.setVisibility(View.VISIBLE);
-            restartButton.setVisibility(View.GONE);
-
             findViewById(R.id.start_background).setVisibility(View.VISIBLE);
+
+            playButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isStartScreen) {
+                        Intent intent = new Intent(MenuActivity.this, GameActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    }
+                }
+            });
         } else {
-            findViewById(R.id.restart_button).setOnClickListener(new View.OnClickListener() {
+            playButton.setVisibility(View.GONE);
+            restartButton.setVisibility(View.VISIBLE);
+            restartButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     setResult(RESTART_GAME);
@@ -46,19 +56,6 @@ public class MenuActivity extends Activity {
             });
         }
 
-        findViewById(R.id.resume_game_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isStartScreen) {
-                    Intent intent = new Intent(MenuActivity.this, GameActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    setResult(RESULT_CANCELED);
-                    finish();
-                }
-            }
-        });
 
         findViewById(R.id.help_button).setOnClickListener(new View.OnClickListener() {
             @Override
