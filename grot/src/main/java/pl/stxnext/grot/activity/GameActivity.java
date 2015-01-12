@@ -24,8 +24,8 @@ import pl.stxnext.grot.model.GamePlainModel;
  */
 public class GameActivity extends Activity implements GameStateChangedListener, GameController.GameControllerListener {
 
-    public static final int GAME_OVER_REQUEST= 1324;
-    public static final int PAUSE_MENU_REQUEST= 1325;
+    public static final int GAME_OVER_REQUEST = 1324;
+    public static final int PAUSE_MENU_REQUEST = 1325;
 
     private static final String GAME_FRAGMENT_TAG = "game_fragment_tag";
     private GameController gameController;

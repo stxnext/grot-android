@@ -1,17 +1,22 @@
 package pl.stxnext.grot.activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.BaseGameActivity;
 
 import pl.stxnext.grot.R;
+import pl.stxnext.grot.config.AppConfig;
 
 /**
  * @author Mieszko Stelmach @ STXNext
  */
 public class GameServicesActivity extends BaseGameActivity {
+    private static final int REQUEST_LEADERBOARD = 1546;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +28,7 @@ public class GameServicesActivity extends BaseGameActivity {
                 beginUserInitiatedSignIn();
             }
         });
+        beginUserInitiatedSignIn();
     }
 
     @Override
@@ -32,6 +38,21 @@ public class GameServicesActivity extends BaseGameActivity {
 
     @Override
     public void onSignInSucceeded() {
-        Toast.makeText(this, "OK!", Toast.LENGTH_SHORT).show();
+        SharedPreferences preferences = getSharedPreferences(AppConfig.SHARED_PREFS, MODE_PRIVATE);
+        preferences.edit().putBoolean(AppConfig.GOOGLE_PLAY_GAMES_STATUS, true).apply();
+        showLeaderboard();
+    }
+
+    private void showLeaderboard() {
+        Intent intent = Games.Leaderboards.getLeaderboardIntent(getApiClient(), getString(R.string.leaderboard_id));
+        startActivityForResult(intent, REQUEST_LEADERBOARD);
+    }
+
+    @Override
+    protected void onActivityResult(int request, int response, Intent data) {
+        super.onActivityResult(request, response, data);
+        if (request == REQUEST_LEADERBOARD) {
+            finish();
+        }
     }
 }

@@ -12,6 +12,7 @@
     <string name="help">Help</string>
 
     <string name="app_id">1002479476948</string>
+    <string name="leaderboard_id">CgkI1MG7w5YdEAIQAA</string>
 
     <string name="poor">Poor…</string>
     <string name="fair">Fair</string>
@@ -31,5 +32,7 @@
     <string name="source_code">Source code</string>
     <string name="source_code_url">https://github.com/stxnext/grot-android</string>
     <string name="credits">Credits</string>
+
+    <string name="google_play_games_attached_info">Google Play Games service is attached now.</string>
 
 </resources>

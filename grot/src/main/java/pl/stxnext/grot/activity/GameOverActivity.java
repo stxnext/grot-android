@@ -1,6 +1,5 @@
 package pl.stxnext.grot.activity;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -9,11 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
+import com.google.example.games.basegameutils.BaseGameActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,7 +26,7 @@ import pl.stxnext.grot.config.AppConfig;
 /**
  * Created by Tomasz Konieczny on 2015-01-07.
  */
-public class GameOverActivity extends Activity {
+public class GameOverActivity extends BaseGameActivity {
 
     public static final int RESTART_GAME = 1421;
 
@@ -57,6 +59,9 @@ public class GameOverActivity extends Activity {
             if (score > personalBest) {
                 personalBest = score;
                 prefs.edit().putInt(BEST_RESULT_PREF, score).apply();
+                if (prefs.getBoolean(AppConfig.GOOGLE_PLAY_GAMES_STATUS, false)) {
+                    beginUserInitiatedSignIn();
+                }
             }
 
             typefaceBold = Typeface.createFromAsset(getAssets(), "Lato-Bold.ttf");
@@ -205,5 +210,19 @@ public class GameOverActivity extends Activity {
 
             }
         });
+    }
+
+    @Override
+    public void onSignInFailed() {
+        SharedPreferences preferences = getSharedPreferences(AppConfig.SHARED_PREFS, MODE_PRIVATE);
+        preferences.edit().putBoolean(AppConfig.GOOGLE_PLAY_GAMES_STATUS, false).apply();
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        GoogleApiClient googleApiClient = getApiClient();
+        if (googleApiClient != null && googleApiClient.isConnected()) {
+            Games.Leaderboards.submitScore(googleApiClient, getString(R.string.leaderboard_id), score);
+        }
     }
 }
