@@ -15,4 +15,10 @@ public class HelpActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
 }
