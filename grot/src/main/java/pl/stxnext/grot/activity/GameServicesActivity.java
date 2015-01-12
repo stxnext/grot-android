@@ -33,7 +33,7 @@ public class GameServicesActivity extends BaseGameActivity {
 
     @Override
     public void onSignInFailed() {
-        findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+        findViewById(R.id.sign_in_container).setVisibility(View.VISIBLE);
     }
 
     @Override

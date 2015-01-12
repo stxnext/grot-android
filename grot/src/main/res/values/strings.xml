@@ -33,5 +33,6 @@
     <string name="credits">Credits</string>
 
     <string name="google_play_games_attached_info">Google Play Games service is attached now.</string>
+    <string name="game_center_info">If you want to publish your best score and conquer with other players sign into Google Play Games.</string>
 
 </resources>
