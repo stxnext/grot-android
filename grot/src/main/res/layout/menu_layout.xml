@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:background="@color/transparent_black"
         android:gravity="center"
-
+        android:layoutAnimation="@anim/menu_animation"
         android:orientation="vertical"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
