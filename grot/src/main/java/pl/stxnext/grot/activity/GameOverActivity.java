@@ -214,8 +214,6 @@ public class GameOverActivity extends BaseGameActivity {
 
     @Override
     public void onSignInFailed() {
-        SharedPreferences preferences = getSharedPreferences(AppConfig.SHARED_PREFS, MODE_PRIVATE);
-        preferences.edit().putBoolean(AppConfig.GOOGLE_PLAY_GAMES_STATUS, false).apply();
     }
 
     @Override
