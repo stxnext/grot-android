@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_id" traslatable="false">1002479476948</string>
-    <string name="leaderboard_id" traslatable="false">CgkI1MG7w5YdEAIQAA</string>
+    <string name="app_id" translatable="false">1002479476948</string>
+    <string name="leaderboard_id" translatable="false">CgkI1MG7w5YdEAIQAA</string>
 </resources>
