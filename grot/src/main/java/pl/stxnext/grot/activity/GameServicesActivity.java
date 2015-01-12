@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.BaseGameActivity;
@@ -26,6 +25,7 @@ public class GameServicesActivity extends BaseGameActivity {
             @Override
             public void onClick(View v) {
                 beginUserInitiatedSignIn();
+                v.setVisibility(View.GONE);
             }
         });
         beginUserInitiatedSignIn();
