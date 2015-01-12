@@ -152,4 +152,10 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
         gameFragment.enablePlain();
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
 }

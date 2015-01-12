@@ -232,4 +232,10 @@ public class GameOverActivity extends BaseGameActivity {
             Games.Leaderboards.submitScore(googleApiClient, getString(R.string.leaderboard_id), score);
         }
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
 }

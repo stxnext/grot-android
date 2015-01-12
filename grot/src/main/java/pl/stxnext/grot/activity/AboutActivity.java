@@ -36,4 +36,10 @@ public class AboutActivity extends Activity {
         faLabel.setText(firstAuthor);
         saLabel.setText(secondAuthor);
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
 }
