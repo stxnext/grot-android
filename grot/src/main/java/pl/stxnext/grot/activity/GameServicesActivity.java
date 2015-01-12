@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.example.games.basegameutils.BaseGameActivity;
 
 import pl.stxnext.grot.R;
@@ -53,7 +54,11 @@ public class GameServicesActivity extends BaseGameActivity {
     protected void onActivityResult(int request, int response, Intent data) {
         super.onActivityResult(request, response, data);
         if (request == REQUEST_LEADERBOARD) {
-            finish();
+            if (response == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED ) {
+                onSignInFailed();
+            } else {
+                finish();
+            }
         }
     }
 }
