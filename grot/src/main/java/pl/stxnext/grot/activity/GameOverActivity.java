@@ -1,5 +1,6 @@
 package pl.stxnext.grot.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -138,6 +139,14 @@ public class GameOverActivity extends BaseGameActivity {
     private void prepareBottomContainer() {
         View bottomContainer = findViewById(R.id.game_over_menu);
         bottomContainer.setVisibility(View.VISIBLE);
+
+        bottomContainer.findViewById(R.id.game_center_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameOverActivity.this, GameServicesActivity.class);
+                startActivity(intent);
+            }
+        });
 
         bottomContainer.findViewById(R.id.restart_button).setOnClickListener(new View.OnClickListener() {
             @Override
