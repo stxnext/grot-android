@@ -34,14 +34,8 @@ public class MenuActivity extends Activity {
             playButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isStartScreen) {
-                        Intent intent = new Intent(MenuActivity.this, GameActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        setResult(RESULT_CANCELED);
-                        finish();
-                    }
+                    Intent intent = new Intent(MenuActivity.this, GameActivity.class);
+                    startActivity(intent);
                 }
             });
         } else {

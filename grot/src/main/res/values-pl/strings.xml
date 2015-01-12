@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">GROT</string>
+    <string name="grot">GROT</string>
+    <string name="score">Wynik</string>
+    <string name="moves">Ruchy</string>
+    <string name="game_finished">Koniec gry!</string>
+    <string name="restart">Restart</string>
+    <string name="play">Start</string>
+    <string name="game_center">Ranking</string>
+    <string name="about">Info</string>
+    <string name="help">Pomoc</string>
+
+    <string name="poor">Słabiutko…</string>
+    <string name="fair">Może być…</string>
+    <string name="good">Całkiem nieźle</string>
+    <string name="quite_good">Dobrze!</string>
+    <string name="great">Świetnie!</string>
+    <string name="excellent">Wspaniale!</string>
+    <string name="perfect">Perfekcyjnie!</string>
+    <string name="masterpiece">Mistrzostwo!</string>
+
+    <string name="tutorial_1">Gra polega na zbieraniu najwyżej punktowanych łańcuchów.</string>
+    <string name="tutorial_2">Dotknij dowolne pole, aby rozpocząć reakcję łańcuchową - pola będą znikać, jedno po drugim zgodnie z kierunkiem, który wskazują strzałki.</string>
+    <string name="tutorial_3">Im dłuższy łancuch tym więcej dodatkowych ruchów otrzymasz. Wyczyść wszystkie pola w wierszu lub kolumnie aby dostać premię punktową.</string>
+    <string name="tutorial_4">Zdobądź jak najwięcej punktów!</string>
+    <string name="points">Punkty:</string>
+    <string name="created_by">Stworzone przez STX Next\nhttp://stxnext.com</string>
+    <string name="source_code">Kod źródłowy</string>
+    <string name="source_code_url">https://github.com/stxnext/grot-android</string>
+    <string name="credits">Autorzy</string>
+
+    <string name="game_center_info">Zaloguj się do serwisu Google Play Gry, aby konkurować z innymi graczami.</string>
+    <string name="warning">Uwaga!</string>
+    <string name="are_you_sure">Utracisz cały postęp aktualnej gry. Czy jesteś pewien, że chcesz wyjść?</string>
+
+</resources>

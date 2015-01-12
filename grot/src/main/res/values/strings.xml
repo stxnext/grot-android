@@ -10,9 +10,6 @@
     <string name="about">About</string>
     <string name="help">Help</string>
 
-    <string name="app_id">1002479476948</string>
-    <string name="leaderboard_id">CgkI1MG7w5YdEAIQAA</string>
-
     <string name="poor">Poor…</string>
     <string name="fair">Fair</string>
     <string name="good">Quite good</string>
@@ -22,7 +19,7 @@
     <string name="perfect">Perfect!</string>
     <string name="masterpiece">Masterpiece!</string>
 
-    <string name="tutorial_1">This logic game is about making the most valuable chains possible!</string>
+    <string name="tutorial_1">This logic game is about making the most valuable chains possible.</string>
     <string name="tutorial_2">Tap any field to start a chain reaction - fields will move one by one in the direction shown by the arrowheads.</string>
     <string name="tutorial_3">Longer chains grant move bonuses. Clear all fields in a row or in a column to get extra points.</string>
     <string name="tutorial_4">Collect as many points as possible.</string>
@@ -32,7 +29,8 @@
     <string name="source_code_url">https://github.com/stxnext/grot-android</string>
     <string name="credits">Credits</string>
 
-    <string name="google_play_games_attached_info">Google Play Games service is attached now.</string>
     <string name="game_center_info">If you want to publish your best score and conquer with other players sign into Google Play Games.</string>
+    <string name="warning">Warning!</string>
+    <string name="are_you_sure">You will lose all your game progress. Are you sure?</string>
 
 </resources>

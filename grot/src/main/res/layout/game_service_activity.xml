@@ -1,44 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sign_in_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:visibility="gone"
+    android:background="@color/transparent_black"
+    android:layoutAnimation="@anim/menu_animation"
+    android:padding="24dp">
 
-    <include
-        android:id="@+id/start_background"
-        layout="@layout/activity_splash"/>
-
-    <FrameLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/transparent_black"/>
+        android:layout_height="wrap_content"
+        android:text="@string/game_center_info"
+        android:layout_marginBottom="24dp"
+        android:textColor="@android:color/white"
+        android:padding="8dp"
+        android:textSize="16sp"/>
 
-    <LinearLayout
-        android:id="@+id/sign_in_container"
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone"
-        android:layoutAnimation="@anim/menu_animation"
-        android:padding="24dp">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/game_center_info"
-            android:layout_marginBottom="24dp"
-            android:textColor="@android:color/white"
-            android:padding="8dp"
-            android:textSize="16sp"/>
-
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/sign_in_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="visible"/>
-
-    </LinearLayout>
-
-</FrameLayout>
+</LinearLayout>

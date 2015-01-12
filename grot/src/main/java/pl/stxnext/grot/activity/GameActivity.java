@@ -15,6 +15,7 @@ import pl.stxnext.grot.R;
 import pl.stxnext.grot.controller.GameController;
 import pl.stxnext.grot.controller.ScoreBoardViewController;
 import pl.stxnext.grot.fragment.GameFragment;
+import pl.stxnext.grot.fragment.WarningDialogFragment;
 import pl.stxnext.grot.listener.GameStateChangedListener;
 import pl.stxnext.grot.model.FieldTransition;
 import pl.stxnext.grot.model.GamePlainModel;
@@ -141,7 +142,14 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
     }
 
     @Override
+    public void onBackPressed() {
+        WarningDialogFragment dialog = new WarningDialogFragment();
+        dialog.show(getFragmentManager(), "warning_dialog");
+    }
+
+    @Override
     public void onGamePlainUpdated() {
         gameFragment.enablePlain();
     }
+
 }

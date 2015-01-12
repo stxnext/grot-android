@@ -15,6 +15,7 @@ import pl.stxnext.grot.config.AppConfig;
  * @author Mieszko Stelmach @ STXNext
  */
 public class GameServicesActivity extends BaseGameActivity {
+
     private static final int REQUEST_LEADERBOARD = 1546;
 
     @Override
