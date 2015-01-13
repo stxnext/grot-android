@@ -94,7 +94,11 @@ public class GameOverActivity extends BaseGameActivity {
                             if (score > progressBar.getProgress()) {
                                 int value = progressBar.getProgress() + 1;
                                 progressBar.setProgress(value);
-                                currentScore = value;
+                                if (score > currentScore + 200) {
+                                    currentScore = value;
+                                } else {
+                                    currentScore = score;
+                                }
                             } else {
                                 cancel();
                             }
@@ -103,7 +107,7 @@ public class GameOverActivity extends BaseGameActivity {
                 }
             };
 
-            (new Timer()).scheduleAtFixedRate(timerTask, 0, 8);
+            (new Timer()).scheduleAtFixedRate(timerTask, 0, 3);
         }
 
         updateScore();
@@ -167,8 +171,9 @@ public class GameOverActivity extends BaseGameActivity {
     }
 
     private void updateScore() {
-        String value = String.format("%d", currentScore > 10 ? currentScore - 9 : 0);
+        String value = String.format("%d", currentScore > 80 ? currentScore - 70 : currentScore);
         scoreSwitcher.setText(value);
+
         scoreSwitcher.getInAnimation().setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {

@@ -9,10 +9,10 @@ android {
 
     defaultConfig {
         applicationId "pl.stxnext.grot"
-        minSdkVersion 15
+        minSdkVersion 14
         targetSdkVersion 21
-        versionCode 2
-        versionName "1.0 alpha"
+        versionCode 3
+        versionName "1.0"
     }
 
     signingConfigs {

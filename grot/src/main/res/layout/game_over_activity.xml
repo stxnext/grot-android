@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Game Over"
-                android:textSize="50sp"
+                android:textSize="42sp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:paddingBottom="20dp"
@@ -59,7 +59,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2.4"
+            android:layout_weight="2.5"
             android:gravity="center"
             android:layoutAnimation="@anim/menu_animation"
             android:visibility="invisible">

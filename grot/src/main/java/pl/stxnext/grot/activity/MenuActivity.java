@@ -36,6 +36,7 @@ public class MenuActivity extends Activity {
                 public void onClick(View v) {
                     Intent intent = new Intent(MenuActivity.this, GameActivity.class);
                     startActivity(intent);
+                    finish();
                 }
             });
         } else {

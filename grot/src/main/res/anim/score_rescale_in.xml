@@ -2,7 +2,7 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
      android:interpolator="@android:interpolator/anticipate_overshoot"
      android:fillAfter="true"
-     android:duration="700">
+     android:duration="500">
 
     <alpha
         android:fromAlpha="0"
