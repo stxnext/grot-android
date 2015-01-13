@@ -2,9 +2,13 @@ package pl.stxnext.grot.controller;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.graphics.Point;
 import android.os.Handler;
 import android.util.Log;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +18,9 @@ import java.util.Map;
 import java.util.Set;
 
 import pl.stxnext.grot.config.AppConfig;
+import pl.stxnext.grot.enums.MovesAchievements;
 import pl.stxnext.grot.enums.Rotation;
+import pl.stxnext.grot.enums.ScoreAchievements;
 import pl.stxnext.grot.game.GamePlainGenerator;
 import pl.stxnext.grot.model.FieldTransition;
 import pl.stxnext.grot.model.GameFieldModel;
@@ -27,10 +33,13 @@ public class GameController {
 
     private final GamePlainGenerator gamePlainGenerator;
     private final GameControllerListener listener;
+    private final Context context;
+    private GoogleApiClient googleApiClient;
     private GamePlainModel gamePlainModel;
 
-    public GameController(GameControllerListener listener) {
+    public GameController(Context context, GameControllerListener listener) {
         this.gamePlainGenerator = new GamePlainGenerator();
+        this.context = context;
         this.listener = listener;
     }
 
@@ -193,6 +202,46 @@ public class GameController {
             int gainedMoves = Math.max(0, fieldTransitions.size() - threshold);
             gainedMoves--;
             gamePlainModel.updateResults(gainedScore, gainedMoves);
+            checkAchievements();
+        }
+    }
+
+    public void setGoogleApiClient(GoogleApiClient googleApiClient) {
+        this.googleApiClient = googleApiClient;
+    }
+
+    private void checkAchievements() {
+        if (googleApiClient != null && googleApiClient.isConnected()) {
+            int moves = gamePlainModel.getMoves();
+            int score = gamePlainModel.getScore();
+
+            ScoreAchievements lastScoreAchievement = ScoreAchievements.getLastReached(context);
+            int lastScore = lastScoreAchievement != null ? lastScoreAchievement.getScore() : 0;
+
+            MovesAchievements lastMovesAchievement = MovesAchievements.getLastReached(context);
+            int lastMoves = lastMovesAchievement != null ? lastMovesAchievement.getMoves() : 0;
+
+            if (score > lastScore) {
+                for (ScoreAchievements achievement : ScoreAchievements.values()) {
+                    if (achievement.getScore() > lastScore) {
+                        if (score >= achievement.getScore()) {
+                            Games.Achievements.unlock(googleApiClient, context.getString(achievement.getIdRes()));
+                            ScoreAchievements.setLastReached(context, achievement);
+                        }
+                    }
+                }
+            }
+
+            if (moves > lastMoves) {
+                for (MovesAchievements achievement : MovesAchievements.values()) {
+                    if (achievement.getMoves() > lastMoves) {
+                        if (moves >= achievement.getMoves()) {
+                            Games.Achievements.unlock(googleApiClient, context.getString(achievement.getIdRes()));
+                            MovesAchievements.setLastReached(context, achievement);
+                        }
+                    }
+                }
+            }
         }
     }
 

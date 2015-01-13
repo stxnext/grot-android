@@ -2,4 +2,13 @@
 <resources>
     <string name="app_id" translatable="false">1002479476948</string>
     <string name="leaderboard_id" translatable="false">CgkI1MG7w5YdEAIQAA</string>
+    <string name="achievement_noob" translatable="false">CgkI1MG7w5YdEAIQAw</string>
+    <string name="achievement_regular_player" translatable="false">CgkI1MG7w5YdEAIQBA</string>
+    <string name="achievement_wizard" translatable="false">CgkI1MG7w5YdEAIQBQ</string>
+    <string name="achievement_paradise" translatable="false">CgkI1MG7w5YdEAIQBg</string>
+    <string name="achievement_grotmaster" translatable="false">CgkI1MG7w5YdEAIQBw</string>
+    <string name="achievement_grotstar" translatable="false">CgkI1MG7w5YdEAIQCA</string>
+    <string name="achievement_god_of_grot" translatable="false">CgkI1MG7w5YdEAIQCQ</string>
+    <string name="achievement_miser" translatable="false">CgkI1MG7w5YdEAIQCg</string>
+    <string name="achievement_banker" translatable="false">CgkI1MG7w5YdEAIQCw</string>
 </resources>

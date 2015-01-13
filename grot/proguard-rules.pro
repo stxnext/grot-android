@@ -15,3 +15,10 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keepattributes *Annotation*, SourceFile, LineNumberTable, Signature, RuntimeVisibleAnnotations, AnnotationDefault, Exceptions, Signature
+
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+
+-keep class * implements java.io.Serializable

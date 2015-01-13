@@ -2,6 +2,7 @@ package pl.stxnext.grot.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,9 +11,12 @@ import android.widget.ProgressBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
+import com.google.example.games.basegameutils.BaseGameActivity;
+
 import java.util.List;
 
 import pl.stxnext.grot.R;
+import pl.stxnext.grot.config.AppConfig;
 import pl.stxnext.grot.controller.GameController;
 import pl.stxnext.grot.controller.ScoreBoardViewController;
 import pl.stxnext.grot.fragment.GameFragment;
@@ -24,7 +28,7 @@ import pl.stxnext.grot.model.GamePlainModel;
 /**
  * @author Mieszko Stelmach @ STXNext
  */
-public class GameActivity extends Activity implements GameStateChangedListener, GameController.GameControllerListener {
+public class GameActivity extends BaseGameActivity implements GameStateChangedListener, GameController.GameControllerListener {
 
     public static final int GAME_OVER_REQUEST = 1324;
     public static final int PAUSE_MENU_REQUEST = 1325;
@@ -40,7 +44,12 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        this.gameController = new GameController(this);
+        this.gameController = new GameController(this, this);
+
+        SharedPreferences prefs = getSharedPreferences(AppConfig.SHARED_PREFS, MODE_PRIVATE);
+        if (prefs.getBoolean(AppConfig.GOOGLE_PLAY_GAMES_STATUS, false)) {
+            beginUserInitiatedSignIn();
+        }
 
         TextSwitcher scoreSwitcher = (TextSwitcher) findViewById(R.id.scoreViewId);
         TextSwitcher movesSwitcher = (TextSwitcher) findViewById(R.id.movesViewId);
@@ -163,4 +172,12 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
+    @Override
+    public void onSignInFailed() {
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        gameController.setGoogleApiClient(getApiClient());
+    }
 }
