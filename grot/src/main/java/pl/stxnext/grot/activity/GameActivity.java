@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
@@ -143,8 +144,12 @@ public class GameActivity extends Activity implements GameStateChangedListener, 
 
     @Override
     public void onBackPressed() {
-        WarningDialogFragment dialog = new WarningDialogFragment();
-        dialog.show(getFragmentManager(), "warning_dialog");
+        if (gameController.getCurrentScore() > 0) {
+            WarningDialogFragment dialog = new WarningDialogFragment();
+            dialog.show(getFragmentManager(), "warning_dialog");
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override

@@ -38,6 +38,10 @@ public class GameController {
         return gamePlainGenerator.generateNewGamePlain();
     }
 
+    public int getCurrentScore() {
+        return gamePlainModel != null ? gamePlainModel.getScore() : 0;
+    }
+
     public void setNewGamePlainModel(GamePlainModel model) {
         this.gamePlainModel = model;
     }
