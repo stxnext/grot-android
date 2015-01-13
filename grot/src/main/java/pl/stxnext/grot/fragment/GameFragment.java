@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -75,10 +76,18 @@ public class GameFragment extends Fragment {
 
     private void fillGamePlain(GamePlainModel model) {
         Iterator<GameFieldModel> iterator = model.getGamePlainIterator();
+        Point size = new Point();
+        getActivity().getWindowManager().getDefaultDisplay().getSize(size);
+        float margin = getResources().getDimension(R.dimen.game_button_margin);
+        final int buttonSize = (int) ((size.x / (model.getSize() + 1)) - margin);
         for (int i = 0; iterator.hasNext(); i++) {
             GameFieldModel fieldModel = iterator.next();
             LinearLayout buttonLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.button_layout, null);
             final GameButtonView gameButtonView = (GameButtonView) buttonLayout.findViewById(R.id.button);
+            ViewGroup.LayoutParams layoutParams = gameButtonView.getLayoutParams();
+            layoutParams.width = buttonSize;
+            layoutParams.height = buttonSize;
+            gameButtonView.setLayoutParams(layoutParams);
             gameButtonView.setModel(fieldModel);
             gameButtonView.setId(i);
             gameButtonView.setOnClickListener(new View.OnClickListener() {
