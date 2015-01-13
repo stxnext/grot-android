@@ -18,6 +18,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.BaseGameActivity;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,6 +42,7 @@ public class GameOverActivity extends BaseGameActivity {
     private volatile int currentScore = 0;
     private Typeface typefaceBold;
     private int personalBest;
+    private int dailyBest;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -50,19 +53,31 @@ public class GameOverActivity extends BaseGameActivity {
             score = getIntent().getIntExtra(GAME_RESULT_ARG, 0);
 
             SharedPreferences prefs = getSharedPreferences(AppConfig.SHARED_PREFS, MODE_PRIVATE);
+            Calendar dailyRecordDate = Calendar.getInstance();
+            dailyRecordDate.setTimeInMillis(prefs.getLong(AppConfig.DAILY_RECORD_DATE, 0));
+            Calendar currentDate = Calendar.getInstance();
+            if (currentDate.get(Calendar.DAY_OF_YEAR) == dailyRecordDate.get(Calendar.DAY_OF_YEAR)) {
+                dailyBest = prefs.getInt(AppConfig.DAILY_RECORD_SCORE, 0);
+            } else {
+                prefs.edit().putLong(AppConfig.DAILY_RECORD_DATE, System.currentTimeMillis()).apply();
+            }
+
             personalBest = prefs.getInt(BEST_RESULT_PREF, 0);
-
             progressBar = (ProgressBar) findViewById(R.id.scoreProgress);
-
             int maxProgress = score > personalBest ? score : personalBest;
             progressBar.setMax(maxProgress);
 
-            if (score > personalBest) {
-                personalBest = score;
-                prefs.edit().putInt(BEST_RESULT_PREF, score).apply();
+            if (score > dailyBest) {
+                dailyBest = score;
+                prefs.edit().putInt(AppConfig.DAILY_RECORD_SCORE, dailyBest).apply();
                 if (prefs.getBoolean(AppConfig.GOOGLE_PLAY_GAMES_STATUS, false)) {
                     beginUserInitiatedSignIn();
                 }
+            }
+
+            if (score > personalBest) {
+                personalBest = score;
+                prefs.edit().putInt(BEST_RESULT_PREF, personalBest).apply();
             }
 
             typefaceBold = Typeface.createFromAsset(getAssets(), "Lato-Bold.ttf");
