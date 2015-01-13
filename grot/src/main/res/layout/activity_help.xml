@@ -17,7 +17,7 @@
             android:clipChildren="false"
             android:clipToPadding="false"
             android:padding="25dp"
-            android:layoutAnimation="@anim/menu_animation"
+            android:layoutAnimation="@anim/layout_animation"
             android:orientation="vertical">
 
             <TextView

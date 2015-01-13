@@ -12,7 +12,8 @@ import pl.stxnext.grot.config.AppConfig;
 public enum MovesAchievements {
 
     MISER(15, R.string.achievement_miser),
-    BANKER(20, R.string.achievement_banker);
+    BANKER(20, R.string.achievement_banker),
+    INVESTOR(25, R.string.achievement_investor);
 
     private final int moves;
     private final int idRes;

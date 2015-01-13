@@ -1,7 +1,10 @@
 package pl.stxnext.grot.activity;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import pl.stxnext.grot.BuildConfig;
@@ -35,6 +38,14 @@ public class AboutActivity extends Activity {
 
         faLabel.setText(firstAuthor);
         saLabel.setText(secondAuthor);
+
+        findViewById(R.id.stx_logo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.stx_url)));
+                startActivity(browserIntent);
+            }
+        });
     }
 
     @Override

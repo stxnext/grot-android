@@ -32,5 +32,8 @@
     <string name="game_center_info">Zaloguj się do serwisu Google Play Gry, aby konkurować z innymi graczami.</string>
     <string name="warning">Uwaga!</string>
     <string name="are_you_sure">Utracisz cały postęp aktualnej gry. Czy jesteś pewien, że chcesz wyjść?</string>
+    <string name="ranking">Ranking</string>
+    <string name="achievements">Osiągnięcia</string>
+    <string name="stx_url">http://www.stxnext.pl</string>
 
 </resources>

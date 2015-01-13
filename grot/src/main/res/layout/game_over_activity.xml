@@ -61,7 +61,7 @@
             android:layout_height="0dp"
             android:layout_weight="2.5"
             android:gravity="center"
-            android:layoutAnimation="@anim/menu_animation"
+            android:layoutAnimation="@anim/layout_animation"
             android:visibility="invisible">
 
             <LinearLayout

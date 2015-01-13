@@ -32,5 +32,8 @@
     <string name="game_center_info">If you want to publish your best score and conquer with other players sign into Google Play Games.</string>
     <string name="warning">Warning!</string>
     <string name="are_you_sure">You will lose all your game progress. Are you sure?</string>
+    <string name="ranking">Leaderboard</string>
+    <string name="achievements">Achievements</string>
+    <string name="stx_url">http://www.stxnext.com</string>
 
 </resources>

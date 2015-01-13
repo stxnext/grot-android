@@ -1,30 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/sign_in_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:visibility="gone"
-    android:background="@color/transparent_black"
-    android:layoutAnimation="@anim/menu_animation"
-    android:padding="24dp">
+    android:layout_height="match_parent">
 
-    <TextView
+    <include layout="@layout/activity_splash"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent_black"/>
+
+    <LinearLayout
+        android:id="@+id/game_center_menu"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/game_center_info"
-        android:layout_marginBottom="24dp"
-        android:textColor="@android:color/white"
-        android:padding="8dp"
-        android:textSize="16sp"/>
+        android:visibility="gone"
+        android:layoutAnimation="@anim/layout_animation"
+        android:baselineAligned="false"
+        android:layout_gravity="center">
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
+        <LinearLayout
+            android:id="@+id/leaderboard_button"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/crown"
+                android:clickable="false"
+                android:focusable="false"
+                android:background="@drawable/oval_button"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:text="@string/ranking"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/achievements_button"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:padding="20dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/achievements"
+                android:clickable="false"
+                android:focusable="false"
+                android:background="@drawable/oval_button"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:text="@string/achievements"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/sign_in_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_gravity="center"
-        android:visibility="visible"/>
+        android:visibility="gone"
+        android:layoutAnimation="@anim/layout_animation"
+        android:padding="24dp">
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/game_center_info"
+            android:layout_marginBottom="24dp"
+            android:textColor="@android:color/white"
+            android:padding="8dp"
+            android:textSize="16sp"/>
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="visible"/>
+
+    </LinearLayout>
+
+</FrameLayout>
+
+
+
