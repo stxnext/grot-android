@@ -169,12 +169,6 @@ public class GameActivity extends BaseGameActivity implements GameStateChangedLi
     }
 
     @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
-    @Override
     public void onSignInFailed() {
     }
 
