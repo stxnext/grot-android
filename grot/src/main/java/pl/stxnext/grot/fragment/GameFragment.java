@@ -75,6 +75,7 @@ public class GameFragment extends Fragment {
     }
 
     private void fillGamePlain(GamePlainModel model) {
+        gameLayout.removeAllViews();
         Iterator<GameFieldModel> iterator = model.getGamePlainIterator();
         Point size = new Point();
         getActivity().getWindowManager().getDefaultDisplay().getSize(size);

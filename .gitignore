@@ -4,3 +4,6 @@
 .DS_Store
 build/
 *.iml
+grot/crashlytics.properties
+grot/src/main/assets/crashlytics-build.properties
+grot/src/main/res/values/com_crashlytics_export_strings.xml
