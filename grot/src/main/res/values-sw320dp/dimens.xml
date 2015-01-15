@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="game_button_radius">60dp</dimen>
     <dimen name="content_margin">24dp</dimen>
+    <dimen name="content_margin_vertical">8dp</dimen>
+    <dimen name="game_button_radius">60dp</dimen>
     <dimen name="game_button_margin">2dp</dimen>
     <dimen name="menu_layout_horizontal_margin">25dp</dimen>
     <dimen name="menu_layout_vertical_margin">45dp</dimen>
     <dimen name="bottom_panel_top_margin">4dp</dimen>
+    <dimen name="header_bottom_margin">2dp</dimen>
 </resources>

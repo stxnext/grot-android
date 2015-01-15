@@ -8,7 +8,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/content_margin"
+        android:layout_marginTop="@dimen/content_margin_vertical"
+        android:layout_marginLeft="@dimen/content_margin"
+        android:layout_marginRight="@dimen/content_margin"
+        android:layout_marginBottom="@dimen/content_margin_vertical"
         android:background="@drawable/green_border_bottom"
         android:baselineAligned="false"
         android:gravity="center"
@@ -17,7 +20,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/header_bottom_margin"
             android:layout_weight="1"
             android:gravity="center"
             android:animateLayoutChanges="true"
@@ -51,7 +54,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/header_bottom_margin"
             android:layout_weight="1"
             android:gravity="center"
             android:animateLayoutChanges="true"
@@ -89,7 +92,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipChildren="false"
-        android:layout_marginBottom="4dp"
         android:layout_weight="1"/>
 
     <include layout="@layout/bottom_panel"/>
