@@ -4,13 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.Fragment;
-import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -56,10 +57,10 @@ public class GameFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.gameLayout = (GameLayout) view;
+        this.gameLayout = (GameLayout) view.findViewById(R.id.game_plain);
         this.handler = new Handler();
         GamePlainModel model = (GamePlainModel) getArguments().get(GAME_PLAIN_MODEL_ARG);
-        fillGamePlain(model);
+        fillGamePlain(view, model);
     }
 
     @Override
@@ -74,33 +75,44 @@ public class GameFragment extends Fragment {
         }
     }
 
-    private void fillGamePlain(GamePlainModel model) {
+    private void fillGamePlain(final View view, final GamePlainModel model) {
         gameLayout.removeAllViews();
-        Iterator<GameFieldModel> iterator = model.getGamePlainIterator();
-        Point size = new Point();
-        getActivity().getWindowManager().getDefaultDisplay().getSize(size);
-        float margin = getResources().getDimension(R.dimen.game_button_margin);
-        final int buttonSize = (int) ((size.x / (model.getSize() + 1)) - margin);
-        for (int i = 0; iterator.hasNext(); i++) {
-            GameFieldModel fieldModel = iterator.next();
-            LinearLayout buttonLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.button_layout, null);
-            final GameButtonView gameButtonView = (GameButtonView) buttonLayout.findViewById(R.id.button);
-            ViewGroup.LayoutParams layoutParams = gameButtonView.getLayoutParams();
-            layoutParams.width = buttonSize;
-            layoutParams.height = buttonSize;
-            gameButtonView.setLayoutParams(layoutParams);
-            gameButtonView.setModel(fieldModel);
-            gameButtonView.setId(i);
-            gameButtonView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gameLayout.lock();
-                    listener.onFieldPressed(gameButtonView.getId());
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Iterator<GameFieldModel> iterator = model.getGamePlainIterator();
+                int size = Math.min(view.getWidth(), view.getHeight());
+                float margin = getResources().getDimension(R.dimen.game_button_margin);
+                final int buttonSize = (int) ((size / (model.getSize() + 1)) - margin);
+                for (int i = 0; iterator.hasNext(); i++) {
+                    GameFieldModel fieldModel = iterator.next();
+                    LinearLayout buttonLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.button_layout, null);
+                    final GameButtonView gameButtonView = (GameButtonView) buttonLayout.findViewById(R.id.button);
+                    ViewGroup.LayoutParams layoutParams = gameButtonView.getLayoutParams();
+                    layoutParams.width = buttonSize;
+                    layoutParams.height = buttonSize;
+                    gameButtonView.setLayoutParams(layoutParams);
+                    gameButtonView.setModel(fieldModel);
+                    gameButtonView.setId(i);
+                    gameButtonView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            gameLayout.lock();
+                            listener.onFieldPressed(gameButtonView.getId());
+                        }
+                    });
+                    gameLayout.addView(buttonLayout);
                 }
-            });
-            gameLayout.addView(buttonLayout);
-        }
-        listener.onGameStarted(model);
+                ViewTreeObserver obs = view.getViewTreeObserver();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    obs.removeOnGlobalLayoutListener(this);
+                } else {
+                    //noinspection deprecation
+                    obs.removeGlobalOnLayoutListener(this);
+                }
+                listener.onGameStarted(model);
+            }
+        });
     }
 
     public void restartGame(GamePlainModel model) {
@@ -177,10 +189,6 @@ public class GameFragment extends Fragment {
         });
         animators.add(animator);
         return animator;
-    }
-
-    private Animator getAnimator(GameButtonView view, int position, Rotation rotation, boolean transition, int size, Set<Integer> positions) {
-        return view.getMoveAnimator(calculateAnimationJumps(position, rotation, positions, size), transition);
     }
 
     private int calculateAnimationJumps(final int position, final Rotation rotation, final Set<Integer> positions, int size) {
