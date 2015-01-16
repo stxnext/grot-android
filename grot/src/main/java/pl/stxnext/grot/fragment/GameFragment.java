@@ -127,23 +127,23 @@ public class GameFragment extends Fragment {
                         animators.get(i).addListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
-                                resetGame(model);
+                                resetGame(model, view);
                             }
                         });
                     }
                     animators.get(i).cancel();
                 }
             } else {
-                resetGame(model);
+                resetGame(model, view);
             }
         }
     }
 
-    private void resetGame(final GamePlainModel model) {
+    private void resetGame(final GamePlainModel model, View view) {
         Iterator<GameFieldModel> iterator = model.getGamePlainIterator();
         for (int i = 0; iterator.hasNext(); i++) {
             GameFieldModel fieldModel = iterator.next();
-            final GameButtonView gameButtonView = (GameButtonView) getView().findViewById(i);
+            final GameButtonView gameButtonView = (GameButtonView) view.findViewById(i);
             gameButtonView.resetView();
             gameButtonView.setModel(fieldModel);
             gameButtonView.invalidate();

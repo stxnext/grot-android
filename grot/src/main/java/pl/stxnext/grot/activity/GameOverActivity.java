@@ -51,81 +51,89 @@ public class GameOverActivity extends BaseGameActivity {
         if (getIntent() != null) {
             score = getIntent().getIntExtra(GAME_RESULT_ARG, 0);
 
-            SharedPreferences prefs = getSharedPreferences(AppConfig.SHARED_PREFS, MODE_PRIVATE);
-            Calendar dailyRecordDate = Calendar.getInstance();
-            dailyRecordDate.setTimeInMillis(prefs.getLong(AppConfig.DAILY_RECORD_DATE, 0));
-            Calendar currentDate = Calendar.getInstance();
-            if (currentDate.get(Calendar.DAY_OF_YEAR) == dailyRecordDate.get(Calendar.DAY_OF_YEAR)) {
-                dailyBest = prefs.getInt(AppConfig.DAILY_RECORD_SCORE, 0);
-            } else {
-                prefs.edit().putLong(AppConfig.DAILY_RECORD_DATE, System.currentTimeMillis()).apply();
-            }
-
-            personalBest = prefs.getInt(BEST_RESULT_PREF, 0);
-            progressBar = (ProgressBar) findViewById(R.id.scoreProgress);
-            int maxProgress = score > personalBest ? score : personalBest;
-            progressBar.setMax(maxProgress);
-
-            if (score > dailyBest) {
-                dailyBest = score;
-                prefs.edit().putInt(AppConfig.DAILY_RECORD_SCORE, dailyBest).apply();
-                if (prefs.getBoolean(AppConfig.GOOGLE_PLAY_GAMES_STATUS, false)) {
-                    beginUserInitiatedSignIn();
+            if (score > 0) {
+                SharedPreferences prefs = getSharedPreferences(AppConfig.SHARED_PREFS, MODE_PRIVATE);
+                Calendar dailyRecordDate = Calendar.getInstance();
+                dailyRecordDate.setTimeInMillis(prefs.getLong(AppConfig.DAILY_RECORD_DATE, 0));
+                Calendar currentDate = Calendar.getInstance();
+                if (currentDate.get(Calendar.DAY_OF_YEAR) == dailyRecordDate.get(Calendar.DAY_OF_YEAR)) {
+                    dailyBest = prefs.getInt(AppConfig.DAILY_RECORD_SCORE, 0);
+                } else {
+                    prefs.edit().putLong(AppConfig.DAILY_RECORD_DATE, System.currentTimeMillis()).apply();
                 }
-            }
 
-            if (score > personalBest) {
-                personalBest = score;
-                prefs.edit().putInt(BEST_RESULT_PREF, personalBest).apply();
-            }
+                personalBest = prefs.getInt(BEST_RESULT_PREF, 0);
+                progressBar = (ProgressBar) findViewById(R.id.scoreProgress);
+                int maxProgress = score > personalBest ? score : personalBest;
+                progressBar.setMax(maxProgress);
 
-            typefaceBold = Typeface.createFromAsset(getAssets(), "Lato-Bold.ttf");
-            ViewSwitcher.ViewFactory factory = new ViewSwitcher.ViewFactory() {
-                @Override
-                public View makeView() {
-                    View view = LayoutInflater.from(GameOverActivity.this).inflate(R.layout.game_score_text_view, null);
-
-                    TextView textView = (TextView) view.findViewById(R.id.scoreLabel);
-                    textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-
-                    textView.setTypeface(typefaceBold);
-
-                    return textView;
+                if (score > dailyBest) {
+                    dailyBest = score;
+                    prefs.edit().putInt(AppConfig.DAILY_RECORD_SCORE, dailyBest).apply();
+                    if (prefs.getBoolean(AppConfig.GOOGLE_PLAY_GAMES_STATUS, false)) {
+                        beginUserInitiatedSignIn();
+                    }
                 }
-            };
 
-            scoreSwitcher = (TextSwitcher) findViewById(R.id.scoreViewId);
-            scoreSwitcher.setInAnimation(this, R.anim.score_scale_in);
-            scoreSwitcher.setOutAnimation(this, R.anim.score_scale_out);
-            scoreSwitcher.setFactory(factory);
+                if (score > personalBest) {
+                    personalBest = score;
+                    prefs.edit().putInt(BEST_RESULT_PREF, personalBest).apply();
+                }
 
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (score > progressBar.getProgress()) {
-                                int value = progressBar.getProgress() + 1;
-                                progressBar.setProgress(value);
-                                if (score > currentScore + 200) {
-                                    currentScore = value;
+                typefaceBold = Typeface.createFromAsset(getAssets(), "Lato-Bold.ttf");
+                ViewSwitcher.ViewFactory factory = new ViewSwitcher.ViewFactory() {
+                    @Override
+                    public View makeView() {
+                        View view = LayoutInflater.from(GameOverActivity.this).inflate(R.layout.game_score_text_view, null);
+
+                        TextView textView = (TextView) view.findViewById(R.id.scoreLabel);
+                        textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+
+                        textView.setTypeface(typefaceBold);
+
+                        return textView;
+                    }
+                };
+
+                scoreSwitcher = (TextSwitcher) findViewById(R.id.scoreViewId);
+                scoreSwitcher.setInAnimation(this, R.anim.score_scale_in);
+                scoreSwitcher.setOutAnimation(this, R.anim.score_scale_out);
+                scoreSwitcher.setFactory(factory);
+
+                TimerTask timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (score > progressBar.getProgress()) {
+                                    int value = progressBar.getProgress() + 1;
+                                    progressBar.setProgress(value);
+                                    if (score > currentScore + 200) {
+                                        currentScore = value;
+                                    } else {
+                                        currentScore = score;
+                                    }
                                 } else {
-                                    currentScore = score;
+                                    cancel();
                                 }
-                            } else {
-                                cancel();
                             }
-                        }
-                    });
-                }
-            };
+                        });
+                    }
+                };
 
-            (new Timer()).scheduleAtFixedRate(timerTask, 0, 3);
+                (new Timer()).scheduleAtFixedRate(timerTask, 0, 3);
+
+                updateScore();
+                prepareTopLabel();
+            } else {
+                setResult(RESTART_GAME);
+                finish();
+            }
+        } else {
+            setResult(RESTART_GAME);
+            finish();
         }
-
-        updateScore();
-        prepareTopLabel();
     }
 
     private void prepareTopLabel() {

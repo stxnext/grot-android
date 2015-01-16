@@ -64,6 +64,7 @@ public class ScoreBoardViewController {
 
     public void resetMoves(int initMoves) {
         moves = initMoves;
+        movesInfo.setVisibility(View.INVISIBLE);
         if (movesSwitcher.getInAnimation() != null) {
             movesSwitcher.getInAnimation().setAnimationListener(null);
         }
@@ -73,7 +74,7 @@ public class ScoreBoardViewController {
 
     public void resetScore() {
         score = 0;
-
+        scoreInfo.setVisibility(View.INVISIBLE);
         if (scoreSwitcher.getInAnimation() != null) {
             scoreSwitcher.getInAnimation().setAnimationListener(null);
         }
