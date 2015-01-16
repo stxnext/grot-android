@@ -18,6 +18,7 @@ import pl.stxnext.grot.R;
 import pl.stxnext.grot.config.AppConfig;
 import pl.stxnext.grot.controller.GameController;
 import pl.stxnext.grot.controller.ScoreBoardViewController;
+import pl.stxnext.grot.enums.PlayedGamesAchievements;
 import pl.stxnext.grot.fragment.GameFragment;
 import pl.stxnext.grot.fragment.WarningDialogFragment;
 import pl.stxnext.grot.listener.GameStateChangedListener;
@@ -93,7 +94,7 @@ public class GameActivity extends BaseGameActivity implements GameStateChangedLi
     public void onGameStarted(final GamePlainModel model) {
         scoreBoardViewController.resetScore();
         scoreBoardViewController.resetMoves(model.getMoves());
-        gameController.setNewGamePlainModel(model);
+        gameController.prepareNewGame(model);
     }
 
     @Override
@@ -126,7 +127,9 @@ public class GameActivity extends BaseGameActivity implements GameStateChangedLi
 
     @Override
     public void onGameFinished(final GamePlainModel model) {
-        (new Handler()).postDelayed(new Runnable() {
+        PlayedGamesAchievements.addPlayedGame(this);
+
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent intent = new Intent(GameActivity.this, GameOverActivity.class);
