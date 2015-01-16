@@ -36,6 +36,7 @@ import pl.stxnext.grot.view.GameLayout;
 public class GameFragment extends Fragment {
 
     public static final String GAME_PLAIN_MODEL_ARG = "game_plain_model";
+    private List<Animator> animators;
 
     public static GameFragment newInstance(GamePlainModel model) {
         GameFragment gameFragment = new GameFragment();
@@ -115,26 +116,47 @@ public class GameFragment extends Fragment {
         });
     }
 
-    public void restartGame(GamePlainModel model) {
-        View view = getView();
+    public void restartGame(final GamePlainModel model) {
+        final View view = getView();
         if (view != null) {
-            Iterator<GameFieldModel> iterator = model.getGamePlainIterator();
-            for (int i = 0; iterator.hasNext(); i++) {
-                GameFieldModel fieldModel = iterator.next();
-                final GameButtonView gameButtonView = (GameButtonView) view.findViewById(i);
-                gameButtonView.resetView();
-                gameButtonView.setModel(fieldModel);
-                gameButtonView.invalidate();
+            if (animators != null && !animators.isEmpty()) {
+                gameLayout.setVisibility(View.INVISIBLE);
+                for (int i = 0; i < animators.size(); i++) {
+                    animators.get(i).removeAllListeners();
+                    if (i == animators.size() - 1) {
+                        animators.get(i).addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                resetGame(model);
+                            }
+                        });
+                    }
+                    animators.get(i).cancel();
+                }
+            } else {
+                resetGame(model);
             }
-            gameLayout.unlock();
-            listener.onGameStarted(model);
         }
+    }
+
+    private void resetGame(final GamePlainModel model) {
+        Iterator<GameFieldModel> iterator = model.getGamePlainIterator();
+        for (int i = 0; iterator.hasNext(); i++) {
+            GameFieldModel fieldModel = iterator.next();
+            final GameButtonView gameButtonView = (GameButtonView) getView().findViewById(i);
+            gameButtonView.resetView();
+            gameButtonView.setModel(fieldModel);
+            gameButtonView.invalidate();
+        }
+        gameLayout.unlock();
+        gameLayout.setVisibility(View.VISIBLE);
+        listener.onGameStarted(model);
     }
 
     public void updateGameBoard(final GamePlainModel model, final List<FieldTransition> fieldTransitions) {
         final Iterator<FieldTransition> iterator = fieldTransitions.iterator();
         final Set<Integer> positions = new HashSet<>();
-        final List<Animator> animators = new ArrayList<>();
+        animators = new ArrayList<>();
         if (iterator.hasNext()) {
             final FieldTransition fieldTransition = iterator.next();
             final int position = fieldTransition.getPosition();

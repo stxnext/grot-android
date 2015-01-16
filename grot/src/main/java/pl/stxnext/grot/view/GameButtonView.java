@@ -170,6 +170,7 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
 
     public void resetView() {
         LinearLayout.LayoutParams layoutParams = ((LinearLayout.LayoutParams) getLayoutParams());
+        setAlpha(1f);
         setX(layoutParams.leftMargin);
         setY(layoutParams.topMargin);
     }
