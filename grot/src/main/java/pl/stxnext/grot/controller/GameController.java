@@ -263,16 +263,18 @@ public class GameController {
     }
 
     private void checkPlayedGamesAchievement() {
-        // Played games achievements
-        int currentPlayedGames = PlayedGamesAchievements.getPlayedGames(context);
-        PlayedGamesAchievements lastReachedAchievement = PlayedGamesAchievements.getLastReached(context);
-        int playedGames = lastReachedAchievement != null ? lastReachedAchievement.getPlayedGames() : 0;
-        if (currentPlayedGames > playedGames) {
-            for (PlayedGamesAchievements achievement : PlayedGamesAchievements.values()) {
-                if (achievement.getPlayedGames() > playedGames) {
-                    if (currentPlayedGames >= achievement.getPlayedGames()) {
-                        Games.Achievements.unlock(googleApiClient, context.getString(achievement.getIdRes()));
-                        PlayedGamesAchievements.setLastReached(context, achievement);
+        if (googleApiClient != null && googleApiClient.isConnected()) {
+            // Played games achievements
+            int currentPlayedGames = PlayedGamesAchievements.getPlayedGames(context);
+            PlayedGamesAchievements lastReachedAchievement = PlayedGamesAchievements.getLastReached(context);
+            int playedGames = lastReachedAchievement != null ? lastReachedAchievement.getPlayedGames() : 0;
+            if (currentPlayedGames > playedGames) {
+                for (PlayedGamesAchievements achievement : PlayedGamesAchievements.values()) {
+                    if (achievement.getPlayedGames() > playedGames) {
+                        if (currentPlayedGames >= achievement.getPlayedGames()) {
+                            Games.Achievements.unlock(googleApiClient, context.getString(achievement.getIdRes()));
+                            PlayedGamesAchievements.setLastReached(context, achievement);
+                        }
                     }
                 }
             }
