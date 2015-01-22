@@ -17,7 +17,8 @@ public enum ScoreAchievements {
     PARADISE(800, R.string.achievement_paradise),
     MASTER(1000, R.string.achievement_grotmaster),
     GROTSTAR(1200, R.string.achievement_grotstar),
-    GOD(1600, R.string.achievement_god_of_grot);
+    GOD(1600, R.string.achievement_god_of_grot),
+    PROFESSOR(1800, R.string.achievement_professor);
 
     private final int score;
     private final int idRes;

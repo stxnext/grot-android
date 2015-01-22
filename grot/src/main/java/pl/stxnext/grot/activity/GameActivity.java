@@ -1,5 +1,7 @@
 package pl.stxnext.grot.activity;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -83,11 +85,12 @@ public class GameActivity extends BaseGameActivity implements GameStateChangedLi
     }
 
     private void addGameFragment() {
-        this.gameFragment = GameFragment.newInstance(gameController.getNewGamePlainModel());
-        getFragmentManager()
-                .beginTransaction()
-                .add(R.id.game_plain_container, gameFragment, GAME_FRAGMENT_TAG)
-                .commit();
+        if (gameFragment == null || !gameFragment.isAdded()) {
+            gameFragment = GameFragment.newInstance(gameController.getNewGamePlainModel());
+            getFragmentManager().beginTransaction()
+                    .add(R.id.game_plain_container, gameFragment, GAME_FRAGMENT_TAG)
+                    .commit();
+        }
     }
 
     @Override
