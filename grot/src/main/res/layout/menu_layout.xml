@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/start_background"
         layout="@layout/activity_splash"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,15 +30,15 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:visibility="gone"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <ImageButton
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:background="@drawable/oval_button"
                     android:clickable="false"
-                    android:src="@drawable/restart_btn"/>
+                    android:src="@drawable/restart_btn" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
                     android:clickable="false"
                     android:text="@string/restart"
                     android:textColor="@android:color/white"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
@@ -65,7 +65,7 @@
                     android:layout_height="90dp"
                     android:background="@drawable/oval_button"
                     android:clickable="false"
-                    android:src="@drawable/resume"/>
+                    android:src="@drawable/resume" />
 
                 <TextView
                     android:id="@+id/play_resume_label"
@@ -75,7 +75,7 @@
                     android:clickable="false"
                     android:text="@string/play"
                     android:textColor="@android:color/white"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
@@ -85,12 +85,12 @@
             android:id="@+id/about_button"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/menu_layout_horizontal_margin"
+            android:layout_toRightOf="@id/restart_button_container"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:orientation="vertical"
-            android:layout_marginLeft="@dimen/menu_layout_horizontal_margin"
-            android:layout_toRightOf="@id/restart_button_container">
+            android:orientation="vertical">
 
             <Button
                 android:layout_width="90dp"
@@ -101,7 +101,7 @@
                 android:text="i"
                 android:textColor="@android:color/white"
                 android:textSize="58sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -110,7 +110,7 @@
                 android:clickable="false"
                 android:text="@string/about"
                 android:textColor="@android:color/white"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -131,7 +131,7 @@
                 android:background="@drawable/oval_button"
                 android:clickable="false"
                 android:focusable="false"
-                android:src="@drawable/google_games"/>
+                android:src="@drawable/google_games" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -141,7 +141,7 @@
                 android:focusable="false"
                 android:text="@string/game_center"
                 android:textColor="@android:color/white"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -167,7 +167,7 @@
                 android:text="\?"
                 android:textColor="@android:color/white"
                 android:textSize="58sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -175,7 +175,67 @@
                 android:layout_marginTop="6dp"
                 android:text="@string/help"
                 android:textColor="@android:color/white"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/leaderboard_button"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/game_center_button"
+            android:layout_marginTop="@dimen/menu_layout_vertical_margin"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:background="@drawable/oval_button"
+                android:clickable="false"
+                android:focusable="false"
+                android:src="@drawable/crown" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/ranking"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/achievements_button"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/help_button"
+            android:layout_marginLeft="@dimen/menu_layout_horizontal_margin"
+            android:layout_marginTop="@dimen/menu_layout_vertical_margin"
+            android:layout_toRightOf="@id/leaderboard_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:background="@drawable/oval_button"
+                android:clickable="false"
+                android:focusable="false"
+                android:src="@drawable/achievements" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/achievements"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
