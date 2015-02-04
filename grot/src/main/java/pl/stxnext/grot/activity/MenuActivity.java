@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
@@ -47,9 +48,19 @@ public class MenuActivity extends BaseGameActivity {
                     finish();
                 }
             });
+
+            restartButton.setAlpha(0.3f);
         } else {
-            playButton.setVisibility(View.GONE);
-            restartButton.setVisibility(View.VISIBLE);
+            TextView resumeLabel = (TextView) playButton.findViewById(R.id.play_resume_label);
+            resumeLabel.setText(R.string.resume);
+
+            playButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+
             restartButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -57,6 +68,7 @@ public class MenuActivity extends BaseGameActivity {
                     finish();
                 }
             });
+
         }
 
 
@@ -65,14 +77,6 @@ public class MenuActivity extends BaseGameActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MenuActivity.this, HelpActivity.class);
                 startActivity(intent);
-            }
-        });
-
-        findViewById(R.id.game_center_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(MenuActivity.this, GameServicesActivity.class);
-//                startActivity(intent);
             }
         });
 

@@ -174,7 +174,7 @@ public class GameOverActivity extends BaseGameActivity {
             }
         });
 
-        bottomContainer.findViewById(R.id.restart_button).setOnClickListener(new View.OnClickListener() {
+        bottomContainer.findViewById(R.id.play_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setResult(RESTART_GAME);

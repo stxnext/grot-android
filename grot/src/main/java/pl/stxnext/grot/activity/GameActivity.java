@@ -1,7 +1,6 @@
 package pl.stxnext.grot.activity;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -23,6 +22,7 @@ import pl.stxnext.grot.controller.ScoreBoardViewController;
 import pl.stxnext.grot.enums.PlayedGamesAchievements;
 import pl.stxnext.grot.fragment.GameFragment;
 import pl.stxnext.grot.fragment.WarningDialogFragment;
+import pl.stxnext.grot.game.GamePlainGenerator;
 import pl.stxnext.grot.listener.GameStateChangedListener;
 import pl.stxnext.grot.model.FieldTransition;
 import pl.stxnext.grot.model.GamePlainModel;
@@ -37,8 +37,6 @@ public class GameActivity extends BaseGameActivity implements GameStateChangedLi
 
     private static final String GAME_FRAGMENT_TAG = "game_fragment_tag";
     private GameController gameController;
-    private GameFragment gameFragment;
-
     ScoreBoardViewController scoreBoardViewController;
 
     @Override
@@ -85,6 +83,7 @@ public class GameActivity extends BaseGameActivity implements GameStateChangedLi
     }
 
     private void addGameFragment() {
+        Fragment gameFragment = getFragmentManager().findFragmentByTag(GAME_FRAGMENT_TAG);
         if (gameFragment == null || !gameFragment.isAdded()) {
             gameFragment = GameFragment.newInstance(gameController.getNewGamePlainModel());
             getFragmentManager().beginTransaction()
@@ -107,7 +106,10 @@ public class GameActivity extends BaseGameActivity implements GameStateChangedLi
     }
 
     public void restartGame() {
-        gameFragment.restartGame(gameController.getNewGamePlainModel());
+        GameFragment gameFragment = (GameFragment) getFragmentManager().findFragmentByTag(GAME_FRAGMENT_TAG);
+        if (gameFragment != null && gameFragment.isAdded()) {
+            gameFragment.restartGame(gameController.getNewGamePlainModel());
+        }
     }
 
     @Override
@@ -125,7 +127,10 @@ public class GameActivity extends BaseGameActivity implements GameStateChangedLi
 
     @Override
     public void updateGameInfo(GamePlainModel model, List<FieldTransition> fieldTransitions) {
-        gameFragment.updateGameBoard(model, fieldTransitions);
+        GameFragment gameFragment = (GameFragment) getFragmentManager().findFragmentByTag(GAME_FRAGMENT_TAG);
+        if (gameFragment != null && gameFragment.isAdded()) {
+            gameFragment.updateGameBoard(model, fieldTransitions);
+        }
     }
 
     @Override
@@ -169,7 +174,10 @@ public class GameActivity extends BaseGameActivity implements GameStateChangedLi
 
     @Override
     public void onGamePlainUpdated() {
-        gameFragment.enablePlain();
+        GameFragment gameFragment = (GameFragment) getFragmentManager().findFragmentByTag(GAME_FRAGMENT_TAG);
+        if (gameFragment != null && gameFragment.isAdded()) {
+            gameFragment.enablePlain();
+        }
     }
 
     @Override
