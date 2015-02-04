@@ -6,6 +6,7 @@
     <string name="game_finished">Koniec gry!</string>
     <string name="restart">Restart</string>
     <string name="play">Start</string>
+    <string name="resume">Wznów</string>
     <string name="game_center">Game Center</string>
     <string name="about">Info</string>
     <string name="help">Pomoc</string>

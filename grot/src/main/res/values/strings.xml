@@ -35,5 +35,6 @@
     <string name="ranking">Leaderboard</string>
     <string name="achievements">Achievements</string>
     <string name="stx_url">http://www.stxnext.com</string>
+    <string name="resume">Resume</string>
 
 </resources>
