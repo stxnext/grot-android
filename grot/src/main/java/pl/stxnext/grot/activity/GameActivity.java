@@ -22,7 +22,6 @@ import pl.stxnext.grot.controller.ScoreBoardViewController;
 import pl.stxnext.grot.enums.PlayedGamesAchievements;
 import pl.stxnext.grot.fragment.GameFragment;
 import pl.stxnext.grot.fragment.WarningDialogFragment;
-import pl.stxnext.grot.game.GamePlainGenerator;
 import pl.stxnext.grot.listener.GameStateChangedListener;
 import pl.stxnext.grot.model.FieldTransition;
 import pl.stxnext.grot.model.GamePlainModel;
@@ -94,7 +93,7 @@ public class GameActivity extends BaseGameActivity implements GameStateChangedLi
 
     @Override
     public void onGameStarted(final GamePlainModel model) {
-        scoreBoardViewController.resetScore();
+        scoreBoardViewController.resetScore(model.getScore());
         scoreBoardViewController.resetMoves(model.getMoves());
         gameController.prepareNewGame(model);
     }

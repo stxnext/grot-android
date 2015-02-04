@@ -77,7 +77,6 @@ public class GameFragment extends Fragment {
     }
 
     private void fillGamePlain(final View view, final GamePlainModel model) {
-        gameLayout.removeAllViews();
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
