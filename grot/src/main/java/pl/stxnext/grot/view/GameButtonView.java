@@ -198,16 +198,16 @@ public class GameButtonView extends ImageButton implements GameFieldModel.ModelC
             if (moveAnimator == null) {
                 switch (rotation) {
                     case LEFT:
-                        moveAnimator = ObjectAnimator.ofFloat(this, "translationX", -getWidth() * jumps);
+                        this.moveAnimator = ObjectAnimator.ofFloat(this, "translationX", -getWidth() * jumps);
                         break;
                     case RIGHT:
-                        moveAnimator = ObjectAnimator.ofFloat(this, "translationX", getWidth() * jumps);
+                        this.moveAnimator = ObjectAnimator.ofFloat(this, "translationX", getWidth() * jumps);
                         break;
                     case UP:
-                        moveAnimator = ObjectAnimator.ofFloat(this, "translationY", -getHeight() * jumps);
+                        this.moveAnimator = ObjectAnimator.ofFloat(this, "translationY", -getHeight() * jumps);
                         break;
                     case DOWN:
-                        moveAnimator = ObjectAnimator.ofFloat(this, "translationY", getHeight() * jumps);
+                        this.moveAnimator = ObjectAnimator.ofFloat(this, "translationY", getHeight() * jumps);
                         break;
                 }
             } else {

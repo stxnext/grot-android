@@ -115,6 +115,9 @@ public class GameOverActivity extends BaseGameActivity {
                                         currentScore = score;
                                     }
                                 } else {
+                                    if (currentScore < score) {
+                                        currentScore = score;
+                                    }
                                     cancel();
                                 }
                             }
