@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
         <shape
-            android:innerRadiusRatio="3"
+            android:innerRadiusRatio="@integer/progress_ratio"
             android:shape="ring"
             android:useLevel="false"
             android:thicknessRatio="24.0">
@@ -14,7 +14,7 @@
             android:fromDegrees="270"
             android:toDegrees="270">
             <shape
-                android:innerRadiusRatio="3"
+                android:innerRadiusRatio="@integer/progress_ratio"
                 android:shape="ring"
                 android:thicknessRatio="24.0"
                 android:useLevel="true">
