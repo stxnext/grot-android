@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 
 import pl.stxnext.grot.R;
 
@@ -23,7 +24,9 @@ public class WarningDialogFragment extends DialogFragment {
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                getActivity().finish();
+                if (getActivity() != null) {
+                    ActivityCompat.finishAffinity(getActivity());
+                }
             }
         });
 

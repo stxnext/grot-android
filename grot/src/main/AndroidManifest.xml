@@ -7,12 +7,12 @@
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
-        android:theme="@style/GrotTheme"
         android:label="@string/app_name">
 
         <activity
             android:name=".activity.SplashActivity"
             android:label="@string/app_name"
+            android:theme="@style/GrotTheme.STX"
             android:screenOrientation="portrait">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN" />
@@ -23,26 +23,32 @@
 
         <activity
             android:name=".activity.GameActivity"
+            android:theme="@style/GrotTheme.Light"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name=".activity.MenuActivity"
+            android:theme="@style/GrotTheme"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name=".activity.GameOverActivity"
+            android:theme="@style/GrotTheme"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name=".activity.GameServicesActivity"
+            android:theme="@style/GrotTheme"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name=".activity.HelpActivity"
+            android:theme="@style/GrotTheme"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name=".activity.AboutActivity"
+            android:theme="@style/GrotTheme"
             android:screenOrientation="portrait" />
 
         <meta-data

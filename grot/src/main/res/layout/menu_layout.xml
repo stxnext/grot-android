@@ -103,6 +103,7 @@
                 android:clickable="false"
                 android:focusable="false"
                 android:text="i"
+                android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="58sp"
                 android:textStyle="bold" />

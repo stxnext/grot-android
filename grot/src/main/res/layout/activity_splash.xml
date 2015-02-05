@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:background="@color/stx_main_color"
-             android:gravity="center"
-             android:orientation="vertical">
+             android:background="@color/stx_main_color">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:alpha="0.2"
+        android:src="@drawable/hero"/>
 
     <TextView
         android:id="@+id/splash_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="60dp"
         android:background="@null"
         android:text="@string/grot"
         android:textColor="@color/splash_text_color"
@@ -20,8 +26,9 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="30dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,10 +40,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
             android:layout_margin="8dp"
-            android:src="@drawable/logo_white" />
+            android:src="@drawable/logo_white"/>
 
     </LinearLayout>
 
-</LinearLayout>
+</FrameLayout>

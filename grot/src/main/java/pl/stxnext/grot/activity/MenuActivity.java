@@ -12,6 +12,7 @@ import com.google.example.games.basegameutils.BaseGameActivity;
 
 import pl.stxnext.grot.R;
 import pl.stxnext.grot.config.AppConfig;
+import pl.stxnext.grot.fragment.WarningDialogFragment;
 
 /**
  * Created by Tomasz Konieczny on 2015-01-07.
@@ -38,8 +39,6 @@ public class MenuActivity extends BaseGameActivity {
         View playButton = findViewById(R.id.play_game_button);
         View restartButton = findViewById(R.id.restart_button);
         if (isStartScreen) {
-            findViewById(R.id.start_background).setVisibility(View.VISIBLE);
-
             playButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -68,9 +67,7 @@ public class MenuActivity extends BaseGameActivity {
                     finish();
                 }
             });
-
         }
-
 
         findViewById(R.id.help_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +157,16 @@ public class MenuActivity extends BaseGameActivity {
                     beginUserInitiatedSignIn();
                 }
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!isStartScreen) {
+            WarningDialogFragment dialog = new WarningDialogFragment();
+            dialog.show(getFragmentManager(), "warning_dialog");
+        } else {
+            super.onBackPressed();
         }
     }
 }

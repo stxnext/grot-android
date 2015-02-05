@@ -63,22 +63,6 @@ public class GameActivity extends BaseGameActivity implements GameStateChangedLi
         TextView movesLabel = (TextView) findViewById(R.id.movesLabelId);
         movesLabel.setTypeface(typefaceRegular);
         addGameFragment();
-
-        findViewById(R.id.help_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GameActivity.this, HelpActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        findViewById(R.id.pauseButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GameActivity.this, MenuActivity.class);
-                startActivityForResult(intent, PAUSE_MENU_REQUEST);
-            }
-        });
     }
 
     private void addGameFragment() {
@@ -163,12 +147,8 @@ public class GameActivity extends BaseGameActivity implements GameStateChangedLi
 
     @Override
     public void onBackPressed() {
-        if (gameController.getCurrentScore() > 0) {
-            WarningDialogFragment dialog = new WarningDialogFragment();
-            dialog.show(getFragmentManager(), "warning_dialog");
-        } else {
-            super.onBackPressed();
-        }
+        Intent intent = new Intent(GameActivity.this, MenuActivity.class);
+        startActivityForResult(intent, PAUSE_MENU_REQUEST);
     }
 
     @Override
@@ -187,4 +167,5 @@ public class GameActivity extends BaseGameActivity implements GameStateChangedLi
     public void onSignInSucceeded() {
         gameController.setGoogleApiClient(getApiClient());
     }
+
 }

@@ -6,6 +6,5 @@
     <dimen name="game_button_margin">2dp</dimen>
     <dimen name="menu_layout_horizontal_margin">100dp</dimen>
     <dimen name="menu_layout_vertical_margin">150dp</dimen>
-    <dimen name="bottom_panel_top_margin">16dp</dimen>
     <dimen name="header_bottom_margin">8dp</dimen>
 </resources>

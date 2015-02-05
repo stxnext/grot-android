@@ -10,4 +10,10 @@
     <color name="transparent_black">#e1000000</color>
     <color name="alpha_white">#37f8f7ff</color>
 
+    <color name="dark_accent">#ff717273</color>
+    <color name="light_accent">#ffe4e5e6</color>
+    <color name="light_primary_dark">#ffd3d4d5</color>
+    <color name="stx_accent">#ff00afa8</color>
+    <color name="stx_secondary_color">#ff006d66</color>
+
 </resources>
